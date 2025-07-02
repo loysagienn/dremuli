@@ -1,0 +1,40 @@
+{
+  "name": "assistant-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "NODE_ENV=production node ./build/build.js",
+    "start": "NODE_ENV=production node --env-file=.env ./dist/app.js",
+    "build-dev": "NODE_ENV=development node ./build/build.js",
+    "start-dev": "NODE_ENV=development nodemon --env-file=.env ./dist/app.js",
+    "dev": "npm run build-dev & npm run start-dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@koa/bodyparser": "^6.0.0",
+    "@prisma/client": "^6.10.1",
+    "@reduxjs/toolkit": "^2.8.2",
+    "bcrypt": "^6.0.0",
+    "koa": "^3.0.0",
+    "koa-send": "^5.0.1",
+    "nodemailer": "^7.0.4",
+    "prisma": "^6.10.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-redux": "^9.2.0",
+    "redux": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/koa-send": "^4.1.6",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "esbuild": "^0.25.5",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.8.3"
+  }
+}

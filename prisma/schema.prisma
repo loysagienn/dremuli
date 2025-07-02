@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/server/db/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
+
+model Session {
+  id        String           @id @default(uuid())
+  createdAt DateTime         @default(now()) @map("created_at")
+  userAgent String?          @map("user_agent")
+  settings  SessionSettings?
+  userId    String?          @map("user_id")
+  user      User?            @relation(fields: [userId], references: [id])
+
+  @@map("web_sessions")
+}
+
+model User {
+  id          String              @id @default(uuid())
+  email       String              @unique
+  credentials UserCredentials?
+  resetToken  PasswordResetToken?
+
+  sessions Session[] // one-to-many relation to sessions
+
+  @@map("users")
+}
+
+model UserCredentials {
+  userId       String @id @map("id")
+  passwordHash String @map("password_hash")
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_credentials")
+}
+
+model PasswordResetToken {
+  userId    String    @id @map("id")
+  tokenHash String    @map("token_hash")
+  issuedAt  DateTime  @default(now()) @map("issued_at")
+  openedAt  DateTime? @map("opened_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
+}
+
+enum Theme {
+  light
+  dark
+}
+
+model SessionSettings {
+  id    String @id
+  theme Theme
+
+  session Session @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@map("session_settings")
+}

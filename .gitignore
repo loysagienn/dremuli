@@ -1,0 +1,9 @@
+node_modules
+dist
+public/app.css
+public/app.js
+.env
+.env.server
+.vscode
+/src/generated/prisma
+/src/server/db/prisma

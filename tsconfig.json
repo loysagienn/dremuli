@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "paths": {
+      "config/*": ["./config/*"],
+      "server/*": ["./server/*"],
+      "types": ["./types"],
+      "utils": ["./utils"],
+      "components": ["./components"],
+      "app": ["./app"],
+      "actions": ["./actions"],
+      "action-handlers": ["./action-handlers"],
+      "reducers": ["./reducers"],
+      "selectors": ["./selectors"]
+    },
+    "allowSyntheticDefaultImports": true
+  }
+}
