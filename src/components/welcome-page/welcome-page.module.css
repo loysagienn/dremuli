@@ -1,28 +1,42 @@
 .root {
   position: absolute;
   inset: 0;
+}
+
+.content {
+  position: absolute;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3vh 16px;
+  padding: 0 16px;
 }
 
 .logo {
   width: 30vh;
   height: 30vh;
-  background-image: url("http://localhost:3040/static/logo.svg");
+  position: relative;
+}
+
+.logoSvg {
+  position: absolute;
+  inset: 0;
+  fill: var(--color-action);
 }
 
 .title {
   margin: -1vh 0 0;
   padding: 0;
-  font-size: 8vh;
+  font-size: 7vh;
   font-family: "Times New Roman", Times, serif;
   /* color: var(--color-action); */
 }
 
 .caption {
-  font-size: 5vh;
+  font-size: 4vh;
   margin-top: 1vh;
   text-align: center;
   font-weight: 300;
@@ -32,6 +46,24 @@
   margin-top: 2vh;
   max-width: 60vh;
   text-align: center;
-  font-size: 3vh;
+  font-size: 2.5vh;
   font-weight: 250;
+}
+
+.buttons {
+  margin-top: 3vh;
+  display: flex;
+  gap: 8px;
+}
+
+.header {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--header-height);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }

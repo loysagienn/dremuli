@@ -4,8 +4,14 @@ import styles from "./theme-switcher.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTheme } from "selectors";
 import { setTheme } from "actions";
+import Moon from "./moon.svg";
+import Sun from "./sun.svg";
 
-export function ThemeSwitcher() {
+type ThemeSwitcherProps = {
+  className?: string;
+};
+
+export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
   const theme = useSelector(selectTheme);
   const dispatch = useDispatch();
 
@@ -15,11 +21,12 @@ export function ThemeSwitcher() {
   );
 
   return (
-    <div className={cn(styles.root)}>
-      {`Current theme: ${theme}`}{" "}
-      <div className={styles.toggle} onClick={toggleTheme}>
-        Toggle
-      </div>
+    <div className={cn(className, styles.switcher)} onClick={toggleTheme}>
+      <div
+        className={cn(styles.control, theme === "dark" && styles.checked)}
+      ></div>
+      <Moon className={styles.moon} />
+      <Sun className={styles.sun} />
     </div>
   );
 }

@@ -12,28 +12,41 @@ type LinkProps = {
   children: ReactNode;
   className?: string;
   web?: boolean;
+  onClick?: () => void;
 };
 
-export function Link({ route, children, className, web }: LinkProps) {
+export function Link({ route, children, className, web, onClick }: LinkProps) {
   const dispatch = useDispatch();
 
   const href = useMemo(() => router.writeRoute(route), [route]);
 
-  const onClick = useCallback(
+  const clickHandler = useCallback(
     (event: MouseEvent) => {
       if (web) {
+        if (onClick) {
+          onClick();
+        }
+
         return;
       }
 
       dispatch(routeToAction(route));
 
       event.preventDefault();
+
+      if (onClick) {
+        onClick();
+      }
     },
     [route, web]
   );
 
   return (
-    <a href={href} className={cn(className, styles.link)} onClick={onClick}>
+    <a
+      href={href}
+      className={cn(className, styles.link)}
+      onClick={clickHandler}
+    >
       {children}
     </a>
   );

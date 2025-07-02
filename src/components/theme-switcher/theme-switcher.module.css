@@ -1,8 +1,40 @@
-.root {
-  display: block;
+.switcher {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background-color: var(--color-bg-secondary);
+  border-radius: 12px;
+  cursor: pointer;
 }
 
-.toggle {
-  width: fit-content;
-  cursor: pointer;
+.control {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  border-radius: 10px;
+  background-color: var(--color-action);
+  transition: transform 0.2s ease-in-out;
+}
+
+.control.checked {
+  transform: translate(24px, 0);
+}
+
+.moon,
+.sun {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 6px;
+  stroke: var(--color-bg-main);
+}
+
+.moon {
+  right: 6px;
+}
+
+.sun {
+  left: 6px;
 }

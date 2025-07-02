@@ -1,0 +1,31 @@
+.root {
+  border-radius: 0;
+  text-decoration: none;
+  padding: 6px 16px;
+  display: block;
+  border-radius: 6px;
+  border: 2px solid var(--color-action);
+  cursor: pointer;
+}
+
+.root:hover {
+  border: 2px solid var(--color-action-hover);
+}
+
+.style_action {
+  background-color: var(--color-action);
+  color: var(--color-text-action);
+}
+
+.style_action:hover {
+  background-color: var(--color-action-hover);
+  color: var(--color-text-action-hover);
+}
+
+.style_outline {
+  color: var(--color-text);
+}
+
+.style_outline:hover {
+  color: var(--color-text-hover);
+}

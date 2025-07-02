@@ -1,6 +1,11 @@
 .root {
   --color-bg-main: #dae5f5;
+  --color-bg-secondary: #bacde8;
   --color-text: #323942;
+  --color-text-hover: #21252b;
   --color-text-secondary: #536073;
   --color-action: #5087d4;
+  --color-action-hover: #5a92e0;
+  --color-text-action: #dce7f5;
+  --color-text-action-hover: #ffffff;
 }

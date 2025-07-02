@@ -1,4 +1,5 @@
 import * as esbuild from "esbuild";
+import svgrPlugin from "esbuild-plugin-svgr";
 
 function getOptions(NODE_ENV, APP_VERSION) {
   /**
@@ -22,6 +23,7 @@ function getOptions(NODE_ENV, APP_VERSION) {
       __APP_VERSION__: JSON.stringify(APP_VERSION),
     },
     minify: NODE_ENV === "production",
+    plugins: [svgrPlugin()],
   };
 
   return options;
