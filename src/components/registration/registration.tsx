@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "actions";
+import { Header } from "components/header";
+import styles from "./registration.module.css";
 
 export function Registration() {
   const [email, setEmail] = useState("");
@@ -16,18 +18,24 @@ export function Registration() {
   }, [email, password]);
 
   return (
-    <div>
-      <div>Registration</div>
-      <div>Email:</div>
-      <input value={email} onChange={(event) => setEmail(event.target.value)} />
-      <div>Password:</div>
-      <input
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-        type="password"
-      />
-      <div>
-        <button onClick={onSubmit}>Submit</button>
+    <div className={styles.root}>
+      <Header />
+      <div className={styles.content}>
+        <div>Registration</div>
+        <div>Email:</div>
+        <input
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+        <div>Password:</div>
+        <input
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          type="password"
+        />
+        <div>
+          <button onClick={onSubmit}>Submit</button>
+        </div>
       </div>
     </div>
   );

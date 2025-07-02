@@ -4,8 +4,8 @@ import styles from "./theme-switcher.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTheme } from "selectors";
 import { setTheme } from "actions";
-import Moon from "./moon.svg";
-import Sun from "./sun.svg";
+import Moon from "svg/moon.svg";
+import Sun from "svg/sun.svg";
 
 type ThemeSwitcherProps = {
   className?: string;

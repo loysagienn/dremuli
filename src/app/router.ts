@@ -36,24 +36,6 @@ const apiSettings: RouteConfig<ApiSettingsRoute> = {
   writeRoute: (route) => "/api/settings",
 };
 
-type SettingsRoute = {
-  key: "settings";
-};
-
-const settings: RouteConfig<SettingsRoute> = {
-  key: "settings",
-  readRoute: (path: string) => {
-    if (path === "/settings") {
-      return {
-        key: "settings",
-      };
-    }
-
-    return null;
-  },
-  writeRoute: (route) => "/settings",
-};
-
 type LoginRoute = {
   key: "login";
 };
@@ -334,7 +316,6 @@ const apiResetPassword: RouteConfig<ApiResetPassword> = {
 
 export const router = initRouter(
   home,
-  settings,
   login,
   logout,
   register,

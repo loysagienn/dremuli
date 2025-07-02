@@ -6,7 +6,6 @@ import darkStyles from "app/styles/dark.module.css";
 import commonStyles from "app/styles/common.module.css";
 import { useSelector } from "react-redux";
 import { selectTheme, selectUser } from "selectors";
-import { ThemeSwitcher } from "components/theme-switcher";
 import { Route, Link } from "components/router";
 import { Registration } from "components/registration";
 import { ChangePassword } from "components/change-password";
@@ -34,28 +33,17 @@ export function App() {
             <div>
               <Link route={{ key: "profile" }}>Profile</Link>
             </div>
-            <div>
-              <Link route={{ key: "settings" }}>Settings</Link>
-            </div>
           </>
         )}
         {!user && <WelcomePage />}
       </Route>
 
-      <Route routeKey="settings">
-        <Link route={{ key: "home" }}>Home</Link>
-        <ThemeSwitcher />
-      </Route>
-
       <Route routeKey="login">
-        <Link route={{ key: "home" }}>Home</Link>
-
-        {user ? <div>{`Logged in as: ${user.email}`}</div> : <Login />}
+        <Login />
       </Route>
 
       <Route routeKey="register">
-        <Link route={{ key: "home" }}>Home</Link>
-        {user ? <div>{`Logged in as: ${user.email}`}</div> : <Registration />}
+        <Registration />
       </Route>
 
       <Route routeKey="profile">
@@ -79,8 +67,6 @@ export function App() {
       </Route>
 
       <Route routeKey="forget_password">
-        <Link route={{ key: "home" }}>Home</Link>
-
         <ForgetPassword />
       </Route>
 

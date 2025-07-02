@@ -1,0 +1,29 @@
+.root {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--header-height);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.homeLink {
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  box-sizing: border-box;
+  margin-right: auto;
+}
+
+.homeSvg {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-action);
+}
+
+.homeLink:hover .homeSvg {
+  fill: var(--color-action-hover);
+}

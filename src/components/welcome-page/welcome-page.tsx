@@ -1,21 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { selectTheme, selectUser } from "selectors";
-import { Route, Link } from "components/router";
 import { Button } from "components/button";
 import { ThemeSwitcher } from "components/theme-switcher";
-import Logo from "./logo.svg";
+import { Header } from "components/header";
+import Logo from "svg/logo.svg";
 import styles from "./welcome-page.module.css";
 
 export function WelcomePage() {
-  const theme = useSelector(selectTheme);
-  const user = useSelector(selectUser);
-
   return (
     <div className={styles.root}>
-      <div className={styles.header}>
-        <ThemeSwitcher />
-      </div>
+      <Header />
       <div className={styles.content}>
         <div className={styles.logo}>
           <Logo className={styles.logoSvg} />

@@ -55,15 +55,3 @@
   display: flex;
   gap: 8px;
 }
-
-.header {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: var(--header-height);
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
