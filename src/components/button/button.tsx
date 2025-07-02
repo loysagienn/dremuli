@@ -31,7 +31,10 @@ export function Button({
     );
   }
   return (
-    <div className={cn(className, styles.root)} onClick={onClick}>
+    <div
+      className={cn(className, styles.root, styles[`style_${style}`])}
+      onClick={onClick}
+    >
       {children}
     </div>
   );

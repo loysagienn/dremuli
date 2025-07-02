@@ -1,8 +1,13 @@
 .root {
+  box-sizing: border-box;
   border-radius: 0;
   text-decoration: none;
-  padding: 6px 16px;
-  display: block;
+  padding: 0 20px;
+  height: 36px;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 6px;
   border: 2px solid var(--color-action);
   cursor: pointer;

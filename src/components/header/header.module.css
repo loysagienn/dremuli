@@ -7,23 +7,32 @@
   padding: 0 16px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.root.home {
   justify-content: flex-end;
 }
 
 .homeLink {
   width: 32px;
   height: 32px;
-  padding: 4px;
+  padding: 6px;
   box-sizing: border-box;
-  margin-right: auto;
+  margin-left: -6px;
 }
 
 .homeSvg {
-  width: 24px;
-  height: 24px;
+  margin-top: -1px;
+  width: 20px;
+  height: 20px;
   fill: var(--color-action);
 }
 
 .homeLink:hover .homeSvg {
   fill: var(--color-action-hover);
+}
+
+.routeName {
+  font-size: 20px;
 }

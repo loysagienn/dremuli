@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { forgetPassword } from "actions";
-import { Link } from "components/router";
 import { Header } from "components/header";
+import { FormInput, FormSubmit } from "components/form";
 import styles from "./forget-password.module.css";
 
 export function ForgetPassword() {
@@ -24,20 +24,21 @@ export function ForgetPassword() {
       <Header />
 
       <div className={styles.content}>
-        <div>Forget password</div>
-        {done && <div>Reset password link has been sent to your email</div>}
-        {!done && (
-          <>
-            <div>Email:</div>
-            <input
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-            <div>
-              <button onClick={onSubmit}>Submit</button>
-            </div>
-          </>
-        )}
+        <div className={styles.page}>
+          <div className={styles.title}>Restore password</div>
+          {done && <div>Reset password link has been sent to your email</div>}
+          {!done && (
+            <>
+              <FormInput
+                label="Email"
+                value={email}
+                onChange={setEmail}
+                autoFocus
+              />
+              <FormSubmit onSubmit={onSubmit} submitLabel="Submit" />
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

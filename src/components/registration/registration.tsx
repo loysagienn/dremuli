@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "actions";
 import { Header } from "components/header";
+import { FormInput, FormSubmit } from "components/form";
 import styles from "./registration.module.css";
 
 export function Registration() {
@@ -21,20 +22,21 @@ export function Registration() {
     <div className={styles.root}>
       <Header />
       <div className={styles.content}>
-        <div>Registration</div>
-        <div>Email:</div>
-        <input
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <div>Password:</div>
-        <input
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          type="password"
-        />
-        <div>
-          <button onClick={onSubmit}>Submit</button>
+        <div className={styles.page}>
+          <div className={styles.title}>Sign up</div>
+          <FormInput
+            label="Email"
+            value={email}
+            onChange={setEmail}
+            autoFocus
+          />
+          <FormInput
+            label="Password"
+            value={password}
+            onChange={setPassword}
+            type="password"
+          />
+          <FormSubmit onSubmit={onSubmit} submitLabel="Sign up" />
         </div>
       </div>
     </div>

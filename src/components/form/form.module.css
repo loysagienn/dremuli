@@ -1,0 +1,15 @@
+.formInput {
+  margin-top: 16px;
+}
+
+.fieldLabel {
+  margin-bottom: 4px;
+}
+
+.formSubmit {
+  margin-top: 24px;
+}
+
+.formSubmit .submitBtn {
+  width: 100%;
+}

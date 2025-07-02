@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "actions";
 import { Link } from "components/router";
 import { Header } from "components/header";
+import { FormInput, FormSubmit } from "components/form";
 import styles from "./login.module.css";
 
 export function Login() {
@@ -21,25 +22,25 @@ export function Login() {
   return (
     <div className={styles.root}>
       <Header />
-
       <div className={styles.content}>
-        <div>Login</div>
-        <div>Email:</div>
-        <input
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <div>Password:</div>
-        <input
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          type="password"
-        />
-        <div>
-          <button onClick={onSubmit}>Submit</button>
-        </div>
-        <div>
-          <Link route={{ key: "forget_password" }}>Forget password</Link>
+        <div className={styles.page}>
+          <div className={styles.title}>Sign in</div>
+          <FormInput
+            label="Email"
+            value={email}
+            onChange={setEmail}
+            autoFocus
+          />
+          <FormInput
+            label="Password"
+            value={password}
+            onChange={setPassword}
+            type="password"
+          />
+          <FormSubmit onSubmit={onSubmit} submitLabel="Sign in" />
+          <div className={styles.forgetPassword}>
+            <Link route={{ key: "forget_password" }}>Forget password?</Link>
+          </div>
         </div>
       </div>
     </div>
