@@ -1,7 +1,6 @@
 import { SESSION_ID_COOKIE_NAME, DOMAIN } from "config";
 import type { Session, AppContext, AppNext } from "types";
 
-const SESSION_ID_LENGTH = 32;
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365; // 1 year
 
 const getSession = async (ctx: AppContext): Promise<Session> => {

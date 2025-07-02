@@ -1,0 +1,37 @@
+.root {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3vh 16px;
+}
+
+.logo {
+  width: 30vh;
+  height: 30vh;
+  background-image: url("http://localhost:3040/static/logo.svg");
+}
+
+.title {
+  margin: -1vh 0 0;
+  padding: 0;
+  font-size: 8vh;
+  font-family: "Times New Roman", Times, serif;
+  /* color: var(--color-action); */
+}
+
+.caption {
+  font-size: 5vh;
+  margin-top: 1vh;
+  text-align: center;
+  font-weight: 300;
+}
+
+.description {
+  margin-top: 2vh;
+  max-width: 60vh;
+  text-align: center;
+  font-size: 3vh;
+  font-weight: 250;
+}

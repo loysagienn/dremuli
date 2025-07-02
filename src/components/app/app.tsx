@@ -1,8 +1,9 @@
 import React from "react";
 import { cn } from "utils/cn";
 import styles from "./app.module.css";
-import light from "./light.module.css";
-import dark from "./dark.module.css";
+import lightStyles from "app/styles/light.module.css";
+import darkStyles from "app/styles/dark.module.css";
+import commonStyles from "app/styles/common.module.css";
 import { useSelector } from "react-redux";
 import { selectTheme, selectUser } from "selectors";
 import { ThemeSwitcher } from "components/theme-switcher";
@@ -11,6 +12,7 @@ import { Registration } from "components/registration";
 import { ChangePassword } from "components/change-password";
 import { ForgetPassword } from "components/forget-password";
 import { ResetPassword } from "components/reset-password";
+import { WelcomePage } from "components/welcome-page";
 import { Login } from "components/login";
 
 export function App() {
@@ -21,30 +23,23 @@ export function App() {
     <div
       className={cn(
         styles.app,
-        theme === "light" && light.root,
-        theme === "dark" && dark.root
+        commonStyles.root,
+        theme === "light" && lightStyles.root,
+        theme === "dark" && darkStyles.root
       )}
     >
       <Route routeKey="home">
-        <div>Template app</div>
         {user && (
-          <div>
-            <Link route={{ key: "profile" }}>Profile</Link>
-          </div>
-        )}
-        {!user && (
           <>
             <div>
-              <Link route={{ key: "login" }}>Login</Link>
+              <Link route={{ key: "profile" }}>Profile</Link>
             </div>
             <div>
-              <Link route={{ key: "register" }}>Register</Link>
+              <Link route={{ key: "settings" }}>Settings</Link>
             </div>
           </>
         )}
-        <div>
-          <Link route={{ key: "settings" }}>Settings</Link>
-        </div>
+        {!user && <WelcomePage />}
       </Route>
 
       <Route routeKey="settings">

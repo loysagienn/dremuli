@@ -1,6 +1,6 @@
 import React from "react";
 import { App } from "components/app";
-import { Store, State, Action, AnyAction, Api } from "types";
+import { Store, State, AnyAction, Api } from "types";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { reducer } from "reducers";
