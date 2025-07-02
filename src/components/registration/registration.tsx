@@ -29,6 +29,7 @@ export function Registration() {
             value={email}
             onChange={setEmail}
             autoFocus
+            type="email"
           />
           <FormInput
             label="Password"

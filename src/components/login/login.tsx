@@ -28,6 +28,7 @@ export function Login() {
           <FormInput
             label="Email"
             value={email}
+            type="email"
             onChange={setEmail}
             autoFocus
           />

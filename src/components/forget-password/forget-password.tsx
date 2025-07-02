@@ -33,6 +33,7 @@ export function ForgetPassword() {
                 label="Email"
                 value={email}
                 onChange={setEmail}
+                type="email"
                 autoFocus
               />
               <FormSubmit onSubmit={onSubmit} submitLabel="Submit" />
