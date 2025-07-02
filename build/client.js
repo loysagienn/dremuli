@@ -22,7 +22,7 @@ function getOptions(NODE_ENV, APP_VERSION) {
     define: {
       __APP_VERSION__: JSON.stringify(APP_VERSION),
     },
-    minify: NODE_ENV === "production",
+    minify: false,
     plugins: [svgrPlugin()],
   };
 
