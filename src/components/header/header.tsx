@@ -1,12 +1,12 @@
 import React from "react";
 import { Button } from "components/button";
 import { ThemeSwitcher } from "components/theme-switcher";
-import Logo from "svg/logo.svg";
+import Profile from "svg/profile.svg";
 import Home from "svg/home.svg";
 import { Link } from "components/router";
 import styles from "./header.module.css";
 import { useSelector } from "react-redux";
-import { selectRoute } from "selectors";
+import { selectRoute, selectUser } from "selectors";
 import { AppRoute } from "app/router";
 import { cn } from "utils/cn";
 
@@ -14,6 +14,7 @@ const routeNames: { [key in AppRoute["key"]]?: string } = {};
 
 export function Header() {
   const route = useSelector(selectRoute);
+  const user = useSelector(selectUser);
 
   const routeName = routeNames[route?.key];
 
@@ -26,6 +27,11 @@ export function Header() {
       )}
       {routeName && <div className={styles.routeName}>{routeName}</div>}
       <ThemeSwitcher />
+      {user && (
+        <Link route={{ key: "profile" }} className={styles.profileLink}>
+          <Profile className={styles.profileSvg} />
+        </Link>
+      )}
     </div>
   );
 }

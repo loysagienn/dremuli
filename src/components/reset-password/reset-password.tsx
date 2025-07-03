@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { resetPassword } from "actions";
 import { Link } from "components/router";
 import { selectRoute } from "selectors";
+import styles from "./reset-password.module.css";
+import { Header } from "components/header";
+import { FormInput, FormSubmit } from "components/form";
 
 export function ResetPassword() {
   const route = useSelector(selectRoute);
@@ -19,20 +22,32 @@ export function ResetPassword() {
   }, [newPassword, token]);
 
   if (!token) {
-    return <div>Token is invalid or expired</div>;
+    return (
+      <div className={styles.root}>
+        <Header />
+        <div className={styles.content}>
+          <div className={styles.page}>Token is invalid or expired</div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <div>Reset password</div>
-      <div>New password:</div>
-      <input
-        value={newPassword}
-        onChange={(event) => setNewPassword(event.target.value)}
-        type="password"
-      />
-      <div>
-        <button onClick={onSubmit}>Submit</button>
+    <div className={styles.root}>
+      <Header />
+      <div className={styles.content}>
+        <div className={styles.page}>
+          <div className={styles.title}>Reset password</div>
+
+          <FormInput
+            label="New password"
+            value={newPassword}
+            onChange={setNewPassword}
+            type="password"
+            autoFocus
+          />
+          <FormSubmit onSubmit={onSubmit} submitLabel="Submit" />
+        </div>
       </div>
     </div>
   );

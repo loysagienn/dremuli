@@ -28,14 +28,9 @@
 
 .title {
   font-size: 22px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
-.forgetPassword {
-  margin-top: 16px;
-}
-
-.forgetPasswordLink {
-  color: var(--color-text-secondary);
-  font-size: 14px;
+.line {
+  margin-top: 8px;
 }

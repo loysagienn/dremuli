@@ -4,6 +4,7 @@
 
 .fieldLabel {
   margin-bottom: 4px;
+  color: var(--color-text-secondary);
 }
 
 .formSubmit {

@@ -1,5 +1,5 @@
 import { ActionHandler } from "types";
-import { setUser } from "actions";
+import { setUser, routeToAction } from "actions";
 
 export const loginUser: ActionHandler<"LOGIN_USER"> = async ({
   action,
@@ -16,6 +16,7 @@ export const loginUser: ActionHandler<"LOGIN_USER"> = async ({
 
     if (user) {
       dispatch(setUser(user));
+      dispatch(routeToAction({ key: "home" }));
     }
   } catch (error) {
     console.error("Login failed", error);

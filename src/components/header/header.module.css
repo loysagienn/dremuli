@@ -7,7 +7,7 @@
   padding: 0 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 .root.home {
@@ -20,6 +20,7 @@
   padding: 6px;
   box-sizing: border-box;
   margin-left: -6px;
+  margin-right: auto;
 }
 
 .homeSvg {
@@ -35,4 +36,23 @@
 
 .routeName {
   font-size: 20px;
+}
+
+.profileLink {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  box-sizing: border-box;
+  margin-left: 12px;
+}
+
+.profileSvg {
+  margin-top: -1px;
+  width: 20px;
+  height: 20px;
+  fill: var(--color-action);
+}
+
+.profileLink:hover .profileSvg {
+  fill: var(--color-action-hover);
 }

@@ -1,6 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { changePassword } from "actions";
+import { FormInput, FormSubmit } from "components/form";
+import styles from "./change-password.module.css";
+import { Header } from "components/header";
 
 export function ChangePassword() {
   const [password, setPassword] = useState("");
@@ -16,22 +19,27 @@ export function ChangePassword() {
   }, [newPassword, password]);
 
   return (
-    <div>
-      <div>Change password</div>
-      <div>Current password:</div>
-      <input
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-        type="password"
-      />
-      <div>New password:</div>
-      <input
-        value={newPassword}
-        onChange={(event) => setNewPassword(event.target.value)}
-        type="password"
-      />
-      <div>
-        <button onClick={onSubmit}>Submit</button>
+    <div className={styles.root}>
+      <Header />
+      <div className={styles.content}>
+        <div className={styles.page}>
+          <div className={styles.title}>Change password</div>
+
+          <FormInput
+            label="Current password"
+            value={password}
+            onChange={setPassword}
+            type="password"
+            autoFocus
+          />
+          <FormInput
+            label="New password"
+            value={newPassword}
+            onChange={setNewPassword}
+            type="password"
+          />
+          <FormSubmit onSubmit={onSubmit} submitLabel="Change password" />
+        </div>
       </div>
     </div>
   );

@@ -12,6 +12,8 @@ import { ChangePassword } from "components/change-password";
 import { ForgetPassword } from "components/forget-password";
 import { ResetPassword } from "components/reset-password";
 import { WelcomePage } from "components/welcome-page";
+import { Profile } from "components/profile";
+import { Home } from "components/home";
 import { Login } from "components/login";
 
 export function App() {
@@ -28,13 +30,7 @@ export function App() {
       )}
     >
       <Route routeKey="home">
-        {user && (
-          <>
-            <div>
-              <Link route={{ key: "profile" }}>Profile</Link>
-            </div>
-          </>
-        )}
+        {user && <Home />}
         {!user && <WelcomePage />}
       </Route>
 
@@ -46,33 +42,15 @@ export function App() {
         <Registration />
       </Route>
 
-      <Route routeKey="profile">
-        <div>
-          <Link route={{ key: "home" }}>Home</Link>
-        </div>
-        <div>
-          <Link route={{ key: "profile_password" }}>Change password</Link>
-        </div>
-        <div>
-          <Link route={{ key: "logout" }} web>
-            Logout
-          </Link>
-        </div>
-      </Route>
-      <Route routeKey="profile_password">
-        <div>
-          <Link route={{ key: "home" }}>Home</Link>
-        </div>
-        {user && <ChangePassword />}
-      </Route>
+      <Route routeKey="profile">{user && <Profile />}</Route>
+
+      <Route routeKey="profile_password">{user && <ChangePassword />}</Route>
 
       <Route routeKey="forget_password">
         <ForgetPassword />
       </Route>
 
       <Route routeKey="reset_password">
-        <Link route={{ key: "home" }}>Home</Link>
-
         <ResetPassword />
       </Route>
     </div>

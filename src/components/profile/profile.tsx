@@ -1,0 +1,30 @@
+import React from "react";
+import styles from "./profile.module.css";
+import { Header } from "components/header";
+import { Link } from "components/router";
+import { useSelector } from "react-redux";
+import { selectUser } from "selectors";
+
+export function Profile() {
+  const user = useSelector(selectUser);
+
+  return (
+    <div className={styles.root}>
+      <Header />
+      <div className={styles.content}>
+        <div className={styles.page}>
+          <div className={styles.title}>Profile</div>
+          <div className={styles.line}>{user?.email}</div>
+          <div className={styles.line}>
+            <Link route={{ key: "profile_password" }}>Change password</Link>
+          </div>
+          <div className={styles.line}>
+            <Link route={{ key: "logout" }} web>
+              Logout
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

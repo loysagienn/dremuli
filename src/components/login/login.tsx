@@ -40,7 +40,12 @@ export function Login() {
           />
           <FormSubmit onSubmit={onSubmit} submitLabel="Sign in" />
           <div className={styles.forgetPassword}>
-            <Link route={{ key: "forget_password" }}>Forget password?</Link>
+            <Link
+              route={{ key: "forget_password" }}
+              className={styles.forgetPasswordLink}
+            >
+              Forget password?
+            </Link>
           </div>
         </div>
       </div>
