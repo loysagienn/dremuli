@@ -1,5 +1,5 @@
 import { ActionHandler } from "types";
-import { routeToAction, setUser } from "actions";
+import { routeToAction, setNaps, setUser } from "actions";
 
 export const createNap: ActionHandler<"CREATE_NAP"> = async ({
   action,
@@ -13,7 +13,9 @@ export const createNap: ActionHandler<"CREATE_NAP"> = async ({
 
   try {
     const nap = await api.createNap(startTime, endTime);
+    const naps = await api.getNaps();
 
+    dispatch(setNaps(naps));
     dispatch(routeToAction({ key: "home" }));
   } catch (error) {
     console.error(error);

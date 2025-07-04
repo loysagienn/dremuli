@@ -26,7 +26,7 @@ export function CreateNap() {
       <Header />
       <div className={styles.content}>
         <div className={styles.page}>
-          <div className={styles.title}>Sign up</div>
+          <div className={styles.title}>Create nap</div>
           <FormInput
             label="Start time"
             value={startTimeStr}

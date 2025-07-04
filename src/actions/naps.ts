@@ -1,3 +1,5 @@
+import { Nap } from "types";
+
 export type CreateNap = {
   type: "CREATE_NAP";
   startTime: Date;
@@ -12,5 +14,17 @@ export function createNapAction(
     type: "CREATE_NAP",
     startTime,
     endTime,
+  };
+}
+
+export type SetNaps = {
+  type: "SET_NAPS";
+  naps: Nap[];
+};
+
+export function setNaps(naps: Nap[]): SetNaps {
+  return {
+    type: "SET_NAPS",
+    naps,
   };
 }

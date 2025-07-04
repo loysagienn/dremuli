@@ -1,0 +1,21 @@
+.root {
+  overflow: auto;
+}
+
+.content {
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 360px;
+  position: relative;
+  padding: 0 16px 16px;
+}
+
+@media (max-width: 440px) {
+  .content {
+    max-width: 100%;
+  }
+}
+
+.nap {
+  margin-bottom: 16px;
+}

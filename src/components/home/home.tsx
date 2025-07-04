@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./home.module.css";
 import { Header } from "components/header";
 import { Button } from "components/button";
+import { Naps } from "components/naps";
 import { useSelector } from "react-redux";
 import { selectNaps, selectTimeZone } from "selectors";
 import { formatDateTime } from "utils/date";
@@ -21,17 +22,7 @@ export function Home() {
   return (
     <div className={styles.root}>
       <Header />
-      <div className={styles.content}>
-        <Button route={{ key: "create_nap" }}>Create nap</Button>
-        {naps.map((nap) => (
-          <div className={styles.nap} key={nap.id}>
-            <div>{`From: ${formatDateTime(nap.startTime, timeZone)}`}</div>
-            {nap.endTime && (
-              <div>{`To: ${formatDateTime(nap.endTime, timeZone)}`}</div>
-            )}
-          </div>
-        ))}
-      </div>
+      <Naps className={styles.content} />
     </div>
   );
 }
