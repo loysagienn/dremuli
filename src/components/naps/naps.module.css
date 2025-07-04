@@ -19,15 +19,15 @@
   }
 }
 
-.nap {
-  margin-bottom: 16px;
+.createNapBtn {
+  width: 100%;
 }
 
 .napEvent {
   box-sizing: border-box;
   /* border: 1px solid red; */
   position: relative;
-  height: 70px;
+  height: 64px;
 }
 
 .napEventTime {
@@ -39,7 +39,7 @@
   font-size: 16px;
   font-weight: 600;
   text-align: right;
-  line-height: 32px;
+  line-height: 28px;
 }
 
 .napEventTitle {
@@ -50,12 +50,12 @@
   /* border: 1px solid green; */
   font-size: 16px;
   font-weight: 600;
-  line-height: 32px;
+  line-height: 28px;
 }
 
 .napEventDuration {
   position: absolute;
-  top: 32px;
+  top: 28px;
   right: 0;
   left: 110px;
   /* border: 1px solid yellow; */
@@ -66,7 +66,7 @@
 
 .napEventPointer {
   position: absolute;
-  top: 8px;
+  top: 6px;
   left: 72px;
   width: 16px;
   height: 16px;
@@ -79,6 +79,6 @@
   top: 0;
   left: 79px;
   width: 2px;
-  height: 70px;
+  height: 64px;
   background-color: var(--color-bg-secondary);
 }

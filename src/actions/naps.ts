@@ -1,4 +1,4 @@
-import { Nap } from "types";
+import { Nap, NapUpdate } from "types";
 
 export type CreateNap = {
   type: "CREATE_NAP";
@@ -26,5 +26,19 @@ export function setNaps(naps: Nap[]): SetNaps {
   return {
     type: "SET_NAPS",
     naps,
+  };
+}
+
+export type UpdateNap = {
+  type: "UPDATE_NAP";
+  napId: string;
+  update: NapUpdate;
+};
+
+export function updateNapAction(napId: string, update: NapUpdate): UpdateNap {
+  return {
+    type: "UPDATE_NAP",
+    napId,
+    update,
   };
 }

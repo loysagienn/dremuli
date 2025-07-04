@@ -5,6 +5,7 @@ import { Event } from "./event";
 import { Button } from "components/button";
 import { useSelector } from "react-redux";
 import { selectNapEvents } from "selectors";
+import { NapEventType } from "types";
 
 type NapsProps = {
   className?: string;
@@ -26,6 +27,10 @@ export function Naps({ className }: NapsProps) {
     }
   }, [napEvents]);
 
+  const lastEvent =
+    napEvents.length > 0 ? napEvents[napEvents.length - 1] : null;
+  const isSleeping = lastEvent && lastEvent.type === NapEventType.Sleep;
+
   return (
     <div className={cn(className, styles.root)} ref={rootRef}>
       <div className={styles.content}>
@@ -33,7 +38,19 @@ export function Naps({ className }: NapsProps) {
           <Event napEvent={napEvent} key={napEvent.id} />
         ))}
 
-        <Button route={{ key: "create_nap" }}>Create nap</Button>
+        {isSleeping && (
+          <Button
+            route={{ key: "update_nap", napId: lastEvent.nap.id }}
+            className={styles.createNapBtn}
+          >
+            Update nap
+          </Button>
+        )}
+        {!isSleeping && (
+          <Button route={{ key: "create_nap" }} className={styles.createNapBtn}>
+            Create nap
+          </Button>
+        )}
       </div>
     </div>
   );

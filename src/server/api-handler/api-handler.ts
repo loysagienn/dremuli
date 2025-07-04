@@ -45,12 +45,12 @@ function getBodyChangePassword(ctx: AppContext): BodyChangePassword | null {
   return data;
 }
 
-type BodyNapCreate = {
+type BodyNap = {
   startTime: Date;
   endTime: Date | null;
 };
 
-function getBodyNapCreate(ctx: AppContext): BodyNapCreate | null {
+function getBodyNap(ctx: AppContext): BodyNap | null {
   const data = ctx.request.body?.data;
 
   if (!data || typeof data !== "object") {
@@ -294,6 +294,21 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
     }
   }
 
+  if (route.key === "api_nap") {
+    if (ctx.method === "POST") {
+      const { napId } = route;
+      const update = getBodyNap(ctx);
+
+      const nap = await api.updateNap(napId, update);
+
+      ctx.body = {
+        data: nap,
+      };
+
+      return;
+    }
+  }
+
   if (route.key === "api_naps") {
     if (ctx.method === "POST") {
       const { userId } = ctx.state.session;
@@ -302,7 +317,7 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
         return unauthorized(ctx);
       }
 
-      const napCreate = getBodyNapCreate(ctx);
+      const napCreate = getBodyNap(ctx);
 
       if (!napCreate) {
         return badRequest(ctx);

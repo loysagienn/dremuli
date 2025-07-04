@@ -332,6 +332,31 @@ const apiNaps: RouteConfig<ApiNaps> = {
   writeRoute: (route) => "/api/naps",
 };
 
+type ApiNap = {
+  key: "api_nap";
+  napId: string;
+};
+
+const apiNap: RouteConfig<ApiNap> = {
+  key: "api_nap",
+  readRoute: (path: string) => {
+    if (!path.startsWith("/api/naps/")) {
+      return null;
+    }
+
+    const napId = path.slice(10);
+
+    if (napId && !napId.includes("/")) {
+      return {
+        key: "api_nap",
+        napId,
+      };
+    }
+    return null;
+  },
+  writeRoute: (route) => `/api/naps/${route.napId}`,
+};
+
 type CreateNap = {
   key: "create_nap";
 };
@@ -350,6 +375,30 @@ const createNap: RouteConfig<CreateNap> = {
   writeRoute: (route) => "/naps/create",
 };
 
+type UpdateNap = {
+  key: "update_nap";
+  napId: string;
+};
+
+const updateNap: RouteConfig<UpdateNap> = {
+  key: "update_nap",
+  readRoute: (path: string) => {
+    if (path.startsWith("/naps/") && path.endsWith("/update")) {
+      const napId = path.slice(6, -7);
+
+      if (!napId.includes("/")) {
+        return {
+          key: "update_nap",
+          napId,
+        };
+      }
+    }
+
+    return null;
+  },
+  writeRoute: (route) => `/naps/${route.napId}/update`,
+};
+
 export const router = initRouter(
   home,
   login,
@@ -360,6 +409,7 @@ export const router = initRouter(
   forgetPassword,
   resetPassword,
   createNap,
+  updateNap,
   apiSettings,
   apiRegisterUser,
   apiLogin,
@@ -367,6 +417,7 @@ export const router = initRouter(
   apiForgetPassword,
   apiResetPassword,
   apiNaps,
+  apiNap,
   apiNotFound,
   notFound
 );

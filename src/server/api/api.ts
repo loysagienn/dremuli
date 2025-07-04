@@ -1,4 +1,4 @@
-import { AppContext, User } from "types";
+import { AppContext, NapUpdate, User } from "types";
 import { SessionSettings, Api } from "types";
 import {
   hashPassword,
@@ -145,6 +145,29 @@ const createNapFactory =
     return nap;
   };
 
+const updateNapFactory =
+  (ctx: AppContext) => async (napId: string, update: NapUpdate) => {
+    const { userId } = ctx.state.session;
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const fullNap = await ctx.db.getFullNap(napId);
+
+    if (!fullNap) {
+      throw new Error("Nap not found");
+    }
+
+    if (fullNap.userId !== userId) {
+      throw new Error("Access denied");
+    }
+
+    const nap = await ctx.db.updateNap(napId, update);
+
+    return nap;
+  };
+
 const getNapsFactory = (ctx: AppContext) => async () => {
   const { userId } = ctx.state.session;
 
@@ -167,6 +190,7 @@ export function initApi(ctx: AppContext): Api {
   const resetPassword = resetPasswordFactory(ctx);
   const createNap = createNapFactory(ctx);
   const getNaps = getNapsFactory(ctx);
+  const updateNap = updateNapFactory(ctx);
 
   return {
     setSessionSettings,
@@ -178,5 +202,6 @@ export function initApi(ctx: AppContext): Api {
     resetPassword,
     createNap,
     getNaps,
+    updateNap,
   };
 }

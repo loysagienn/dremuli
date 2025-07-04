@@ -16,6 +16,7 @@ import { Profile } from "components/profile";
 import { Home } from "components/home";
 import { Login } from "components/login";
 import { CreateNap } from "components/create-nap";
+import { UpdateNap } from "components/update-nap";
 
 export function App() {
   const theme = useSelector(selectTheme);
@@ -57,6 +58,10 @@ export function App() {
 
       <Route routeKey="create_nap">
         <CreateNap />
+      </Route>
+
+      <Route routeKey="update_nap">
+        <UpdateNap />
       </Route>
     </div>
   );

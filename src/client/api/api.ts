@@ -1,4 +1,4 @@
-import { SessionSettings, Api, User, Nap } from "types";
+import { SessionSettings, Api, User, Nap, NapUpdate } from "types";
 import { request } from "./request";
 
 async function getSessionSettings() {
@@ -55,7 +55,7 @@ function parseNap(data: any): Nap {
   return {
     id,
     startTime: new Date(startTime),
-    endTime: new Date(endTime),
+    endTime: endTime ? new Date(endTime) : null,
     createdAt: new Date(createdAt),
     updatedAt: new Date(updatedAt),
   };
@@ -64,6 +64,14 @@ function parseNap(data: any): Nap {
 async function createNap(startTime: Date, endTime?: Date | null) {
   const result = await request({ key: "api_naps" }, "POST", {
     data: { startTime, endTime },
+  });
+
+  return parseNap(result);
+}
+
+async function updateNap(napId: string, update: NapUpdate) {
+  const result = await request({ key: "api_nap", napId }, "POST", {
+    data: update,
   });
 
   return parseNap(result);
@@ -85,4 +93,5 @@ export const api: Api = {
   resetPassword,
   createNap,
   getNaps,
+  updateNap,
 };

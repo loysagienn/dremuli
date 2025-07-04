@@ -2,11 +2,26 @@ import { State, NapEvent, NapEventType } from "types";
 import { createSelector } from "@reduxjs/toolkit";
 import { selectTimeZone } from "./session-settings";
 import { formatDuration, formatTime } from "utils/date";
+import { selectRoute } from "./router";
 
 export const selectNaps = (state: State) => state.naps;
 
 export const selectNapsReverse = createSelector(selectNaps, (naps) =>
   naps.slice().reverse()
+);
+
+export const selectRouteNap = createSelector(
+  selectNaps,
+  selectRoute,
+  (naps, route) => {
+    if (route.key !== "update_nap") {
+      return null;
+    }
+
+    const nap = naps.find((nap) => nap.id === route.napId);
+
+    return nap ?? null;
+  }
 );
 
 export const selectNapEvents = createSelector(
@@ -49,7 +64,11 @@ export const selectNapEvents = createSelector(
       const sleepEndTime = getSleepEndTime(i);
       const awakeEndTime = getAwakeEndTime(i);
 
-      const sleepDuration = sleepEndTime.getTime() - startTime.getTime();
+      let sleepDuration = sleepEndTime.getTime() - startTime.getTime();
+
+      if (sleepDuration < 0) {
+        sleepDuration = 0;
+      }
 
       events.push({
         id: `${nap.id}_start`,
@@ -62,7 +81,11 @@ export const selectNapEvents = createSelector(
       });
 
       if (endTime) {
-        const awakeDuration = awakeEndTime.getTime() - endTime.getTime();
+        let awakeDuration = awakeEndTime.getTime() - endTime.getTime();
+
+        if (awakeDuration < 0) {
+          awakeDuration = 0;
+        }
 
         events.push({
           id: `${nap.id}_end`,

@@ -7,6 +7,7 @@ import { forgetPassword } from "./forget-password";
 import { resetPassword } from "./reset-password";
 import { createNap } from "./create-nap";
 import { setTimeZone } from "./set-timezone";
+import { updateNap } from "./update-nap";
 
 export const basicHandlers: ActionHandlers = {
   SET_THEME: setTheme,
@@ -16,5 +17,6 @@ export const basicHandlers: ActionHandlers = {
   FORGET_PASSWORD: forgetPassword,
   RESET_PASSWORD: resetPassword,
   CREATE_NAP: createNap,
+  UPDATE_NAP: updateNap,
   SET_TIME_ZONE: setTimeZone,
 };

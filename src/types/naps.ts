@@ -20,3 +20,8 @@ export type NapEvent = {
   duration: number;
   durationStr: string;
 };
+
+export type NapUpdate = {
+  startTime?: Date;
+  endTime?: Date | null;
+};

@@ -1,4 +1,4 @@
-import { Nap } from "types";
+import { Nap, NapUpdate } from "types";
 import { prisma } from "../client";
 
 export const createNap =
@@ -18,11 +18,6 @@ export const createNap =
 
     return { id, startTime, endTime, createdAt, updatedAt };
   };
-
-type NapUpdate = {
-  startTime?: Date;
-  endTime?: Date | null;
-};
 
 export const updateNap =
   () =>
@@ -49,6 +44,12 @@ export const getNap =
 
     return null;
   };
+
+export const getFullNap = () => async (id: string) => {
+  const nap = await prisma.sleepSession.findUnique({ where: { id } });
+
+  return nap;
+};
 
 export const getNaps =
   () =>

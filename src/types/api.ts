@@ -1,6 +1,6 @@
 import { SessionSettings } from "./user";
 import { User } from "./db";
-import { Nap } from "./naps";
+import { Nap, NapUpdate } from "./naps";
 
 export type Api = {
   setSessionSettings: (settings: SessionSettings) => Promise<SessionSettings>;
@@ -11,5 +11,6 @@ export type Api = {
   forgetPassword: (email: string) => Promise<void>;
   resetPassword: (password: string, token: string) => Promise<void>;
   createNap: (startTime: Date, endTime?: Date | null) => Promise<Nap>;
+  updateNap: (napId: string, update: NapUpdate) => Promise<Nap>;
   getNaps: () => Promise<Nap[]>;
 };
