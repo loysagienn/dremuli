@@ -5,6 +5,7 @@ import { loginUser } from "./login-user";
 import { changePassword } from "./change-password";
 import { forgetPassword } from "./forget-password";
 import { resetPassword } from "./reset-password";
+import { createNap } from "./create-nap";
 
 export const basicHandlers: ActionHandlers = {
   SET_THEME: setTheme,
@@ -13,4 +14,5 @@ export const basicHandlers: ActionHandlers = {
   CHANGE_PASSWORD: changePassword,
   FORGET_PASSWORD: forgetPassword,
   RESET_PASSWORD: resetPassword,
+  CREATE_NAP: createNap,
 };

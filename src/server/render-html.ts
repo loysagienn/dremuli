@@ -8,6 +8,11 @@ function serializeWithDates(state: State) {
     (key, value) => {
       if (value instanceof Date) {
         return `__DATE__${value.toISOString()}`; // Temporary marker
+      } else if (
+        typeof value === "string" &&
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value)
+      ) {
+        return `__DATE__${value}`;
       }
       return value;
     },

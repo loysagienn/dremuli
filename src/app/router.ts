@@ -332,6 +332,24 @@ const apiNaps: RouteConfig<ApiNaps> = {
   writeRoute: (route) => "/api/naps",
 };
 
+type CreateNap = {
+  key: "create_nap";
+};
+
+const createNap: RouteConfig<CreateNap> = {
+  key: "create_nap",
+  readRoute: (path: string) => {
+    if (path === "/naps/create") {
+      return {
+        key: "create_nap",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/naps/create",
+};
+
 export const router = initRouter(
   home,
   login,
@@ -341,6 +359,7 @@ export const router = initRouter(
   profilePassword,
   forgetPassword,
   resetPassword,
+  createNap,
   apiSettings,
   apiRegisterUser,
   apiLogin,

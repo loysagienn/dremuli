@@ -15,6 +15,7 @@ import { WelcomePage } from "components/welcome-page";
 import { Profile } from "components/profile";
 import { Home } from "components/home";
 import { Login } from "components/login";
+import { CreateNap } from "components/create-nap";
 
 export function App() {
   const theme = useSelector(selectTheme);
@@ -52,6 +53,10 @@ export function App() {
 
       <Route routeKey="reset_password">
         <ResetPassword />
+      </Route>
+
+      <Route routeKey="create_nap">
+        <CreateNap />
       </Route>
     </div>
   );
