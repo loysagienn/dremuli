@@ -1,4 +1,4 @@
-import { UserSettings, Api, User } from "types";
+import { UserSettings, Api, User, Nap } from "types";
 import { request } from "./request";
 
 async function getUserSettings() {
@@ -49,6 +49,20 @@ async function resetPassword(password: string, token: string) {
   });
 }
 
+async function createNap(startTime: Date, endTime?: Date | null) {
+  const result = await request({ key: "api_naps" }, "POST", {
+    data: { startTime, endTime },
+  });
+
+  return result as Nap;
+}
+
+async function getNaps() {
+  const result = await request({ key: "api_naps" }, "GET");
+
+  return result as Nap[];
+}
+
 export const api: Api = {
   getUserSettings,
   setUserSettings,
@@ -57,4 +71,6 @@ export const api: Api = {
   changePassword,
   forgetPassword,
   resetPassword,
+  createNap,
+  getNaps,
 };

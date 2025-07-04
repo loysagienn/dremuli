@@ -32,7 +32,8 @@ model User {
   credentials UserCredentials?
   resetToken  PasswordResetToken?
 
-  sessions Session[] // one-to-many relation to sessions
+  sessions      Session[]
+  sleepSessions SleepSession[]
 
   @@map("users")
 }
@@ -54,6 +55,20 @@ model PasswordResetToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("password_reset_tokens")
+}
+
+model SleepSession {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  startTime DateTime  @map("start_time")
+  endTime   DateTime? @map("end_time")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("sleep_sessions")
 }
 
 enum Theme {

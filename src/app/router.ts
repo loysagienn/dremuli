@@ -314,6 +314,24 @@ const apiResetPassword: RouteConfig<ApiResetPassword> = {
   writeRoute: (route) => "/api/reset-password",
 };
 
+type ApiNaps = {
+  key: "api_naps";
+};
+
+const apiNaps: RouteConfig<ApiNaps> = {
+  key: "api_naps",
+  readRoute: (path: string) => {
+    if (path === "/api/naps") {
+      return {
+        key: "api_naps",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/api/naps",
+};
+
 export const router = initRouter(
   home,
   login,
@@ -329,6 +347,7 @@ export const router = initRouter(
   apiChangePassword,
   apiForgetPassword,
   apiResetPassword,
+  apiNaps,
   apiNotFound,
   notFound
 );

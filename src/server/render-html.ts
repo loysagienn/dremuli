@@ -1,6 +1,19 @@
-import { AppContext } from "../types";
+import { AppContext, State } from "types";
 import { renderToString } from "react-dom/server";
 import { renderApp, initStore } from "app/app";
+
+function serializeWithDates(state: State) {
+  return JSON.stringify(
+    state,
+    (key, value) => {
+      if (value instanceof Date) {
+        return `__DATE__${value.toISOString()}`; // Temporary marker
+      }
+      return value;
+    },
+    2
+  ).replace(/"__DATE__(.*?)"/g, 'new Date("$1")'); // Replace marker with code
+}
 
 const favicon = `
 <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon_light_16.png" media="(prefers-color-scheme: light)">
@@ -33,7 +46,9 @@ export async function renderHtml(ctx: AppContext) {
 </head>
 <body>
   <div id="root">${content}</div>
-  <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
+  <script>window.__INITIAL_STATE__ = ${serializeWithDates(
+    initialState
+  )}</script>
   <script type="module" src="/static/app.js?v=${__APP_VERSION__}"></script>
 </body>
 </html>`;

@@ -1,4 +1,5 @@
 import { AppContext, AppNext, UserSettings } from "types";
+import { parseDate } from "utils/parse-date";
 
 export function isValidEmail(email: string): boolean {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -42,6 +43,28 @@ function getBodyChangePassword(ctx: AppContext): BodyChangePassword | null {
   }
 
   return data;
+}
+
+type BodyNapCreate = {
+  startTime: Date;
+  endTime: Date | null;
+};
+
+function getBodyNapCreate(ctx: AppContext): BodyNapCreate | null {
+  const data = ctx.request.body?.data;
+
+  if (!data || typeof data !== "object") {
+    return null;
+  }
+
+  const startTime = parseDate(data.startTime);
+  const endTime = parseDate(data.endTime);
+
+  if (startTime === null) {
+    return null;
+  }
+
+  return { startTime, endTime };
 }
 
 type BodyResetPassword = {
@@ -120,6 +143,15 @@ function badRequest(ctx: AppContext) {
   };
 
   ctx.status = 400;
+}
+
+function unauthorized(ctx: AppContext) {
+  ctx.body = {
+    error: "unauthorized",
+    message: "Unauthorized",
+  };
+
+  ctx.status = 401;
 }
 
 export async function apiHandler(ctx: AppContext, next: AppNext) {
@@ -256,6 +288,48 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
 
       ctx.body = {
         data: {},
+      };
+
+      return;
+    }
+  }
+
+  if (route.key === "api_naps") {
+    if (ctx.method === "POST") {
+      const { userId } = ctx.state.session;
+
+      if (!userId) {
+        return unauthorized(ctx);
+      }
+
+      const napCreate = getBodyNapCreate(ctx);
+
+      if (!napCreate) {
+        return badRequest(ctx);
+      }
+
+      const { startTime, endTime } = napCreate;
+
+      const nap = await api.createNap(startTime, endTime);
+
+      ctx.body = {
+        data: nap,
+      };
+
+      return;
+    }
+
+    if (ctx.method === "GET") {
+      const { userId } = ctx.state.session;
+
+      if (!userId) {
+        return unauthorized(ctx);
+      }
+
+      const naps = await api.getNaps();
+
+      ctx.body = {
+        data: naps,
       };
 
       return;

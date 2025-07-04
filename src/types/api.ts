@@ -1,5 +1,6 @@
 import { UserSettings } from "./user";
 import { User } from "./db";
+import { Nap } from "./naps";
 
 export type Api = {
   setUserSettings: (settings: UserSettings) => Promise<UserSettings>;
@@ -9,4 +10,6 @@ export type Api = {
   changePassword: (password: string, newPassword: string) => Promise<void>;
   forgetPassword: (email: string) => Promise<void>;
   resetPassword: (password: string, token: string) => Promise<void>;
+  createNap: (startTime: Date, endTime?: Date | null) => Promise<Nap>;
+  getNaps: () => Promise<Nap[]>;
 };

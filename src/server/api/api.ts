@@ -132,6 +132,31 @@ const resetPasswordFactory =
     await ctx.db.updateUserPasswordHash(reset.userId, passwordHash);
   };
 
+const createNapFactory =
+  (ctx: AppContext) => async (startTime: Date, endTime?: Date | null) => {
+    const { userId } = ctx.state.session;
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const nap = await ctx.db.createNap(userId, startTime, endTime);
+
+    return nap;
+  };
+
+const getNapsFactory = (ctx: AppContext) => async () => {
+  const { userId } = ctx.state.session;
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const naps = await ctx.db.getNaps(userId);
+
+  return naps;
+};
+
 export function initApi(ctx: AppContext): Api {
   const setUserSettings = setUserSettingsFactory(ctx);
   const getUserSettings = getUserSettingsFactory(ctx);
@@ -140,6 +165,8 @@ export function initApi(ctx: AppContext): Api {
   const changePassword = chnagePasswordFactory(ctx);
   const forgetPassword = forgetPasswordFactory(ctx);
   const resetPassword = resetPasswordFactory(ctx);
+  const createNap = createNapFactory(ctx);
+  const getNaps = getNapsFactory(ctx);
 
   return {
     setUserSettings,
@@ -149,5 +176,7 @@ export function initApi(ctx: AppContext): Api {
     changePassword,
     forgetPassword,
     resetPassword,
+    createNap,
+    getNaps,
   };
 }
