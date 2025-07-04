@@ -1,29 +1,36 @@
-import React from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import styles from "./naps.module.css";
 import { cn } from "utils/cn";
-import { formatDateTime } from "utils/date";
+import { Event } from "./event";
 import { Button } from "components/button";
 import { useSelector } from "react-redux";
-import { selectNapsReverse, selectTimeZone } from "selectors";
+import { selectNapEvents } from "selectors";
 
 type NapsProps = {
   className?: string;
 };
 
 export function Naps({ className }: NapsProps) {
-  const naps = useSelector(selectNapsReverse);
-  const timeZone = useSelector(selectTimeZone);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const napEvents = useSelector(selectNapEvents);
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+
+    if (root) {
+      if (root.scrollHeight > root.offsetHeight) {
+        root.scrollTop = root.scrollHeight - root.offsetHeight;
+      }
+
+      root.style.opacity = "1";
+    }
+  }, [napEvents]);
 
   return (
-    <div className={cn(className, styles.root)}>
+    <div className={cn(className, styles.root)} ref={rootRef}>
       <div className={styles.content}>
-        {naps.map((nap) => (
-          <div className={styles.nap} key={nap.id}>
-            <div>{`From: ${formatDateTime(nap.startTime, timeZone)}`}</div>
-            {nap.endTime && (
-              <div>{`To: ${formatDateTime(nap.endTime, timeZone)}`}</div>
-            )}
-          </div>
+        {napEvents.map((napEvent) => (
+          <Event napEvent={napEvent} key={napEvent.id} />
         ))}
 
         <Button route={{ key: "create_nap" }}>Create nap</Button>
