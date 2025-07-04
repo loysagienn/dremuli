@@ -1,7 +1,7 @@
 import { State, NapEvent, NapEventType } from "types";
 import { createSelector } from "@reduxjs/toolkit";
 import { selectTimeZone } from "./session-settings";
-import { formatDuration, formatTime } from "utils/date";
+import { formatDate, formatDuration, formatTime } from "utils/date";
 import { selectRoute } from "./router";
 
 export const selectNaps = (state: State) => state.naps;
@@ -96,6 +96,15 @@ export const selectNapEvents = createSelector(
           duration: awakeDuration,
           durationStr: formatDuration(awakeDuration),
         });
+      }
+    }
+
+    for (let i = 1; i < events.length; i++) {
+      const prev = events[i - 1];
+      const event = events[i];
+
+      if (prev.time.getDate() !== event.time.getDate()) {
+        event.dayStartStr = formatDate(event.time, timeZone);
       }
     }
 

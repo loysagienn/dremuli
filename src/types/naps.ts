@@ -19,6 +19,7 @@ export type NapEvent = {
   type: NapEventType;
   duration: number;
   durationStr: string;
+  dayStartStr?: string;
 };
 
 export type NapUpdate = {

@@ -25,7 +25,6 @@
 
 .napEvent {
   box-sizing: border-box;
-  /* border: 1px solid red; */
   position: relative;
   height: 64px;
 }
@@ -35,7 +34,6 @@
   left: 0;
   top: 0;
   width: 50px;
-  /* border: 1px solid blue; */
   font-size: 16px;
   font-weight: 600;
   text-align: right;
@@ -47,7 +45,6 @@
   top: 0;
   right: 0;
   left: 110px;
-  /* border: 1px solid green; */
   font-size: 16px;
   font-weight: 600;
   line-height: 28px;
@@ -58,7 +55,6 @@
   top: 28px;
   right: 0;
   left: 110px;
-  /* border: 1px solid yellow; */
   line-height: 24px;
   color: var(--color-text-secondary);
   font-size: 14px;
@@ -72,6 +68,7 @@
   height: 16px;
   border-radius: 8px;
   background-color: var(--color-bg-secondary);
+  z-index: 2;
 }
 
 .napEventLine {
@@ -81,4 +78,26 @@
   width: 2px;
   height: 64px;
   background-color: var(--color-bg-secondary);
+}
+
+.napEventDayStart {
+  position: sticky;
+  top: 0;
+  width: 81px;
+  background-color: var(--color-bg-main);
+  z-index: 1;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--color-bg-secondary);
+}
+
+.napEventDayStartText {
+  margin-left: -16px;
+  margin-bottom: -2px;
+  width: 66px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 32px;
+  border-bottom: 2px solid var(--color-bg-secondary);
+  background-color: var(--color-bg-main);
+  text-align: right;
 }
