@@ -1,10 +1,10 @@
-import { UserSettings } from "./user";
+import { SessionSettings } from "./user";
 import { User } from "./db";
 import { Nap } from "./naps";
 
 export type Api = {
-  setUserSettings: (settings: UserSettings) => Promise<UserSettings>;
-  getUserSettings: () => Promise<UserSettings>;
+  setSessionSettings: (settings: SessionSettings) => Promise<SessionSettings>;
+  getSessionSettings: () => Promise<SessionSettings>;
   registerUser: (email: string, password: string) => Promise<User>;
   login: (email: string, password: string) => Promise<User>;
   changePassword: (password: string, newPassword: string) => Promise<void>;

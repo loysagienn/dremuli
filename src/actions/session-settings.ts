@@ -11,3 +11,15 @@ export function setTheme(theme: "light" | "dark"): SetTheme {
     theme,
   };
 }
+
+export type SetTimeZone = {
+  type: "SET_TIME_ZONE";
+  timeZone: string;
+};
+
+export function setTimeZone(timeZone: string): SetTimeZone {
+  return {
+    type: "SET_TIME_ZONE",
+    timeZone,
+  };
+}

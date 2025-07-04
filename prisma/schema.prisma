@@ -79,6 +79,7 @@ enum Theme {
 model SessionSettings {
   id    String @id
   theme Theme
+  timeZone String? @map("time_zone")
 
   session Session @relation(fields: [id], references: [id], onDelete: Cascade)
 

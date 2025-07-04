@@ -3,7 +3,8 @@ import styles from "./home.module.css";
 import { Header } from "components/header";
 import { Button } from "components/button";
 import { useSelector } from "react-redux";
-import { selectNaps } from "selectors";
+import { selectNaps, selectTimeZone } from "selectors";
+import { formatDateTime } from "utils/date";
 
 const formatter = new Intl.DateTimeFormat("en-US", {
   month: "short", // or 'long' for full month
@@ -15,6 +16,7 @@ const formatter = new Intl.DateTimeFormat("en-US", {
 
 export function Home() {
   const naps = useSelector(selectNaps);
+  const timeZone = useSelector(selectTimeZone);
 
   return (
     <div className={styles.root}>
@@ -23,8 +25,10 @@ export function Home() {
         <Button route={{ key: "create_nap" }}>Create nap</Button>
         {naps.map((nap) => (
           <div className={styles.nap} key={nap.id}>
-            <div>{`From: ${formatter.format(nap.startTime)}`}</div>
-            {nap.endTime && <div>{`To: ${formatter.format(nap.endTime)}`}</div>}
+            <div>{`From: ${formatDateTime(nap.startTime, timeZone)}`}</div>
+            {nap.endTime && (
+              <div>{`To: ${formatDateTime(nap.endTime, timeZone)}`}</div>
+            )}
           </div>
         ))}
       </div>

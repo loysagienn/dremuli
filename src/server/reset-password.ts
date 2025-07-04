@@ -1,4 +1,4 @@
-import { AppContext, AppNext, User, UserSettings } from "types";
+import { AppContext, AppNext } from "types";
 import { hashToken } from "server/utils/crypto";
 import { router } from "app/router";
 

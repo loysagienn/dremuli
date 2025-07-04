@@ -1,24 +1,24 @@
 import { prisma } from "../client";
-import { Session, UserSettings } from "types";
+import { Session, SessionSettings } from "types";
 
 export const getSessionSettings =
   () =>
-  async (id: string): Promise<UserSettings | null> => {
+  async (id: string): Promise<SessionSettings | null> => {
     const settings = await prisma.sessionSettings.findUnique({ where: { id } });
 
     if (!settings) {
       return null;
     }
 
-    const { theme } = settings;
+    const { theme, timeZone } = settings;
 
-    return { theme };
+    return { theme, timeZone };
   };
 
 export const setSessionSettings =
   () =>
-  async (id: string, settings: UserSettings): Promise<UserSettings> => {
-    const { theme } = await prisma.sessionSettings.upsert({
+  async (id: string, settings: SessionSettings): Promise<SessionSettings> => {
+    const { theme, timeZone } = await prisma.sessionSettings.upsert({
       where: { id },
       update: settings,
       create: {
@@ -27,7 +27,7 @@ export const setSessionSettings =
       },
     });
 
-    return { theme };
+    return { theme, timeZone };
   };
 
 export const deleteSessionSettings = () => async (id: string) => {

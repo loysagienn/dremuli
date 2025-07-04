@@ -1,4 +1,4 @@
-import { AppContext, AppNext, UserSettings } from "types";
+import { AppContext, AppNext, SessionSettings } from "types";
 import { parseDate } from "utils/parse-date";
 
 export function isValidEmail(email: string): boolean {
@@ -6,20 +6,20 @@ export function isValidEmail(email: string): boolean {
   return emailRegex.test(email);
 }
 
-function getBodyUserSettings(ctx: AppContext): UserSettings | null {
+function getBodySessionSettings(ctx: AppContext): SessionSettings | null {
   const data = ctx.request.body?.data;
 
   if (!data || typeof data !== "object") {
     return null;
   }
 
-  const { theme } = data;
+  const { theme, timeZone } = data;
 
   if (!theme || (theme !== "light" && theme !== "dark")) {
     return null;
   }
 
-  return { theme };
+  return { theme, timeZone: timeZone ?? null };
 }
 
 type BodyChangePassword = {
@@ -163,26 +163,26 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
 
   if (route.key === "api_settings") {
     if (ctx.method === "GET") {
-      const userSettings = await api.getUserSettings();
+      const sessionSettings = await api.getSessionSettings();
 
       ctx.body = {
-        data: userSettings,
+        data: sessionSettings,
       };
 
       return;
     }
 
     if (ctx.method === "POST") {
-      const bodyUserSettings = getBodyUserSettings(ctx);
+      const bodySessionSettings = getBodySessionSettings(ctx);
 
-      if (!bodyUserSettings) {
+      if (!bodySessionSettings) {
         return badRequest(ctx);
       }
 
-      const userSettings = await api.setUserSettings(bodyUserSettings);
+      const sessionSettings = await api.setSessionSettings(bodySessionSettings);
 
       ctx.body = {
-        data: userSettings,
+        data: sessionSettings,
       };
 
       return;

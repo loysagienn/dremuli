@@ -2,22 +2,15 @@ import { AppContext, State } from "types";
 import { renderToString } from "react-dom/server";
 import { renderApp, initStore } from "app/app";
 
-function serializeWithDates(state: State) {
-  return JSON.stringify(
-    state,
-    (key, value) => {
-      if (value instanceof Date) {
-        return `__DATE__${value.toISOString()}`; // Temporary marker
-      } else if (
-        typeof value === "string" &&
-        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value)
-      ) {
-        return `__DATE__${value}`;
-      }
-      return value;
-    },
-    2
-  ).replace(/"__DATE__(.*?)"/g, 'new Date("$1")'); // Replace marker with code
+function serializeState(state: State) {
+  return JSON.stringify(state)
+    .replace(
+      /"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z)"/g,
+      'new Date("$1")'
+    )
+    .replace(/</g, "\\u003C")
+    .replace(/>/g, "\\u003E")
+    .replace(/&/g, "\\u0026");
 }
 
 const favicon = `
@@ -51,9 +44,7 @@ export async function renderHtml(ctx: AppContext) {
 </head>
 <body>
   <div id="root">${content}</div>
-  <script>window.__INITIAL_STATE__ = ${serializeWithDates(
-    initialState
-  )}</script>
+  <script>window.__INITIAL_STATE__ = ${serializeState(initialState)}</script>
   <script type="module" src="/static/app.js?v=${__APP_VERSION__}"></script>
 </body>
 </html>`;

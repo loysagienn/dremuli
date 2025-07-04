@@ -1,13 +1,14 @@
-import { AppContext, AppNext, User, UserSettings, Nap } from "types";
+import { AppContext, AppNext, User, SessionSettings, Nap } from "types";
 
-const DEFAULT_USER_SETTINGS: UserSettings = {
+const DEFAULT_SESSION_SETTINGS: SessionSettings = {
   theme: "dark",
+  timeZone: null,
 };
 
 export async function initialState(ctx: AppContext, next: AppNext) {
   const { route, session } = ctx.state;
 
-  const userSettings = await ctx.db.getSessionSettings(session.id);
+  const sessionSettings = await ctx.db.getSessionSettings(session.id);
 
   let user: User | null = null;
   let naps: Nap[] = [];
@@ -20,7 +21,7 @@ export async function initialState(ctx: AppContext, next: AppNext) {
   ctx.state.initialState = {
     router: { route },
     user,
-    userSettings: userSettings ?? DEFAULT_USER_SETTINGS,
+    sessionSettings: sessionSettings ?? DEFAULT_SESSION_SETTINGS,
     naps,
   };
 

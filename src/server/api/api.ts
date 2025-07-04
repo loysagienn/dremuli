@@ -1,5 +1,5 @@
 import { AppContext, User } from "types";
-import { UserSettings, Api } from "types";
+import { SessionSettings, Api } from "types";
 import {
   hashPassword,
   comparePassword,
@@ -10,14 +10,14 @@ import { sendEmailBackground } from "server/utils/send-email";
 import { router } from "app/router";
 import { DOMAIN } from "config";
 
-const setUserSettingsFactory =
-  (ctx: AppContext) => async (settings: UserSettings) => {
+const setSessionSettingsFactory =
+  (ctx: AppContext) => async (settings: SessionSettings) => {
     const { session } = ctx.state;
 
     return ctx.db.setSessionSettings(session.id, settings);
   };
 
-const getUserSettingsFactory = (ctx: AppContext) => async () => {
+const getSessionSettingsFactory = (ctx: AppContext) => async () => {
   const { session } = ctx.state;
 
   return ctx.db.getSessionSettings(session.id);
@@ -158,8 +158,8 @@ const getNapsFactory = (ctx: AppContext) => async () => {
 };
 
 export function initApi(ctx: AppContext): Api {
-  const setUserSettings = setUserSettingsFactory(ctx);
-  const getUserSettings = getUserSettingsFactory(ctx);
+  const setSessionSettings = setSessionSettingsFactory(ctx);
+  const getSessionSettings = getSessionSettingsFactory(ctx);
   const registerUser = registerUserFactory(ctx);
   const login = loginFactory(ctx);
   const changePassword = chnagePasswordFactory(ctx);
@@ -169,8 +169,8 @@ export function initApi(ctx: AppContext): Api {
   const getNaps = getNapsFactory(ctx);
 
   return {
-    setUserSettings,
-    getUserSettings,
+    setSessionSettings,
+    getSessionSettings,
     registerUser,
     login,
     changePassword,

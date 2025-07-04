@@ -1,7 +1,7 @@
 import { ActionHandler } from "types";
 import { selectSessionSettings } from "selectors";
 
-export const setTheme: ActionHandler<"SET_THEME"> = async ({
+export const setTimeZone: ActionHandler<"SET_TIME_ZONE"> = async ({
   action,
   getState,
   api,

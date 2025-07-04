@@ -8,4 +8,11 @@ const theme = createReducer<"light" | "dark">(
   null
 );
 
-export const userSettings = combineReducers({ theme });
+const timeZone = createReducer<string>(
+  {
+    SET_TIME_ZONE: (state, { timeZone }) => timeZone,
+  },
+  ""
+);
+
+export const sessionSettings = combineReducers({ theme, timeZone });

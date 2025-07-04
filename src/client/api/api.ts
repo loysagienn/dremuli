@@ -1,18 +1,18 @@
-import { UserSettings, Api, User, Nap } from "types";
+import { SessionSettings, Api, User, Nap } from "types";
 import { request } from "./request";
 
-async function getUserSettings() {
-  const userSettings = await request({ key: "api_settings" }, "GET");
+async function getSessionSettings() {
+  const sessionSettings = await request({ key: "api_settings" }, "GET");
 
-  return userSettings as UserSettings;
+  return sessionSettings as SessionSettings;
 }
 
-async function setUserSettings(userSettings: UserSettings) {
+async function setSessionSettings(sessionSettings: SessionSettings) {
   const result = await request({ key: "api_settings" }, "POST", {
-    data: userSettings,
+    data: sessionSettings,
   });
 
-  return result as UserSettings;
+  return result as SessionSettings;
 }
 
 async function registerUser(email: string, password: string) {
@@ -64,8 +64,8 @@ async function getNaps() {
 }
 
 export const api: Api = {
-  getUserSettings,
-  setUserSettings,
+  getSessionSettings,
+  setSessionSettings,
   registerUser,
   login,
   changePassword,
