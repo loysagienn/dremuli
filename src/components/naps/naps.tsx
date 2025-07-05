@@ -25,7 +25,7 @@ export function Naps({ className }: NapsProps) {
 
       root.style.opacity = "1";
     }
-  }, [napEvents]);
+  }, []);
 
   const lastEvent =
     napEvents.length > 0 ? napEvents[napEvents.length - 1] : null;

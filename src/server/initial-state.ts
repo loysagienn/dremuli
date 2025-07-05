@@ -1,4 +1,5 @@
 import { AppContext, AppNext, User, SessionSettings, Nap } from "types";
+import { getCurrentMinute } from "utils/date";
 
 const DEFAULT_SESSION_SETTINGS: SessionSettings = {
   theme: "dark",
@@ -23,6 +24,7 @@ export async function initialState(ctx: AppContext, next: AppNext) {
     user,
     sessionSettings: sessionSettings ?? DEFAULT_SESSION_SETTINGS,
     naps,
+    currentTime: getCurrentMinute(),
   };
 
   return next();

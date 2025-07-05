@@ -3,6 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { selectTimeZone } from "./session-settings";
 import { formatDate, formatDuration, formatTime } from "utils/date";
 import { selectRoute } from "./router";
+import { selectCurrentTime } from "./current-time";
 
 export const selectNaps = (state: State) => state.naps;
 
@@ -27,9 +28,9 @@ export const selectRouteNap = createSelector(
 export const selectNapEvents = createSelector(
   selectNapsReverse,
   selectTimeZone,
-  (naps, timeZone) => {
+  selectCurrentTime,
+  (naps, timeZone, currentTime) => {
     const events: NapEvent[] = [];
-    const now = new Date();
 
     const getSleepEndTime = (index: number) => {
       const nap = naps[index];
@@ -44,7 +45,7 @@ export const selectNapEvents = createSelector(
         return nextNap.startTime;
       }
 
-      return now;
+      return currentTime;
     };
 
     const getAwakeEndTime = (index: number) => {
@@ -54,7 +55,7 @@ export const selectNapEvents = createSelector(
         return nextNap.startTime;
       }
 
-      return now;
+      return currentTime;
     };
 
     for (let i = 0; i < naps.length; i++) {
