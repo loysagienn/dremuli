@@ -399,6 +399,24 @@ const updateNap: RouteConfig<UpdateNap> = {
   writeRoute: (route) => `/naps/${route.napId}/update`,
 };
 
+type AddEvent = {
+  key: "add_event";
+};
+
+const addEvent: RouteConfig<AddEvent> = {
+  key: "add_event",
+  readRoute: (path: string) => {
+    if (path === "/add-event") {
+      return {
+        key: "add_event",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/add-event",
+};
+
 export const router = initRouter(
   home,
   login,
@@ -410,6 +428,7 @@ export const router = initRouter(
   resetPassword,
   createNap,
   updateNap,
+  addEvent,
   apiSettings,
   apiRegisterUser,
   apiLogin,

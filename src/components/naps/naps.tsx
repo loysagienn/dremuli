@@ -5,12 +5,17 @@ import { Event } from "./event";
 import { Button } from "components/button";
 import { ActiveDay } from "components/active-day";
 import { useDispatch, useSelector } from "react-redux";
-import { selectNapEvents } from "selectors";
+import { selectNapEvents, selectNextEventType } from "selectors";
 import { NapEventType } from "types";
 import { setActiveDayAction } from "actions";
 
 type NapsProps = {
   className?: string;
+};
+
+const eventTypeTitles: { [key in NapEventType]: string } = {
+  [NapEventType.Awake]: "Woke up",
+  [NapEventType.Sleep]: "Fell asleep",
 };
 
 export function Naps({ className }: NapsProps) {
@@ -98,6 +103,8 @@ export function Naps({ className }: NapsProps) {
     }
   }, [napEvents]);
 
+  const nextEventType = useSelector(selectNextEventType);
+
   const lastEvent =
     napEvents.length > 0 ? napEvents[napEvents.length - 1] : null;
   const isSleeping = lastEvent && lastEvent.type === NapEventType.Sleep;
@@ -113,22 +120,9 @@ export function Naps({ className }: NapsProps) {
             <Event napEvent={napEvent} key={napEvent.id} />
           ))}
 
-          {isSleeping && (
-            <Button
-              route={{ key: "update_nap", napId: lastEvent.nap.id }}
-              className={styles.createNapBtn}
-            >
-              Update nap
-            </Button>
-          )}
-          {!isSleeping && (
-            <Button
-              route={{ key: "create_nap" }}
-              className={styles.createNapBtn}
-            >
-              Create nap
-            </Button>
-          )}
+          <Button route={{ key: "add_event" }} className={styles.createNapBtn}>
+            {eventTypeTitles[nextEventType]}
+          </Button>
         </div>
       </div>
     </div>

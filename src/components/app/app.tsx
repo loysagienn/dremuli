@@ -17,6 +17,7 @@ import { Home } from "components/home";
 import { Login } from "components/login";
 import { CreateNap } from "components/create-nap";
 import { UpdateNap } from "components/update-nap";
+import { AddEvent } from "components/add-event";
 
 export function App() {
   const theme = useSelector(selectTheme);
@@ -62,6 +63,10 @@ export function App() {
 
       <Route routeKey="update_nap">
         <UpdateNap />
+      </Route>
+
+      <Route routeKey="add_event">
+        <AddEvent />
       </Route>
     </div>
   );

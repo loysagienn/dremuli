@@ -123,3 +123,24 @@ export const selectNapEvents = createSelector(
     return events;
   }
 );
+
+export const selectLastEvent = createSelector(selectNapEvents, (napEvents) => {
+  if (napEvents.length === 0) {
+    return null;
+  }
+
+  return napEvents[napEvents.length - 1];
+});
+
+export const selectNextEventType = createSelector(
+  selectLastEvent,
+  (lastEvent) => {
+    if (!lastEvent) {
+      return NapEventType.Sleep;
+    }
+
+    return lastEvent.type === NapEventType.Sleep
+      ? NapEventType.Awake
+      : NapEventType.Sleep;
+  }
+);

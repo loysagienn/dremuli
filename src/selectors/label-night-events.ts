@@ -106,7 +106,7 @@ function addNightSleepAfter(events: NapEvent[], index: number) {
 }
 
 export function labelNightEvents(events: NapEvent[]) {
-  for (let i = 0; i < events.length; i++) {
+  for (let i = 0; i < events.length - 1; i++) {
     const event = events[i];
 
     if (event.type === NapEventType.Sleep && isBetweenHours(event, 0, 4)) {
@@ -143,6 +143,18 @@ export function labelNightEvents(events: NapEvent[]) {
 
     if (event.isNightSleep) {
       addNightSleepAfter(events, i);
+    }
+  }
+
+  if (events.length > 0) {
+    const lastEvent = events[events.length - 1];
+
+    if (
+      lastEvent.type === NapEventType.Sleep &&
+      !lastEvent.isNightSleep &&
+      isBetweenHours(lastEvent, 21, 0)
+    ) {
+      lastEvent.isNightSleep = true;
     }
   }
 }
