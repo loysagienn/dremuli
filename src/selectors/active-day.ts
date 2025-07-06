@@ -65,7 +65,7 @@ function calculateStat(napEvents: NapEvent[], firstNightSleepIndex: number) {
 
       nightSleepDuration += event.duration;
     } else if (event.type === NapEventType.Awake) {
-      if (nextEvent && nextEvent.isNightSleep) {
+      if (!dayStarted && nextEvent && nextEvent.isNightSleep) {
         nightAwakeDuration += event.duration;
       } else {
         dayStarted = true;
