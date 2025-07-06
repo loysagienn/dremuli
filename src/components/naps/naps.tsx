@@ -58,12 +58,13 @@ export function Naps({ className }: NapsProps) {
       let currentActive: Date | null = null;
 
       const getActive = () => {
-        if (
-          napsList.scrollHeight ===
-          napsList.scrollTop + napsList.offsetHeight
-        ) {
+        const gapToBottom =
+          napsList.scrollHeight - napsList.offsetHeight - napsList.scrollTop;
+
+        if (gapToBottom < 60) {
           return dayStartEvent[dayStartEvent.length - 1].time;
         }
+
         for (let i = dayStartEvent.length - 1; i >= 0; i--) {
           const top = eventsTop[i];
 
