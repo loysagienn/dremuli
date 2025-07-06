@@ -4,6 +4,7 @@ import { sessionSettings } from "./session-settings";
 import { user } from "./user";
 import { naps } from "./naps";
 import { currentTime } from "./current-time";
+import { activeDay } from "./active-day";
 
 export const reducer = combineReducers({
   router,
@@ -11,6 +12,7 @@ export const reducer = combineReducers({
   user,
   naps,
   currentTime,
+  activeDay,
 });
 
 export type State = ReturnType<typeof reducer>;

@@ -4,6 +4,7 @@ import { selectTimeZone } from "./session-settings";
 import { formatDate, formatDuration, formatTime } from "utils/date";
 import { selectRoute } from "./router";
 import { selectCurrentTime } from "./current-time";
+import { labelNightEvents } from "./label-night-events";
 
 export const selectNaps = (state: State) => state.naps;
 
@@ -76,9 +77,11 @@ export const selectNapEvents = createSelector(
         nap,
         type: NapEventType.Sleep,
         time: startTime,
+        endTime: sleepEndTime,
         timeStr: formatTime(startTime, timeZone),
         duration: sleepDuration,
         durationStr: formatDuration(sleepDuration),
+        isNightSleep: false,
       });
 
       if (endTime) {
@@ -93,11 +96,17 @@ export const selectNapEvents = createSelector(
           nap,
           type: NapEventType.Awake,
           time: endTime,
+          endTime: awakeEndTime,
           timeStr: formatTime(endTime, timeZone),
           duration: awakeDuration,
           durationStr: formatDuration(awakeDuration),
+          isNightSleep: false,
         });
       }
+    }
+
+    if (events.length > 0) {
+      events[0].dayStartStr = formatDate(events[0].time, timeZone);
     }
 
     for (let i = 1; i < events.length; i++) {
@@ -108,6 +117,8 @@ export const selectNapEvents = createSelector(
         event.dayStartStr = formatDate(event.time, timeZone);
       }
     }
+
+    labelNightEvents(events);
 
     return events;
   }

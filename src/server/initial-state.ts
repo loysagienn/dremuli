@@ -19,12 +19,16 @@ export async function initialState(ctx: AppContext, next: AppNext) {
     naps = await ctx.db.getNaps(session.userId);
   }
 
+  const firstNap = naps.length > 0 ? naps[0] : null;
+  const activeDay = firstNap ? firstNap.endTime || firstNap.startTime : null;
+
   ctx.state.initialState = {
     router: { route },
     user,
     sessionSettings: sessionSettings ?? DEFAULT_SESSION_SETTINGS,
     naps,
     currentTime: getCurrentMinute(),
+    activeDay,
   };
 
   return next();

@@ -1,11 +1,13 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import styles from "./naps.module.css";
 import { cn } from "utils/cn";
 import { Event } from "./event";
 import { Button } from "components/button";
-import { useSelector } from "react-redux";
+import { ActiveDay } from "components/active-day";
+import { useDispatch, useSelector } from "react-redux";
 import { selectNapEvents } from "selectors";
 import { NapEventType } from "types";
+import { setActiveDayAction } from "actions";
 
 type NapsProps = {
   className?: string;
@@ -13,19 +15,87 @@ type NapsProps = {
 
 export function Naps({ className }: NapsProps) {
   const rootRef = useRef<HTMLDivElement>(null);
+  const napsListRef = useRef<HTMLDivElement>(null);
   const napEvents = useSelector(selectNapEvents);
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     const root = rootRef.current;
+    const napsList = napsListRef.current;
 
-    if (root) {
-      if (root.scrollHeight > root.offsetHeight) {
-        root.scrollTop = root.scrollHeight - root.offsetHeight;
+    if (root && napsList) {
+      if (napsList.scrollHeight > napsList.offsetHeight) {
+        napsList.scrollTop = napsList.scrollHeight - napsList.offsetHeight;
       }
 
       root.style.opacity = "1";
     }
   }, []);
+
+  useEffect(() => {
+    const dayStartEvent = napEvents.filter((event) => event.dayStartStr);
+    const napsList = napsListRef.current;
+
+    if (dayStartEvent.length === 0) {
+      return;
+    }
+
+    if (napsList) {
+      const listRect = napsList.getBoundingClientRect();
+
+      const eventsTop = dayStartEvent.map((event) => {
+        const node = document.getElementById(event.id);
+
+        if (node) {
+          const nodeRect = node.getBoundingClientRect();
+
+          return nodeRect.top - listRect.top + napsList.scrollTop;
+        }
+
+        return 0;
+      });
+
+      let currentActive: Date | null = null;
+
+      const getActive = () => {
+        if (
+          napsList.scrollHeight ===
+          napsList.scrollTop + napsList.offsetHeight
+        ) {
+          return dayStartEvent[dayStartEvent.length - 1].time;
+        }
+        for (let i = dayStartEvent.length - 1; i >= 0; i--) {
+          const top = eventsTop[i];
+
+          if (top - napsList.scrollTop < napsList.offsetHeight / 2) {
+            return dayStartEvent[i].time;
+          }
+        }
+
+        return dayStartEvent[0].time;
+      };
+
+      const onScroll = () => {
+        const active = getActive();
+
+        if (active === currentActive) {
+          return;
+        }
+
+        currentActive = active;
+
+        dispatch(setActiveDayAction(active));
+      };
+
+      napsList.addEventListener("scroll", onScroll);
+
+      onScroll();
+
+      return () => {
+        napsList.removeEventListener("scroll", onScroll);
+      };
+    }
+  }, [napEvents]);
 
   const lastEvent =
     napEvents.length > 0 ? napEvents[napEvents.length - 1] : null;
@@ -33,24 +103,32 @@ export function Naps({ className }: NapsProps) {
 
   return (
     <div className={cn(className, styles.root)} ref={rootRef}>
-      <div className={styles.content}>
-        {napEvents.map((napEvent) => (
-          <Event napEvent={napEvent} key={napEvent.id} />
-        ))}
+      <div className={styles.napsActiveDay}>
+        <ActiveDay className={styles.activeDay} />
+      </div>
+      <div className={styles.napsList} ref={napsListRef}>
+        <div className={styles.content}>
+          {napEvents.map((napEvent) => (
+            <Event napEvent={napEvent} key={napEvent.id} />
+          ))}
 
-        {isSleeping && (
-          <Button
-            route={{ key: "update_nap", napId: lastEvent.nap.id }}
-            className={styles.createNapBtn}
-          >
-            Update nap
-          </Button>
-        )}
-        {!isSleeping && (
-          <Button route={{ key: "create_nap" }} className={styles.createNapBtn}>
-            Create nap
-          </Button>
-        )}
+          {isSleeping && (
+            <Button
+              route={{ key: "update_nap", napId: lastEvent.nap.id }}
+              className={styles.createNapBtn}
+            >
+              Update nap
+            </Button>
+          )}
+          {!isSleeping && (
+            <Button
+              route={{ key: "create_nap" }}
+              className={styles.createNapBtn}
+            >
+              Create nap
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

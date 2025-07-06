@@ -1,8 +1,38 @@
 .root {
-  overflow: auto;
   border-top: 1px solid var(--color-bg-secondary);
   opacity: 0;
   transition: opacity 0.2s linear;
+}
+
+.napsActiveDay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 140px;
+  overflow: auto;
+}
+
+.activeDay {
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 360px;
+}
+
+@media (max-width: 440px) {
+  .activeDay {
+    max-width: 100%;
+  }
+}
+
+.napsList {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 140px;
+  bottom: 0;
+  border-top: 1px solid var(--color-bg-secondary);
+  overflow: auto;
 }
 
 .content {

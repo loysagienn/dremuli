@@ -24,9 +24,13 @@ export function Event({ napEvent }: EventProps) {
           </div>
         </div>
       )}
-      <div className={styles.napEvent}>
+      <div className={styles.napEvent} id={napEvent.id}>
         <div className={styles.napEventTime}>{napEvent.timeStr}</div>
-        <div className={styles.napEventTitle}>{titles[napEvent.type]}</div>
+        <div className={styles.napEventTitle}>
+          {napEvent.isNightSleep
+            ? `${titles[napEvent.type]} night`
+            : titles[napEvent.type]}
+        </div>
         <div className={styles.napEventDuration}>{napEvent.durationStr}</div>
         <div className={styles.napEventLine} />
         <div className={styles.napEventPointer} />
