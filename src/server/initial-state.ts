@@ -29,6 +29,7 @@ export async function initialState(ctx: AppContext, next: AppNext) {
     naps,
     currentTime: getCurrentMinute(),
     activeDay,
+    pageVisibility: true,
   };
 
   return next();

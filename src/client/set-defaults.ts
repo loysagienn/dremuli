@@ -1,7 +1,8 @@
 import { Store } from "types";
 import { selectCurrentTime, selectTimeZone } from "selectors";
-import { setCurrentTimeAction, setTimeZone } from "actions";
+import { setCurrentTimeAction, setPageVisible, setTimeZone } from "actions";
 import { getCurrentMinute } from "utils/date";
+import { selectPageVisible } from "selectors/page";
 
 export function setDefaults({ subscribe, getState, dispatch }: Store) {
   const activeTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -21,4 +22,14 @@ export function setDefaults({ subscribe, getState, dispatch }: Store) {
       dispatch(setCurrentTimeAction(currentMinute));
     }
   }, 1000);
+
+  document.addEventListener("visibilitychange", () => {
+    const pageIsVisible = selectPageVisible(getState());
+
+    const isVisible = document.visibilityState === "visible";
+
+    if (pageIsVisible !== isVisible) {
+      dispatch(setPageVisible(isVisible));
+    }
+  });
 }
