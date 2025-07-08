@@ -145,6 +145,28 @@ const createNapFactory =
     return nap;
   };
 
+const deleteNapFactory = (ctx: AppContext) => async (napId: string) => {
+  const { userId } = ctx.state.session;
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const fullNap = await ctx.db.getFullNap(napId);
+
+  if (!fullNap) {
+    throw new Error("Nap not found");
+  }
+
+  if (fullNap.userId !== userId) {
+    throw new Error("Access denied");
+  }
+
+  const nap = await ctx.db.deleteNap(napId);
+
+  return nap;
+};
+
 const updateNapFactory =
   (ctx: AppContext) => async (napId: string, update: NapUpdate) => {
     const { userId } = ctx.state.session;
@@ -191,6 +213,7 @@ export function initApi(ctx: AppContext): Api {
   const createNap = createNapFactory(ctx);
   const getNaps = getNapsFactory(ctx);
   const updateNap = updateNapFactory(ctx);
+  const deleteNap = deleteNapFactory(ctx);
 
   return {
     setSessionSettings,
@@ -203,5 +226,6 @@ export function initApi(ctx: AppContext): Api {
     createNap,
     getNaps,
     updateNap,
+    deleteNap,
   };
 }

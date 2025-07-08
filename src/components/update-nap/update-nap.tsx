@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateNapAction } from "actions";
+import { deleteNapAction, updateNapAction } from "actions";
 import { Header } from "components/header";
 import { FormInput, FormSubmit } from "components/form";
 import styles from "./update-nap.module.css";
@@ -39,7 +39,15 @@ export function UpdateNap() {
     const endTime = endTimeStr ? new Date(endTimeStr) : null;
 
     dispatch(updateNapAction(nap.id, { startTime, endTime }));
-  }, [startTimeStr, endTimeStr]);
+  }, [startTimeStr, endTimeStr, nap]);
+
+  const onDelete = useCallback(() => {
+    if (!nap) {
+      return;
+    }
+
+    dispatch(deleteNapAction(nap.id));
+  }, [nap]);
 
   return (
     <div className={styles.root}>
@@ -60,6 +68,7 @@ export function UpdateNap() {
             type="datetime-local"
           />
           <FormSubmit onSubmit={onSubmit} submitLabel="Update" />
+          <FormSubmit onSubmit={onDelete} submitLabel="Delete nap" />
         </div>
       </div>
     </div>

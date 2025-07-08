@@ -42,3 +42,15 @@ export function updateNapAction(napId: string, update: NapUpdate): UpdateNap {
     update,
   };
 }
+
+export type DeleteNap = {
+  type: "DELETE_NAP";
+  napId: string;
+};
+
+export function deleteNapAction(napId: string): DeleteNap {
+  return {
+    type: "DELETE_NAP",
+    napId,
+  };
+}

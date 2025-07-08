@@ -13,4 +13,5 @@ export type Api = {
   createNap: (startTime: Date, endTime?: Date | null) => Promise<Nap>;
   updateNap: (napId: string, update: NapUpdate) => Promise<Nap>;
   getNaps: () => Promise<Nap[]>;
+  deleteNap: (napId: string) => Promise<Nap | null>;
 };

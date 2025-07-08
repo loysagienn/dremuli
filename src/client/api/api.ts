@@ -49,7 +49,11 @@ async function resetPassword(password: string, token: string) {
   });
 }
 
-function parseNap(data: any): Nap {
+function parseNap(data: any): Nap | null {
+  if (!data) {
+    return null;
+  }
+
   const { id, startTime, endTime, createdAt, updatedAt } = data;
 
   return {
@@ -77,6 +81,12 @@ async function updateNap(napId: string, update: NapUpdate) {
   return parseNap(result);
 }
 
+async function deleteNap(napId: string) {
+  const result = await request({ key: "api_nap", napId }, "DELETE");
+
+  return parseNap(result);
+}
+
 async function getNaps(): Promise<Nap[]> {
   const result = await request({ key: "api_naps" }, "GET");
 
@@ -94,4 +104,5 @@ export const api: Api = {
   createNap,
   getNaps,
   updateNap,
+  deleteNap,
 };

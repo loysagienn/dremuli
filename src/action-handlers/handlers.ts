@@ -8,6 +8,7 @@ import { resetPassword } from "./reset-password";
 import { createNap } from "./create-nap";
 import { setTimeZone } from "./set-timezone";
 import { updateNap } from "./update-nap";
+import { deleteNap } from "./delete-nap";
 
 export const basicHandlers: ActionHandlers = {
   SET_THEME: setTheme,
@@ -19,4 +20,5 @@ export const basicHandlers: ActionHandlers = {
   CREATE_NAP: createNap,
   UPDATE_NAP: updateNap,
   SET_TIME_ZONE: setTimeZone,
+  DELETE_NAP: deleteNap,
 };

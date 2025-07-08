@@ -67,3 +67,17 @@ export const getNaps =
       return { id, startTime, endTime, createdAt, updatedAt };
     });
   };
+
+export const deleteNap =
+  () =>
+  async (id: string): Promise<Nap | null> => {
+    const nap = await prisma.sleepSession.delete({ where: { id } });
+
+    if (nap) {
+      const { id, startTime, endTime, createdAt, updatedAt } = nap;
+
+      return { id, startTime, endTime, createdAt, updatedAt };
+    }
+
+    return null;
+  };

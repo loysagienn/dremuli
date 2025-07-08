@@ -307,6 +307,18 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
 
       return;
     }
+
+    if (ctx.method === "DELETE") {
+      const { napId } = route;
+
+      const nap = await api.deleteNap(napId);
+
+      ctx.body = {
+        data: nap,
+      };
+
+      return;
+    }
   }
 
   if (route.key === "api_naps") {

@@ -11,6 +11,10 @@
   margin-top: 24px;
 }
 
+.formSubmit + .formSubmit {
+  margin-top: 12px;
+}
+
 .formSubmit .submitBtn {
   width: 100%;
 }
