@@ -1,15 +1,37 @@
 import { NapEvent, NapEventType } from "types";
 
+function isBetween(hour: number, fromHour: number, toHour: number) {
+  let marker = fromHour;
+
+  if (hour === toHour) {
+    return true;
+  }
+
+  while (marker !== toHour) {
+    if (hour === marker) {
+      return true;
+    }
+
+    marker += 1;
+
+    if (marker === 24) {
+      marker = 0;
+    }
+  }
+
+  return false;
+}
+
 function isBetweenHours(event: NapEvent, fromHour: number, toHour: number) {
   let marker = event.time.getHours();
   const endHour = event.endTime.getHours();
 
-  if (endHour >= fromHour && endHour <= toHour) {
+  if (isBetween(endHour, fromHour, toHour)) {
     return true;
   }
 
   while (marker !== endHour) {
-    if (marker >= fromHour && marker <= toHour) {
+    if (isBetween(marker, fromHour, toHour)) {
       return true;
     }
 
