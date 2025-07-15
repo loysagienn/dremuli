@@ -68,6 +68,21 @@ export const getNaps =
     });
   };
 
+export const getAllNaps = () => async (): Promise<Nap[]> => {
+  const naps = await prisma.sleepSession.findMany({
+    where: {},
+    orderBy: {
+      startTime: "desc",
+    },
+  });
+
+  return naps.map((nap) => {
+    const { id, startTime, endTime, createdAt, updatedAt } = nap;
+
+    return { id, startTime, endTime, createdAt, updatedAt };
+  });
+};
+
 export const deleteNap =
   () =>
   async (id: string): Promise<Nap | null> => {

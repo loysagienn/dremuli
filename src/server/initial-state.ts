@@ -1,4 +1,4 @@
-import { AppContext, AppNext, User, SessionSettings, Nap } from "types";
+import { AppContext, AppNext, User, SessionSettings, Nap, Event } from "types";
 import { getCurrentMinute } from "utils/date";
 
 const DEFAULT_SESSION_SETTINGS: SessionSettings = {
@@ -13,9 +13,11 @@ export async function initialState(ctx: AppContext, next: AppNext) {
 
   const user = ctx.state.user;
   let naps: Nap[] = [];
+  let events: Event[] = [];
 
   if (user) {
     naps = await ctx.db.getNaps(user.id);
+    events = await ctx.db.getEvents(user.id);
   }
 
   let users: User[] = [];
@@ -36,6 +38,7 @@ export async function initialState(ctx: AppContext, next: AppNext) {
     activeDay,
     pageVisibility: true,
     admin: { users },
+    events,
   };
 
   return next();

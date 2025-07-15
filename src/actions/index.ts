@@ -5,3 +5,4 @@ export * from "./naps";
 export * from "./current-time";
 export * from "./active-day";
 export * from "./browser";
+export * from "./events";

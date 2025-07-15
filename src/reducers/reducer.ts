@@ -7,6 +7,7 @@ import { currentTime } from "./current-time";
 import { activeDay } from "./active-day";
 import { pageVisibility } from "./page-visibility";
 import { admin } from "./admin";
+import { events } from "./events";
 
 export const reducer = combineReducers({
   router,
@@ -17,6 +18,7 @@ export const reducer = combineReducers({
   activeDay,
   pageVisibility,
   admin,
+  events,
 });
 
 export type State = ReturnType<typeof reducer>;

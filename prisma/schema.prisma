@@ -34,6 +34,7 @@ model User {
 
   sessions      Session[]
   sleepSessions SleepSession[]
+  events        Event[]
 
   @@map("users")
 }
@@ -69,6 +70,25 @@ model SleepSession {
 
   @@index([userId])
   @@map("sleep_sessions")
+}
+
+enum EventType {
+  fell_asleep
+  woke_up
+}
+
+model Event {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  timestamp DateTime
+  type      EventType
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("events")
 }
 
 enum Theme {
