@@ -1,5 +1,5 @@
 import { ActionHandler } from "types";
-import { setUser, routeToAction, setNaps } from "actions";
+import { setUser, routeToAction, setEventsAction } from "actions";
 
 export const loginUser: ActionHandler<"LOGIN_USER"> = async ({
   action,
@@ -15,10 +15,10 @@ export const loginUser: ActionHandler<"LOGIN_USER"> = async ({
     const user = await api.login(email, password);
 
     if (user) {
-      const naps = await api.getNaps();
+      const events = await api.getEvents();
 
       dispatch(setUser(user));
-      dispatch(setNaps(naps));
+      dispatch(setEventsAction(events));
       dispatch(routeToAction({ key: "home" }));
     }
   } catch (error) {

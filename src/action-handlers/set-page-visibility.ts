@@ -1,5 +1,5 @@
 import { ActionHandler } from "types";
-import { setNaps } from "actions";
+import { setEventsAction } from "actions";
 import { selectUser } from "selectors";
 
 export const setPageVisibility: ActionHandler<"SET_PAGE_VISIBILITY"> = async ({
@@ -22,9 +22,9 @@ export const setPageVisibility: ActionHandler<"SET_PAGE_VISIBILITY"> = async ({
   }
 
   try {
-    const naps = await api.getNaps();
+    const events = await api.getEvents();
 
-    dispatch(setNaps(naps));
+    dispatch(setEventsAction(events));
   } catch (error) {
     console.error(error);
   }

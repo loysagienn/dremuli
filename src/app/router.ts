@@ -314,107 +314,89 @@ const apiResetPassword: RouteConfig<ApiResetPassword> = {
   writeRoute: (route) => "/api/reset-password",
 };
 
-type ApiNaps = {
-  key: "api_naps";
+type ApiEvents = {
+  key: "api_events";
 };
 
-const apiNaps: RouteConfig<ApiNaps> = {
-  key: "api_naps",
+const apiEvents: RouteConfig<ApiEvents> = {
+  key: "api_events",
   readRoute: (path: string) => {
-    if (path === "/api/naps") {
+    if (path === "/api/events") {
       return {
-        key: "api_naps",
+        key: "api_events",
       };
     }
 
     return null;
   },
-  writeRoute: (route) => "/api/naps",
+  writeRoute: (route) => "/api/events",
 };
 
-type ApiNap = {
-  key: "api_nap";
-  napId: string;
+type ApiEvent = {
+  key: "api_event";
+  eventId: string;
 };
 
-const apiNap: RouteConfig<ApiNap> = {
-  key: "api_nap",
+const apiEvent: RouteConfig<ApiEvent> = {
+  key: "api_event",
   readRoute: (path: string) => {
-    if (!path.startsWith("/api/naps/")) {
+    if (!path.startsWith("/api/events/")) {
       return null;
     }
 
-    const napId = path.slice(10);
+    const eventId = path.slice(12);
 
-    if (napId && !napId.includes("/")) {
+    if (eventId && !eventId.includes("/")) {
       return {
-        key: "api_nap",
-        napId,
+        key: "api_event",
+        eventId,
       };
     }
     return null;
   },
-  writeRoute: (route) => `/api/naps/${route.napId}`,
+  writeRoute: (route) => `/api/events/${route.eventId}`,
 };
 
-type CreateNap = {
-  key: "create_nap";
+type CreateEvent = {
+  key: "create_event";
 };
 
-const createNap: RouteConfig<CreateNap> = {
-  key: "create_nap",
+const createEvent: RouteConfig<CreateEvent> = {
+  key: "create_event",
   readRoute: (path: string) => {
-    if (path === "/naps/create") {
+    if (path === "/events/create") {
       return {
-        key: "create_nap",
+        key: "create_event",
       };
     }
 
     return null;
   },
-  writeRoute: (route) => "/naps/create",
+  writeRoute: (route) => "/events/create",
 };
 
-type UpdateNap = {
-  key: "update_nap";
-  napId: string;
+type UpdateEvent = {
+  key: "update_event";
+  eventId: string;
 };
 
-const updateNap: RouteConfig<UpdateNap> = {
-  key: "update_nap",
+const updateEvent: RouteConfig<UpdateEvent> = {
+  key: "update_event",
   readRoute: (path: string) => {
-    if (path.startsWith("/naps/") && path.endsWith("/update")) {
-      const napId = path.slice(6, -7);
+    if (path.startsWith("/events/") && path.endsWith("/update")) {
+      const eventId = path.slice(8, -7);
 
-      if (!napId.includes("/")) {
+      if (!eventId.includes("/")) {
         return {
-          key: "update_nap",
-          napId,
+          key: "update_event",
+          eventId,
         };
       }
     }
 
     return null;
   },
-  writeRoute: (route) => `/naps/${route.napId}/update`,
-};
-
-type AddEvent = {
-  key: "add_event";
-};
-
-const addEvent: RouteConfig<AddEvent> = {
-  key: "add_event",
-  readRoute: (path: string) => {
-    if (path === "/add-event") {
-      return {
-        key: "add_event",
-      };
-    }
-
-    return null;
-  },
-  writeRoute: (route) => "/add-event",
+  writeRoute: (route) => `/events/${route.eventId}/update`,
 };
 
 export const router = initRouter(
@@ -426,17 +408,16 @@ export const router = initRouter(
   profilePassword,
   forgetPassword,
   resetPassword,
-  createNap,
-  updateNap,
-  addEvent,
+  createEvent,
+  updateEvent,
   apiSettings,
   apiRegisterUser,
   apiLogin,
   apiChangePassword,
   apiForgetPassword,
   apiResetPassword,
-  apiNaps,
-  apiNap,
+  apiEvents,
+  apiEvent,
   apiNotFound,
   notFound
 );

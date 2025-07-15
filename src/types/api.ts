@@ -1,6 +1,6 @@
 import { SessionSettings } from "./user";
 import { User } from "./db";
-import { Nap, NapUpdate } from "./naps";
+import { Event, EventUpdate, EventType } from "./events";
 
 export type Api = {
   setSessionSettings: (settings: SessionSettings) => Promise<SessionSettings>;
@@ -10,8 +10,8 @@ export type Api = {
   changePassword: (password: string, newPassword: string) => Promise<void>;
   forgetPassword: (email: string) => Promise<void>;
   resetPassword: (password: string, token: string) => Promise<void>;
-  createNap: (startTime: Date, endTime?: Date | null) => Promise<Nap>;
-  updateNap: (napId: string, update: NapUpdate) => Promise<Nap>;
-  getNaps: () => Promise<Nap[]>;
-  deleteNap: (napId: string) => Promise<Nap | null>;
+  createEvent: (type: EventType, timestamp: Date) => Promise<Event>;
+  updateEvent: (eventId: string, update: EventUpdate) => Promise<Event>;
+  getEvents: () => Promise<Event[]>;
+  deleteEvent: (eventId: string) => Promise<Event | null>;
 };

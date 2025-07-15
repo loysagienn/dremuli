@@ -1,4 +1,4 @@
-import { AppContext, AppNext, SessionSettings } from "types";
+import { AppContext, AppNext, EventType, SessionSettings } from "types";
 import { parseDate } from "utils/parse-date";
 
 export function isValidEmail(email: string): boolean {
@@ -45,26 +45,31 @@ function getBodyChangePassword(ctx: AppContext): BodyChangePassword | null {
   return data;
 }
 
-type BodyNap = {
-  startTime: Date;
-  endTime: Date | null;
+type BodyEvent = {
+  type: EventType;
+  timestamp: Date;
 };
 
-function getBodyNap(ctx: AppContext): BodyNap | null {
+function getBodyEvent(ctx: AppContext): BodyEvent | null {
   const data = ctx.request.body?.data;
 
   if (!data || typeof data !== "object") {
     return null;
   }
 
-  const startTime = parseDate(data.startTime);
-  const endTime = parseDate(data.endTime);
+  const type = data.type;
 
-  if (startTime === null) {
+  if (type !== "woke_up" && type !== "fell_asleep") {
     return null;
   }
 
-  return { startTime, endTime };
+  const timestamp = parseDate(data.timestamp);
+
+  if (timestamp === null) {
+    return null;
+  }
+
+  return { type, timestamp };
 }
 
 type BodyResetPassword = {
@@ -294,34 +299,34 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
     }
   }
 
-  if (route.key === "api_nap") {
+  if (route.key === "api_event") {
     if (ctx.method === "POST") {
-      const { napId } = route;
-      const update = getBodyNap(ctx);
+      const { eventId } = route;
+      const update = getBodyEvent(ctx);
 
-      const nap = await api.updateNap(napId, update);
+      const event = await api.updateEvent(eventId, update);
 
       ctx.body = {
-        data: nap,
+        data: event,
       };
 
       return;
     }
 
     if (ctx.method === "DELETE") {
-      const { napId } = route;
+      const { eventId } = route;
 
-      const nap = await api.deleteNap(napId);
+      const event = await api.deleteEvent(eventId);
 
       ctx.body = {
-        data: nap,
+        data: event,
       };
 
       return;
     }
   }
 
-  if (route.key === "api_naps") {
+  if (route.key === "api_events") {
     if (ctx.method === "POST") {
       const { userId } = ctx.state.session;
 
@@ -329,18 +334,18 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
         return unauthorized(ctx);
       }
 
-      const napCreate = getBodyNap(ctx);
+      const eventCreate = getBodyEvent(ctx);
 
-      if (!napCreate) {
+      if (!eventCreate) {
         return badRequest(ctx);
       }
 
-      const { startTime, endTime } = napCreate;
+      const { type, timestamp } = eventCreate;
 
-      const nap = await api.createNap(startTime, endTime);
+      const event = await api.createEvent(type, timestamp);
 
       ctx.body = {
-        data: nap,
+        data: event,
       };
 
       return;
@@ -353,10 +358,10 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
         return unauthorized(ctx);
       }
 
-      const naps = await api.getNaps();
+      const events = await api.getEvents();
 
       ctx.body = {
-        data: naps,
+        data: events,
       };
 
       return;

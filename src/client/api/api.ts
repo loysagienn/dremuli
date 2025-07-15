@@ -1,4 +1,11 @@
-import { SessionSettings, Api, User, Nap, NapUpdate } from "types";
+import {
+  SessionSettings,
+  Api,
+  User,
+  EventType,
+  Event,
+  EventUpdate,
+} from "types";
 import { request } from "./request";
 
 async function getSessionSettings() {
@@ -49,48 +56,48 @@ async function resetPassword(password: string, token: string) {
   });
 }
 
-function parseNap(data: any): Nap | null {
+function parseEvent(data: any): Event | null {
   if (!data) {
     return null;
   }
 
-  const { id, startTime, endTime, createdAt, updatedAt } = data;
+  const { id, type, timestamp, createdAt, updatedAt } = data;
 
   return {
     id,
-    startTime: new Date(startTime),
-    endTime: endTime ? new Date(endTime) : null,
+    type,
+    timestamp: new Date(timestamp),
     createdAt: new Date(createdAt),
     updatedAt: new Date(updatedAt),
   };
 }
 
-async function createNap(startTime: Date, endTime?: Date | null) {
-  const result = await request({ key: "api_naps" }, "POST", {
-    data: { startTime, endTime },
+async function createEvent(type: EventType, timestamp: Date) {
+  const result = await request({ key: "api_events" }, "POST", {
+    data: { type, timestamp },
   });
 
-  return parseNap(result);
+  return parseEvent(result);
 }
 
-async function updateNap(napId: string, update: NapUpdate) {
-  const result = await request({ key: "api_nap", napId }, "POST", {
+async function updateEvent(eventId: string, update: EventUpdate) {
+  const result = await request({ key: "api_event", eventId }, "POST", {
     data: update,
   });
 
-  return parseNap(result);
+  return parseEvent(result);
 }
 
-async function deleteNap(napId: string) {
-  const result = await request({ key: "api_nap", napId }, "DELETE");
+async function deleteEvent(eventId: string) {
+  const result = await request({ key: "api_event", eventId }, "DELETE");
 
-  return parseNap(result);
+  return parseEvent(result);
 }
 
-async function getNaps(): Promise<Nap[]> {
-  const result = await request({ key: "api_naps" }, "GET");
+async function getEvents(): Promise<Event[]> {
+  const result = await request({ key: "api_events" }, "GET");
 
-  return result.map(parseNap);
+  return result.map(parseEvent);
 }
 
 export const api: Api = {
@@ -101,8 +108,8 @@ export const api: Api = {
   changePassword,
   forgetPassword,
   resetPassword,
-  createNap,
-  getNaps,
-  updateNap,
-  deleteNap,
+  createEvent,
+  getEvents,
+  updateEvent,
+  deleteEvent,
 };

@@ -15,8 +15,7 @@ import { WelcomePage } from "components/welcome-page";
 import { Profile } from "components/profile";
 import { Home } from "components/home";
 import { Login } from "components/login";
-import { CreateNap } from "components/create-nap";
-import { UpdateNap } from "components/update-nap";
+import { UpdateEvent } from "components/update-event";
 import { AddEvent } from "components/add-event";
 
 export function App() {
@@ -57,15 +56,11 @@ export function App() {
         <ResetPassword />
       </Route>
 
-      <Route routeKey="create_nap">
-        <CreateNap />
+      <Route routeKey="update_event">
+        <UpdateEvent />
       </Route>
 
-      <Route routeKey="update_nap">
-        <UpdateNap />
-      </Route>
-
-      <Route routeKey="add_event">
+      <Route routeKey="create_event">
         <AddEvent />
       </Route>
     </div>

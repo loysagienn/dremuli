@@ -4,7 +4,7 @@ import { selectTimeZone } from "./session-settings";
 import { formatDate, formatDuration, formatTime } from "utils/date";
 import { selectRoute } from "./router";
 import { selectCurrentTime } from "./current-time";
-import { selectNapEvents } from "./naps";
+import { selectNapEvents } from "./events";
 
 export const selectActiveDay = (state: State) => state.activeDay;
 

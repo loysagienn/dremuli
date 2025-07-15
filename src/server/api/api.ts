@@ -1,4 +1,4 @@
-import { AppContext, NapUpdate, User } from "types";
+import { AppContext, EventType, EventUpdate, User } from "types";
 import { SessionSettings, Api } from "types";
 import {
   hashPassword,
@@ -132,74 +132,74 @@ const resetPasswordFactory =
     await ctx.db.updateUserPasswordHash(reset.userId, passwordHash);
   };
 
-const createNapFactory =
-  (ctx: AppContext) => async (startTime: Date, endTime?: Date | null) => {
+const createEventFactory =
+  (ctx: AppContext) => async (type: EventType, timestamp: Date) => {
     const { userId } = ctx.state.session;
 
     if (!userId) {
       throw new Error("Unauthorized");
     }
 
-    const nap = await ctx.db.createNap(userId, startTime, endTime);
+    const event = await ctx.db.createEvent(userId, type, timestamp);
 
-    return nap;
+    return event;
   };
 
-const deleteNapFactory = (ctx: AppContext) => async (napId: string) => {
+const deleteEventFactory = (ctx: AppContext) => async (eventId: string) => {
   const { userId } = ctx.state.session;
 
   if (!userId) {
     throw new Error("Unauthorized");
   }
 
-  const fullNap = await ctx.db.getFullNap(napId);
+  const fullEvent = await ctx.db.getFullEvent(eventId);
 
-  if (!fullNap) {
-    throw new Error("Nap not found");
+  if (!fullEvent) {
+    throw new Error("Event not found");
   }
 
-  if (fullNap.userId !== userId) {
+  if (fullEvent.userId !== userId) {
     throw new Error("Access denied");
   }
 
-  const nap = await ctx.db.deleteNap(napId);
+  const event = await ctx.db.deleteEvent(eventId);
 
-  return nap;
+  return event;
 };
 
-const updateNapFactory =
-  (ctx: AppContext) => async (napId: string, update: NapUpdate) => {
+const updateEventFactory =
+  (ctx: AppContext) => async (eventId: string, update: EventUpdate) => {
     const { userId } = ctx.state.session;
 
     if (!userId) {
       throw new Error("Unauthorized");
     }
 
-    const fullNap = await ctx.db.getFullNap(napId);
+    const fullEvent = await ctx.db.getFullEvent(eventId);
 
-    if (!fullNap) {
-      throw new Error("Nap not found");
+    if (!fullEvent) {
+      throw new Error("Event not found");
     }
 
-    if (fullNap.userId !== userId) {
+    if (fullEvent.userId !== userId) {
       throw new Error("Access denied");
     }
 
-    const nap = await ctx.db.updateNap(napId, update);
+    const event = await ctx.db.updateEvent(eventId, update);
 
-    return nap;
+    return event;
   };
 
-const getNapsFactory = (ctx: AppContext) => async () => {
+const getEventsFactory = (ctx: AppContext) => async () => {
   const { userId } = ctx.state.session;
 
   if (!userId) {
     throw new Error("Unauthorized");
   }
 
-  const naps = await ctx.db.getNaps(userId);
+  const events = await ctx.db.getEvents(userId);
 
-  return naps;
+  return events;
 };
 
 export function initApi(ctx: AppContext): Api {
@@ -210,10 +210,10 @@ export function initApi(ctx: AppContext): Api {
   const changePassword = chnagePasswordFactory(ctx);
   const forgetPassword = forgetPasswordFactory(ctx);
   const resetPassword = resetPasswordFactory(ctx);
-  const createNap = createNapFactory(ctx);
-  const getNaps = getNapsFactory(ctx);
-  const updateNap = updateNapFactory(ctx);
-  const deleteNap = deleteNapFactory(ctx);
+  const createEvent = createEventFactory(ctx);
+  const getEvents = getEventsFactory(ctx);
+  const updateEvent = updateEventFactory(ctx);
+  const deleteEvent = deleteEventFactory(ctx);
 
   return {
     setSessionSettings,
@@ -223,9 +223,9 @@ export function initApi(ctx: AppContext): Api {
     changePassword,
     forgetPassword,
     resetPassword,
-    createNap,
-    getNaps,
-    updateNap,
-    deleteNap,
+    createEvent,
+    getEvents,
+    updateEvent,
+    deleteEvent,
   };
 }

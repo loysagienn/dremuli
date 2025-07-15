@@ -120,7 +120,10 @@ export function Naps({ className }: NapsProps) {
             <Event napEvent={napEvent} key={napEvent.id} />
           ))}
 
-          <Button route={{ key: "add_event" }} className={styles.createNapBtn}>
+          <Button
+            route={{ key: "create_event" }}
+            className={styles.createNapBtn}
+          >
             {eventTypeTitles[nextEventType]}
           </Button>
         </div>

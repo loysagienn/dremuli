@@ -69,3 +69,17 @@ Auto-format the `schema.prisma` file
 ```
 npx prisma format
 ```
+
+## Migrations
+
+Build migrations
+
+```
+npm run build-migrations
+```
+
+Run migration
+
+```
+npm run migration -- <migration-name>
+```

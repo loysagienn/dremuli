@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createNapAction, updateNapAction } from "actions";
+import { createEventAction } from "actions";
 import { Header } from "components/header";
 import { FormInput, FormSubmit } from "components/form";
 import styles from "./add-event.module.css";
 import { NapEventType } from "types";
-import { selectLastEvent, selectNextEventType } from "selectors";
+import { selectNextEventType } from "selectors";
 
 const eventTypeTitles: { [key in NapEventType]: string } = {
   [NapEventType.Awake]: "Woke up",
@@ -16,7 +16,6 @@ export function AddEvent() {
   const [timeStr, setTimeStr] = useState("");
   const dispatch = useDispatch();
   const nextEventType = useSelector(selectNextEventType);
-  const lastEvent = useSelector(selectLastEvent);
 
   const onSubmit = useCallback(() => {
     if (!timeStr) {
@@ -24,16 +23,12 @@ export function AddEvent() {
     }
 
     const time = new Date(timeStr);
-
-    if (lastEvent && !lastEvent.nap.endTime) {
-      const { nap } = lastEvent;
-
-      dispatch(
-        updateNapAction(nap.id, { startTime: nap.startTime, endTime: time })
-      );
-    } else {
-      dispatch(createNapAction(time));
-    }
+    dispatch(
+      createEventAction(
+        nextEventType === NapEventType.Awake ? "woke_up" : "fell_asleep",
+        time
+      )
+    );
   }, [timeStr]);
 
   return (

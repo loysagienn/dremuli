@@ -1,3 +1,5 @@
+import { Event } from "./events";
+
 export type Nap = {
   id: string;
   startTime: Date;
@@ -23,7 +25,7 @@ export enum NapEventType {
 
 export type NapEvent = {
   id: string;
-  nap: Nap;
+  event: Event;
   time: Date;
   endTime: Date;
   timeStr: string;

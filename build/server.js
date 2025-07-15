@@ -1,5 +1,6 @@
 import * as esbuild from "esbuild";
 import svgrPlugin from "esbuild-plugin-svgr";
+import { external } from "./constants.js";
 
 function getOptions(NODE_ENV, APP_VERSION) {
   /**
@@ -10,16 +11,7 @@ function getOptions(NODE_ENV, APP_VERSION) {
     bundle: true,
     outdir: "./dist",
     platform: "neutral",
-    external: [
-      "koa",
-      "path",
-      "bcrypt",
-      "./node_modules/*",
-      "fs",
-      "node:*",
-      "nodemailer",
-      "crypto",
-    ],
+    external: external,
     format: "esm",
     define: {
       __APP_VERSION__: JSON.stringify(APP_VERSION),

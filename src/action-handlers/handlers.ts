@@ -5,10 +5,10 @@ import { loginUser } from "./login-user";
 import { changePassword } from "./change-password";
 import { forgetPassword } from "./forget-password";
 import { resetPassword } from "./reset-password";
-import { createNap } from "./create-nap";
+import { cerateEvent } from "./create-event";
 import { setTimeZone } from "./set-timezone";
-import { updateNap } from "./update-nap";
-import { deleteNap } from "./delete-nap";
+import { updateEvent } from "./update-event";
+import { deleteEvent } from "./delete-event";
 import { setPageVisibility } from "./set-page-visibility";
 
 export const basicHandlers: ActionHandlers = {
@@ -18,9 +18,9 @@ export const basicHandlers: ActionHandlers = {
   CHANGE_PASSWORD: changePassword,
   FORGET_PASSWORD: forgetPassword,
   RESET_PASSWORD: resetPassword,
-  CREATE_NAP: createNap,
-  UPDATE_NAP: updateNap,
+  CREATE_EVENT: cerateEvent,
+  UPDATE_EVENT: updateEvent,
   SET_TIME_ZONE: setTimeZone,
-  DELETE_NAP: deleteNap,
+  DELETE_EVENT: deleteEvent,
   SET_PAGE_VISIBILITY: setPageVisibility,
 };

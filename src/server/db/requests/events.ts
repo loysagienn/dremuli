@@ -65,6 +65,17 @@ export const getEvents =
     });
   };
 
+export const getAllEvents = () => async () => {
+  const events = await prisma.event.findMany({
+    where: {},
+    orderBy: {
+      timestamp: "desc",
+    },
+  });
+
+  return events;
+};
+
 export const deleteEvent =
   () =>
   async (id: string): Promise<Event | null> => {
