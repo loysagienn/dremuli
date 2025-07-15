@@ -11,12 +11,17 @@ export async function initialState(ctx: AppContext, next: AppNext) {
 
   const sessionSettings = await ctx.db.getSessionSettings(session.id);
 
-  let user: User | null = null;
+  const user = ctx.state.user;
   let naps: Nap[] = [];
 
-  if (session.userId) {
-    user = await ctx.db.getUser(session.userId);
-    naps = await ctx.db.getNaps(session.userId);
+  if (user) {
+    naps = await ctx.db.getNaps(user.id);
+  }
+
+  let users: User[] = [];
+
+  if (ctx.state.isAdmin) {
+    users = await ctx.db.getUsers();
   }
 
   const firstNap = naps.length > 0 ? naps[0] : null;
@@ -30,6 +35,7 @@ export async function initialState(ctx: AppContext, next: AppNext) {
     currentTime: getCurrentMinute(),
     activeDay,
     pageVisibility: true,
+    admin: { users },
   };
 
   return next();

@@ -9,6 +9,14 @@ export const getUser =
     return user;
   };
 
+export const getUsers = () => async (): Promise<User[]> => {
+  const users = await prisma.user.findMany({
+    where: {},
+  });
+
+  return users;
+};
+
 export const getUserByEmail =
   () =>
   async (email: string): Promise<User | null> => {

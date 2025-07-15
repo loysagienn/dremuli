@@ -10,6 +10,7 @@ import { initialState } from "./initial-state";
 import { apiMiddleware } from "./api";
 import { apiHandler } from "./api-handler";
 import { resetPassword } from "./reset-password";
+import { processUser } from "./process-user";
 import { AppState, AppContext } from "types";
 
 async function startServer() {
@@ -24,6 +25,7 @@ async function startServer() {
   app.use(sendStatic);
   app.use(bodyParser());
   app.use(session);
+  app.use(processUser);
   app.use(apiMiddleware);
   app.use(requestRoute);
   app.use(apiHandler);

@@ -7,3 +7,6 @@ export const DOMAIN = process.env.DOMAIN || "localhost";
 export const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || null;
 export const SUPPORT_EMAIL_PASSWORD =
   process.env.SUPPORT_EMAIL_PASSWORD || null;
+export const ADMIN_USER_EMAILS = process.env.ADMIN_USER_EMAILS
+  ? process.env.ADMIN_USER_EMAILS.split(",")
+  : [];
