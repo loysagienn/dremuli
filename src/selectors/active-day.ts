@@ -79,7 +79,10 @@ function calculateStat(napEvents: NapEvent[], firstNightSleepIndex: number) {
     index += 1;
   }
 
+  const totalSleepDuration = nightSleepDuration + daySleepDuration;
+
   return {
+    totalSleepDuration,
     nightSleepDuration,
     nightAwakeDuration,
     daySleepDuration,

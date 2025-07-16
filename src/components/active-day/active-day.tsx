@@ -21,29 +21,37 @@ export function ActiveDay({ className }: ActiveDayProps) {
     <div className={cn(className, styles.root)}>
       <div className={styles.dateTitle}>{formatDate(activeDay)}</div>
 
-      {activeDayStat.nightSleepDuration > 0 && (
-        <div className={styles.dataRow}>{`Night sleep: ${formatDuration(
-          activeDayStat.nightSleepDuration
-        )}`}</div>
-      )}
+      <div className={styles.content}>
+        {activeDayStat.totalSleepDuration > 0 && (
+          <div className={styles.dataRow}>{`Total sleep: ${formatDuration(
+            activeDayStat.totalSleepDuration
+          )}`}</div>
+        )}
 
-      {activeDayStat.nightAwakeDuration > 0 && (
-        <div className={styles.dataRow}>{`Night awake: ${formatDuration(
-          activeDayStat.nightAwakeDuration
-        )}`}</div>
-      )}
+        {activeDayStat.nightSleepDuration > 0 && (
+          <div className={styles.dataRow}>{`Night sleep: ${formatDuration(
+            activeDayStat.nightSleepDuration
+          )}`}</div>
+        )}
 
-      {activeDayStat.dayNapsCount > 0 && (
-        <div className={styles.dataRow}>{`${
-          activeDayStat.dayNapsCount
-        } naps: ${formatDuration(activeDayStat.daySleepDuration)}`}</div>
-      )}
+        {activeDayStat.nightAwakeDuration > 0 && (
+          <div className={styles.dataRow}>{`Night awake: ${formatDuration(
+            activeDayStat.nightAwakeDuration
+          )}`}</div>
+        )}
 
-      {activeDayStat.dayAwakeDuration > 0 && (
-        <div className={styles.dataRow}>{`Awake: ${formatDuration(
-          activeDayStat.dayAwakeDuration
-        )}`}</div>
-      )}
+        {activeDayStat.dayNapsCount > 0 && (
+          <div className={styles.dataRow}>{`${
+            activeDayStat.dayNapsCount
+          } naps: ${formatDuration(activeDayStat.daySleepDuration)}`}</div>
+        )}
+
+        {activeDayStat.dayAwakeDuration > 0 && (
+          <div className={styles.dataRow}>{`Awake: ${formatDuration(
+            activeDayStat.dayAwakeDuration
+          )}`}</div>
+        )}
+      </div>
     </div>
   );
 }
