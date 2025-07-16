@@ -45,12 +45,12 @@ function getBodyChangePassword(ctx: AppContext): BodyChangePassword | null {
   return data;
 }
 
-type BodyEvent = {
+type BodyEventCreate = {
   type: EventType;
   timestamp: Date;
 };
 
-function getBodyEvent(ctx: AppContext): BodyEvent | null {
+function getBodyEventCreate(ctx: AppContext): BodyEventCreate | null {
   const data = ctx.request.body?.data;
 
   if (!data || typeof data !== "object") {
@@ -70,6 +70,26 @@ function getBodyEvent(ctx: AppContext): BodyEvent | null {
   }
 
   return { type, timestamp };
+}
+
+type BodyEventUpdate = {
+  timestamp: Date;
+};
+
+function getBodyEventUpdate(ctx: AppContext): BodyEventUpdate | null {
+  const data = ctx.request.body?.data;
+
+  if (!data || typeof data !== "object") {
+    return null;
+  }
+
+  const timestamp = parseDate(data.timestamp);
+
+  if (timestamp === null) {
+    return null;
+  }
+
+  return { timestamp };
 }
 
 type BodyResetPassword = {
@@ -302,7 +322,7 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
   if (route.key === "api_event") {
     if (ctx.method === "POST") {
       const { eventId } = route;
-      const update = getBodyEvent(ctx);
+      const update = getBodyEventUpdate(ctx);
 
       const event = await api.updateEvent(eventId, update);
 
@@ -334,7 +354,7 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
         return unauthorized(ctx);
       }
 
-      const eventCreate = getBodyEvent(ctx);
+      const eventCreate = getBodyEventCreate(ctx);
 
       if (!eventCreate) {
         return badRequest(ctx);

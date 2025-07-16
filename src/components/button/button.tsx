@@ -4,12 +4,14 @@ import { AppRoute } from "app/router";
 import styles from "./button.module.css";
 import { cn } from "utils/cn";
 
+export type ButtonStyle = "action" | "outline" | "danger";
+
 type ButtonProps = {
   route?: AppRoute;
   onClick?: () => void;
   className?: string;
   children?: ReactNode;
-  style?: "action" | "outline";
+  style?: ButtonStyle;
 };
 
 export function Button({

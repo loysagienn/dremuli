@@ -1,4 +1,4 @@
-import { State, NapEvent, NapEventType, Nap } from "types";
+import { State, NapEvent, NapEventType } from "types";
 import { createSelector } from "@reduxjs/toolkit";
 import { selectTimeZone } from "./session-settings";
 import { formatDate, formatDuration, formatTime } from "utils/date";

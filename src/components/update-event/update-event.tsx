@@ -5,6 +5,7 @@ import { Header } from "components/header";
 import { FormInput, FormSubmit } from "components/form";
 import styles from "./update-event.module.css";
 import { selectRouteEvent } from "selectors";
+import { EventType } from "types";
 
 function toDatetimeLocalString(date: Date) {
   const pad = (n) => n.toString().padStart(2, "0");
@@ -17,6 +18,11 @@ function toDatetimeLocalString(date: Date) {
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
+
+const eventTitles: { [key in EventType]: string } = {
+  fell_asleep: "Fell asleep",
+  woke_up: "Woke up",
+};
 
 export function UpdateEvent() {
   const event = useSelector(selectRouteEvent);
@@ -50,7 +56,9 @@ export function UpdateEvent() {
       <Header />
       <div className={styles.content}>
         <div className={styles.page}>
-          <div className={styles.title}>Update event</div>
+          <div className={styles.title}>
+            {eventTitles[event?.type] ?? "Update event"}
+          </div>
           <FormInput
             label="Time"
             value={timeStr}
@@ -58,7 +66,11 @@ export function UpdateEvent() {
             type="datetime-local"
           />
           <FormSubmit onSubmit={onSubmit} submitLabel="Update" />
-          <FormSubmit onSubmit={onDelete} submitLabel="Delete event" />
+          <FormSubmit
+            onSubmit={onDelete}
+            submitLabel="Delete event"
+            style="danger"
+          />
         </div>
       </div>
     </div>

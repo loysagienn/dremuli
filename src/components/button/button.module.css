@@ -18,19 +18,35 @@
 }
 
 .style_action {
+  border: 2px solid var(--color-action);
   background-color: var(--color-action);
   color: var(--color-text-action);
 }
 
 .style_action:hover {
+  border: 2px solid var(--color-action-hover);
   background-color: var(--color-action-hover);
   color: var(--color-text-action-hover);
 }
 
+.style_danger {
+  border: 2px solid var(--color-danger);
+  background-color: var(--color-danger);
+  color: var(--color-text-action);
+}
+
+.style_danger:hover {
+  border: 2px solid var(--color-danger-hover);
+  background-color: var(--color-danger-hover);
+  color: var(--color-text-action-hover);
+}
+
 .style_outline {
+  border: 2px solid var(--color-action);
   color: var(--color-text);
 }
 
 .style_outline:hover {
   color: var(--color-text-hover);
+  border: 2px solid var(--color-action-hover);
 }

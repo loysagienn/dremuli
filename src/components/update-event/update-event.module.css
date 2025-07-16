@@ -18,6 +18,8 @@
   max-width: 360px;
   width: 100%;
   padding: 0 16px;
+  min-height: 100%;
+  position: relative;
 }
 
 @media (max-width: 440px) {

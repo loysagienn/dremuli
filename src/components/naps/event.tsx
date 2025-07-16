@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { NapEvent, NapEventType } from "types";
 import styles from "./naps.module.css";
-import { useSelector } from "react-redux";
-import { selectTimeZone } from "selectors";
+import { Link } from "components/router";
+import { AppRoute } from "app/router";
 
 type EventProps = {
   napEvent: NapEvent;
@@ -14,6 +14,11 @@ const titles: { [key in NapEventType]: string } = {
 };
 
 export function Event({ napEvent }: EventProps) {
+  const napRoute = useMemo<AppRoute>(
+    () => ({ key: "update_event", eventId: napEvent.event.id }),
+    [napEvent]
+  );
+
   return (
     <>
       {napEvent.dayStartStr && (
@@ -26,11 +31,11 @@ export function Event({ napEvent }: EventProps) {
       )}
       <div className={styles.napEvent} id={napEvent.id}>
         <div className={styles.napEventTime}>{napEvent.timeStr}</div>
-        <div className={styles.napEventTitle}>
+        <Link className={styles.napEventTitle} route={napRoute}>
           {napEvent.isNightSleep
             ? `${titles[napEvent.type]} night`
             : titles[napEvent.type]}
-        </div>
+        </Link>
         <div className={styles.napEventDuration}>{napEvent.durationStr}</div>
         <div className={styles.napEventLine} />
         <div className={styles.napEventPointer} />

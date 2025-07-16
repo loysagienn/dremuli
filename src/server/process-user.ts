@@ -1,4 +1,4 @@
-import { AppContext, AppNext, User, SessionSettings, Nap } from "types";
+import { AppContext, AppNext, User, SessionSettings } from "types";
 import { getCurrentMinute } from "utils/date";
 import { ADMIN_USER_EMAILS } from "config";
 
