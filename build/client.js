@@ -10,6 +10,8 @@ function getOptions(NODE_ENV, APP_VERSION) {
     bundle: true,
     outdir: "./public",
     format: "esm",
+    splitting: true,
+    publicPath: "/static",
     minify: false,
     alias: {
       "react-dom/client": "https://esm.sh/react-dom@19.1.0/client",

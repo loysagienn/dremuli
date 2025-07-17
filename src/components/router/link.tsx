@@ -22,7 +22,7 @@ export function Link({ route, children, className, web, onClick }: LinkProps) {
 
   const clickHandler = useCallback(
     (event: MouseEvent) => {
-      if (web) {
+      if (web || event.metaKey) {
         if (onClick) {
           onClick();
         }

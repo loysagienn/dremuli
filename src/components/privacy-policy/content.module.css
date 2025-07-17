@@ -1,0 +1,12 @@
+.content {
+  font-weight: 300;
+}
+
+.subtitle {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.link {
+  color: var(--color-text);
+}

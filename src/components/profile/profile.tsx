@@ -19,6 +19,12 @@ export function Profile() {
             <Link route={{ key: "profile_password" }}>Change password</Link>
           </div>
           <div className={styles.line}>
+            <Link route={{ key: "terms_of_use" }}>Terms of Use</Link>
+          </div>
+          <div className={styles.line}>
+            <Link route={{ key: "privacy_policy" }}>Privacy Policy</Link>
+          </div>
+          <div className={styles.line}>
             <Link route={{ key: "logout" }} web>
               Logout
             </Link>

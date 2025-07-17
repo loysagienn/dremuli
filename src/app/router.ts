@@ -399,6 +399,42 @@ const updateEvent: RouteConfig<UpdateEvent> = {
   writeRoute: (route) => `/events/${route.eventId}/update`,
 };
 
+type TermsOfUse = {
+  key: "terms_of_use";
+};
+
+const termsOfUse: RouteConfig<TermsOfUse> = {
+  key: "terms_of_use",
+  readRoute: (path: string) => {
+    if (path === "/legal/terms-of-use") {
+      return {
+        key: "terms_of_use",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/legal/terms-of-use",
+};
+
+type PrivacyPolicy = {
+  key: "privacy_policy";
+};
+
+const privacyPolicy: RouteConfig<PrivacyPolicy> = {
+  key: "privacy_policy",
+  readRoute: (path: string) => {
+    if (path === "/legal/privacy-policy") {
+      return {
+        key: "privacy_policy",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/legal/privacy-policy",
+};
+
 export const router = initRouter(
   home,
   login,
@@ -410,6 +446,8 @@ export const router = initRouter(
   resetPassword,
   createEvent,
   updateEvent,
+  termsOfUse,
+  privacyPolicy,
   apiSettings,
   apiRegisterUser,
   apiLogin,

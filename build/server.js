@@ -13,6 +13,7 @@ function getOptions(NODE_ENV, APP_VERSION) {
     platform: "neutral",
     external: external,
     format: "esm",
+    splitting: false,
     define: {
       __APP_VERSION__: JSON.stringify(APP_VERSION),
     },
