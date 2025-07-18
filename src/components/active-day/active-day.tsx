@@ -22,35 +22,42 @@ export function ActiveDay({ className }: ActiveDayProps) {
       <div className={styles.dateTitle}>{formatDate(activeDay)}</div>
 
       <div className={styles.content}>
-        {activeDayStat.totalSleepDuration > 0 && (
-          <div className={styles.dataRow}>{`Total sleep: ${formatDuration(
-            activeDayStat.totalSleepDuration
-          )}`}</div>
-        )}
-
-        {activeDayStat.nightSleepDuration > 0 && (
-          <div className={styles.dataRow}>{`Night sleep: ${formatDuration(
-            activeDayStat.nightSleepDuration
-          )}`}</div>
-        )}
-
-        {activeDayStat.nightAwakeDuration > 0 && (
-          <div className={styles.dataRow}>{`Night awake: ${formatDuration(
-            activeDayStat.nightAwakeDuration
-          )}`}</div>
-        )}
-
-        {activeDayStat.dayNapsCount > 0 && (
-          <div className={styles.dataRow}>{`${
+        <div className={styles.dataBlock}>
+          <div className={styles.dataTitle}>Total sleep</div>
+          <div className={styles.dataValue}>
+            {formatDuration(activeDayStat.totalSleepDuration)}
+          </div>
+        </div>
+        <div className={styles.dataBlock}>
+          <div className={styles.dataTitle}>Night sleep</div>
+          <div className={styles.dataValue}>
+            {formatDuration(activeDayStat.nightSleepDuration)}
+          </div>
+        </div>
+        <div className={cn(styles.dataBlock, styles.nightSplitBlock)}>
+          {activeDayStat.nightAwakeDuration > 0 && (
+            <>
+              <div className={styles.dataTitle}>Night split</div>
+              <div className={styles.dataValue}>
+                {formatDuration(activeDayStat.nightAwakeDuration)}
+              </div>
+            </>
+          )}
+        </div>
+        <div className={styles.dataBlock}>
+          <div className={styles.dataTitle}>{`${
             activeDayStat.dayNapsCount
-          } naps: ${formatDuration(activeDayStat.daySleepDuration)}`}</div>
-        )}
-
-        {activeDayStat.dayAwakeDuration > 0 && (
-          <div className={styles.dataRow}>{`Awake: ${formatDuration(
-            activeDayStat.dayAwakeDuration
-          )}`}</div>
-        )}
+          } nap${activeDayStat.dayNapsCount > 1 ? "s" : ""}`}</div>
+          <div className={styles.dataValue}>
+            {formatDuration(activeDayStat.daySleepDuration)}
+          </div>
+        </div>
+        <div className={styles.dataBlock}>
+          <div className={styles.dataTitle}>Awake</div>
+          <div className={styles.dataValue}>
+            {formatDuration(activeDayStat.dayAwakeDuration)}
+          </div>
+        </div>
       </div>
     </div>
   );

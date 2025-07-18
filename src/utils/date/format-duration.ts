@@ -6,11 +6,11 @@ export function formatDuration(ms: number): string {
   const parts = [];
 
   if (hours > 0) {
-    parts.push(`${hours} hr${hours !== 1 ? "s" : ""}`);
+    parts.push(`${hours} h`);
   }
 
   if (minutes > 0 || parts.length === 0) {
-    parts.push(`${minutes} min${minutes !== 1 ? "s" : ""}`);
+    parts.push(`${minutes} min`);
   }
 
   return parts.join(" ");
