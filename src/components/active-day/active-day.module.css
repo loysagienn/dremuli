@@ -15,7 +15,6 @@
 .dateTitle {
   font-size: 14px;
   line-height: 18px;
-  color: var(--color-text-secondary);
   font-weight: 600;
 }
 
@@ -30,18 +29,8 @@
   width: 37%;
 }
 
-.nightSplitBlock {
+.dataBlock.nightSplitBlock {
   width: 26%;
-}
-
-.sleepContent {
-  width: 70%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.awakeContent {
-  width: 30%;
 }
 
 .dataTitle {

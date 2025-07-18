@@ -14,19 +14,13 @@ function serializeState(state: State) {
 }
 
 const favicon = `
-<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon_light_16.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon_light_32.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" sizes="48x48" href="/static/favicon_light_48.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" sizes="192x192" href="/static/favicon_light_192.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" sizes="512x512" href="/static/favicon_light_512.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon_16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon_32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/static/favicon_48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/static/favicon_192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/static/favicon_512.png">
 
-<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon_dark_16.png" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon_dark_32.png" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/png" sizes="48x48" href="/static/favicon_dark_48.png" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/png" sizes="192x192" href="/static/favicon_dark_192.png" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/png" sizes="512x512" href="/static/favicon_dark_512.png" media="(prefers-color-scheme: dark)">
-
-<link rel="apple-touch-icon" sizes="180x180" href="/static/favicon_light_180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/favicon_180.png">
 `;
 
 export async function renderHtml(ctx: AppContext) {
