@@ -11,6 +11,7 @@ import { apiMiddleware } from "./api";
 import { apiHandler } from "./api-handler";
 import { resetPassword } from "./reset-password";
 import { processUser } from "./process-user";
+import { processCors } from "./cors";
 import { AppState, AppContext } from "types";
 
 async function startServer() {
@@ -28,6 +29,7 @@ async function startServer() {
   app.use(processUser);
   app.use(apiMiddleware);
   app.use(requestRoute);
+  app.use(processCors);
   app.use(apiHandler);
   app.use(resetPassword);
   app.use(initialState);

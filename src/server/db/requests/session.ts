@@ -7,7 +7,7 @@ export const getSession = () => async (id: string) => {
   return session;
 };
 
-type SessionData = Pick<Session, "userAgent">;
+type SessionData = Pick<Session, "userAgent" | "csrfToken">;
 
 export const createSession = () => async (data: SessionData) => {
   return prisma.session.create({

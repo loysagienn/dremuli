@@ -19,6 +19,7 @@ model Session {
   id        String           @id @default(uuid())
   createdAt DateTime         @default(now()) @map("created_at")
   userAgent String?          @map("user_agent")
+  csrfToken String?          @map("csrf_token")
   settings  SessionSettings?
   userId    String?          @map("user_id")
   user      User?            @relation(fields: [userId], references: [id])

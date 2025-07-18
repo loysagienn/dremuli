@@ -1,3 +1,4 @@
+import { AppRouteKey } from "app/router";
 import { AppContext, AppNext, EventType, SessionSettings } from "types";
 import { parseDate } from "utils/parse-date";
 
@@ -179,11 +180,40 @@ function unauthorized(ctx: AppContext) {
   ctx.status = 401;
 }
 
+const authorizedRequests: AppRouteKey[] = [
+  "api_change_password",
+  "api_event",
+  "api_events",
+  "api_forget_password",
+  "api_login",
+  "api_register_user",
+  "api_reset_password",
+  "api_settings",
+];
+
 export async function apiHandler(ctx: AppContext, next: AppNext) {
   const { route, api } = ctx.state;
 
   if (route.key === "api_not_found") {
     return notFound(ctx);
+  }
+
+  if (route.key === "api_csrf_token") {
+    if (ctx.method === "GET") {
+      ctx.body = {
+        token: ctx.state.session.csrfToken,
+      };
+
+      return;
+    }
+  }
+
+  if (authorizedRequests.includes(route.key)) {
+    const csrfToken = ctx.headers["x-csrf-token"];
+
+    if (csrfToken !== ctx.state.session.csrfToken) {
+      return unauthorized(ctx);
+    }
   }
 
   if (route.key === "api_settings") {

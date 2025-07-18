@@ -435,6 +435,24 @@ const privacyPolicy: RouteConfig<PrivacyPolicy> = {
   writeRoute: (route) => "/legal/privacy-policy",
 };
 
+type ApiCsrfToken = {
+  key: "api_csrf_token";
+};
+
+const apiCsrfToken: RouteConfig<ApiCsrfToken> = {
+  key: "api_csrf_token",
+  readRoute: (path: string) => {
+    if (path === "/api/csrf-token") {
+      return {
+        key: "api_csrf_token",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/api/csrf-token",
+};
+
 export const router = initRouter(
   home,
   login,
@@ -456,10 +474,12 @@ export const router = initRouter(
   apiResetPassword,
   apiEvents,
   apiEvent,
+  apiCsrfToken,
   apiNotFound,
   notFound
 );
 
 export type AppRoute = ReturnType<typeof router.readRoute>;
+export type AppRouteKey = AppRoute["key"];
 
 router.writeRoute({ key: "home" });

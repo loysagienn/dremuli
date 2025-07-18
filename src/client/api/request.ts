@@ -1,11 +1,29 @@
 import { AppRoute, router } from "app/router";
 
+async function getCsrfToken(): Promise<string> {
+  const response = await fetch("/api/csrf-token");
+
+  if (!response.ok) {
+    return "";
+  }
+
+  const result = await response.json();
+
+  return result.token || "";
+}
+
+const csrfTokenPromise = getCsrfToken();
+
 export async function request(route: AppRoute, method: string, body?: any) {
   const url = router.writeRoute(route);
 
+  const csrfToken = await csrfTokenPromise;
+
   const options: RequestInit = {
     method,
-    headers: {},
+    headers: {
+      "X-CSRF-Token": csrfToken,
+    },
   };
 
   if (body) {
