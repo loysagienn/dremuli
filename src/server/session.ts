@@ -1,4 +1,4 @@
-import { SESSION_ID_COOKIE_NAME, DOMAIN } from "config";
+import { SESSION_ID_COOKIE_NAME, DOMAIN, NODE_ENV } from "config";
 import type { Session, AppContext, AppNext } from "types";
 import { getToken } from "server/utils/crypto";
 
@@ -32,7 +32,8 @@ const getSession = async (ctx: AppContext): Promise<Session> => {
   cookies.set(SESSION_ID_COOKIE_NAME, session.id, {
     domain: DOMAIN,
     maxAge: COOKIE_MAX_AGE,
-    sameSite: "none",
+    sameSite: NODE_ENV === "production" ? "none" : "strict",
+    secure: NODE_ENV === "production",
   });
 
   return session;

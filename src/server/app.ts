@@ -17,7 +17,7 @@ import { AppState, AppContext } from "types";
 async function startServer() {
   console.log("Init app");
 
-  const app = new Koa<AppState, AppContext>();
+  const app = new Koa<AppState, AppContext>({ proxy: true });
 
   const db = await getDbApi();
 

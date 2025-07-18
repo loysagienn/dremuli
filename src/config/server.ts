@@ -10,3 +10,4 @@ export const SUPPORT_EMAIL_PASSWORD =
 export const ADMIN_USER_EMAILS = process.env.ADMIN_USER_EMAILS
   ? process.env.ADMIN_USER_EMAILS.split(",")
   : [];
+export const NODE_ENV = process.env.NODE_ENV;
