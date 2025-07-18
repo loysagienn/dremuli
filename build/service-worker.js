@@ -6,7 +6,7 @@ function getOptions(NODE_ENV, APP_VERSION) {
    * @type {esbuild.BuildOptions}
    */
   const options = {
-    entryPoints: ["./src/client/app.tsx"],
+    entryPoints: ["./src/service-worker/service-worker.ts"],
     bundle: true,
     outdir: "./public/bundle",
     format: "esm",
@@ -14,11 +14,6 @@ function getOptions(NODE_ENV, APP_VERSION) {
     publicPath: "/static/bundle",
     minify: false,
     alias: {
-      "react-dom/client": "https://esm.sh/react-dom@19.1.0/client",
-      react: "https://esm.sh/react@19.1.0",
-      redux: "https://esm.sh/redux@5.0.1",
-      "react-redux": "https://esm.sh/react-redux@9.2.0",
-      "@reduxjs/toolkit": "https://esm.sh/@reduxjs/toolkit@2.8.2",
       config: "config/client",
     },
     define: {
@@ -31,7 +26,7 @@ function getOptions(NODE_ENV, APP_VERSION) {
   return options;
 }
 
-export async function buildClient(NODE_ENV, APP_VERSION) {
+export async function buildServiceWorker(NODE_ENV, APP_VERSION) {
   const options = getOptions(NODE_ENV, APP_VERSION);
 
   if (NODE_ENV === "production") {
