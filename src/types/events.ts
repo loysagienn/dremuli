@@ -1,4 +1,7 @@
-export type EventType = "fell_asleep" | "woke_up";
+export enum EventType {
+  FellAsleep = "fell_asleep",
+  WokeUp = "woke_up",
+}
 
 export type Event = {
   id: string;
@@ -10,4 +13,17 @@ export type Event = {
 
 export type EventUpdate = {
   timestamp?: Date;
+};
+
+export type NapEvent = {
+  event: Event;
+  id: string;
+  type: EventType;
+  timestamp: Date;
+  endTime: Date;
+  timeStr: string;
+  duration: number;
+  durationStr: string;
+  dayStartStr?: string;
+  isNightSleep: boolean;
 };

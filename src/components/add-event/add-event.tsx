@@ -4,12 +4,12 @@ import { createEventAction } from "actions";
 import { Header } from "components/header";
 import { FormInput, FormSubmit } from "components/form";
 import styles from "./add-event.module.css";
-import { NapEventType } from "types";
 import { selectNextEventType } from "selectors";
+import { EventType } from "types";
 
-const eventTypeTitles: { [key in NapEventType]: string } = {
-  [NapEventType.Awake]: "Woke up",
-  [NapEventType.Sleep]: "Fell asleep",
+const eventTypeTitles: { [key in EventType]: string } = {
+  [EventType.WokeUp]: "Woke up",
+  [EventType.FellAsleep]: "Fell asleep",
 };
 
 export function AddEvent() {
@@ -23,12 +23,7 @@ export function AddEvent() {
     }
 
     const time = new Date(timeStr);
-    dispatch(
-      createEventAction(
-        nextEventType === NapEventType.Awake ? "woke_up" : "fell_asleep",
-        time
-      )
-    );
+    dispatch(createEventAction(nextEventType, time));
   }, [timeStr]);
 
   return (

@@ -6,16 +6,16 @@ import { Button } from "components/button";
 import { ActiveDay } from "components/active-day";
 import { useDispatch, useSelector } from "react-redux";
 import { selectNapEvents, selectNextEventType } from "selectors";
-import { NapEventType } from "types";
 import { setActiveDayAction } from "actions";
+import { EventType } from "types";
 
 type NapsProps = {
   className?: string;
 };
 
-const eventTypeTitles: { [key in NapEventType]: string } = {
-  [NapEventType.Awake]: "Woke up",
-  [NapEventType.Sleep]: "Fell asleep",
+const eventTypeTitles: { [key in EventType]: string } = {
+  [EventType.WokeUp]: "Woke up",
+  [EventType.FellAsleep]: "Fell asleep",
 };
 
 export function Naps({ className }: NapsProps) {
@@ -67,18 +67,18 @@ export function Naps({ className }: NapsProps) {
           napsList.scrollHeight - napsList.offsetHeight - napsList.scrollTop;
 
         if (gapToBottom < 60) {
-          return dayStartEvent[dayStartEvent.length - 1].time;
+          return dayStartEvent[dayStartEvent.length - 1].timestamp;
         }
 
         for (let i = dayStartEvent.length - 1; i >= 0; i--) {
           const top = eventsTop[i];
 
           if (top - napsList.scrollTop < napsList.offsetHeight / 2) {
-            return dayStartEvent[i].time;
+            return dayStartEvent[i].timestamp;
           }
         }
 
-        return dayStartEvent[0].time;
+        return dayStartEvent[0].timestamp;
       };
 
       const onScroll = () => {
@@ -107,7 +107,6 @@ export function Naps({ className }: NapsProps) {
 
   const lastEvent =
     napEvents.length > 0 ? napEvents[napEvents.length - 1] : null;
-  const isSleeping = lastEvent && lastEvent.type === NapEventType.Sleep;
 
   return (
     <div className={cn(className, styles.root)} ref={rootRef}>

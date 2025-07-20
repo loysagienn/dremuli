@@ -1,4 +1,4 @@
-import { NapEvent, NapEventType } from "types";
+import { NapEvent, EventType } from "types";
 
 function isBetween(hour: number, fromHour: number, toHour: number) {
   let marker = fromHour;
@@ -23,7 +23,7 @@ function isBetween(hour: number, fromHour: number, toHour: number) {
 }
 
 function isBetweenHours(event: NapEvent, fromHour: number, toHour: number) {
-  let marker = event.time.getHours();
+  let marker = event.timestamp.getHours();
   const endHour = event.endTime.getHours();
 
   if (isBetween(endHour, fromHour, toHour)) {
@@ -131,7 +131,7 @@ export function labelNightEvents(events: NapEvent[]) {
   for (let i = 0; i < events.length - 1; i++) {
     const event = events[i];
 
-    if (event.type === NapEventType.Sleep && isBetweenHours(event, 0, 4)) {
+    if (event.type === EventType.FellAsleep && isBetweenHours(event, 0, 4)) {
       event.isNightSleep = true;
     }
   }
@@ -141,7 +141,7 @@ export function labelNightEvents(events: NapEvent[]) {
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
 
-    if (event.type !== NapEventType.Sleep) {
+    if (event.type !== EventType.FellAsleep) {
       continue;
     }
 
@@ -159,7 +159,7 @@ export function labelNightEvents(events: NapEvent[]) {
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
 
-    if (event.type !== NapEventType.Sleep) {
+    if (event.type !== EventType.FellAsleep) {
       continue;
     }
 
@@ -172,7 +172,7 @@ export function labelNightEvents(events: NapEvent[]) {
     const lastEvent = events[events.length - 1];
 
     if (
-      lastEvent.type === NapEventType.Sleep &&
+      lastEvent.type === EventType.FellAsleep &&
       !lastEvent.isNightSleep &&
       isBetweenHours(lastEvent, 21, 0)
     ) {

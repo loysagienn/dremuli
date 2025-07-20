@@ -1,4 +1,4 @@
-import { State, NapEvent, NapEventType } from "types";
+import { State, NapEvent, EventType } from "types";
 import { createSelector } from "@reduxjs/toolkit";
 import { selectTimeZone } from "./session-settings";
 import { formatDate, formatDuration, formatTime } from "utils/date";
@@ -25,7 +25,7 @@ function findFirstNightSleep(napEvents: NapEvent[], dayStart: Date) {
   while (i >= 0) {
     const event = napEvents[i];
 
-    if (event.type === NapEventType.Awake) {
+    if (event.type === EventType.WokeUp) {
       i -= 1;
       continue;
     }
@@ -59,19 +59,19 @@ function calculateStat(napEvents: NapEvent[], firstNightSleepIndex: number) {
       index + 1 < napEvents.length ? napEvents[index + 1] : null;
 
     if (event.isNightSleep) {
-      if (dayStarted && event.time.getHours() > 15) {
+      if (dayStarted && event.timestamp.getHours() > 15) {
         break;
       }
 
       nightSleepDuration += event.duration;
-    } else if (event.type === NapEventType.Awake) {
+    } else if (event.type === EventType.WokeUp) {
       if (!dayStarted && nextEvent && nextEvent.isNightSleep) {
         nightAwakeDuration += event.duration;
       } else {
         dayStarted = true;
         dayAwakeDuration += event.duration;
       }
-    } else if (event.type === NapEventType.Sleep) {
+    } else if (event.type === EventType.FellAsleep) {
       daySleepDuration += event.duration;
       dayNapsCount += 1;
     }

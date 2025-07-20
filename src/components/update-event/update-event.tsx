@@ -20,8 +20,8 @@ function toDatetimeLocalString(date: Date) {
 }
 
 const eventTitles: { [key in EventType]: string } = {
-  fell_asleep: "Fell asleep",
-  woke_up: "Woke up",
+  [EventType.FellAsleep]: "Fell asleep",
+  [EventType.WokeUp]: "Woke up",
 };
 
 export function UpdateEvent() {

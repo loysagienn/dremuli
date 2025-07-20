@@ -25,7 +25,7 @@ export const updateEvent =
       }
     );
 
-    return { id, timestamp, type, createdAt, updatedAt };
+    return { id, timestamp, type: type as EventType, createdAt, updatedAt };
   };
 
 export const getEvent =
@@ -36,7 +36,13 @@ export const getEvent =
     if (event) {
       const { id, type, timestamp, createdAt, updatedAt } = event;
 
-      return { id, type, timestamp, createdAt, updatedAt };
+      return {
+        id,
+        type: type as EventType,
+        timestamp,
+        createdAt,
+        updatedAt,
+      };
     }
 
     return null;
@@ -61,7 +67,13 @@ export const getEvents =
     return events.map((event) => {
       const { id, type, timestamp, createdAt, updatedAt } = event;
 
-      return { id, type, timestamp, createdAt, updatedAt };
+      return {
+        id,
+        type: type as EventType,
+        timestamp,
+        createdAt,
+        updatedAt,
+      };
     });
   };
 
@@ -84,7 +96,13 @@ export const deleteEvent =
     if (event) {
       const { id, type, timestamp, createdAt, updatedAt } = event;
 
-      return { id, type, timestamp, createdAt, updatedAt };
+      return {
+        id,
+        type: type as EventType,
+        timestamp,
+        createdAt,
+        updatedAt,
+      };
     }
 
     return null;

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { NapEvent, NapEventType } from "types";
+import { NapEvent, EventType } from "types";
 import styles from "./naps.module.css";
 import { Link } from "components/router";
 import { AppRoute } from "app/router";
@@ -8,9 +8,9 @@ type EventProps = {
   napEvent: NapEvent;
 };
 
-const titles: { [key in NapEventType]: string } = {
-  [NapEventType.Awake]: "Woke up",
-  [NapEventType.Sleep]: "Fell asleep",
+const titles: { [key in EventType]: string } = {
+  [EventType.WokeUp]: "Woke up",
+  [EventType.FellAsleep]: "Fell asleep",
 };
 
 export function Event({ napEvent }: EventProps) {

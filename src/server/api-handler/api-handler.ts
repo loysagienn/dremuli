@@ -60,7 +60,7 @@ function getBodyEventCreate(ctx: AppContext): BodyEventCreate | null {
 
   const type = data.type;
 
-  if (type !== "woke_up" && type !== "fell_asleep") {
+  if (type !== EventType.WokeUp && type !== EventType.FellAsleep) {
     return null;
   }
 
