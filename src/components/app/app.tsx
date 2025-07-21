@@ -19,6 +19,7 @@ import { UpdateEvent } from "components/update-event";
 import { AddEvent } from "components/add-event";
 import { TermsOfUse } from "components/terms-of-use";
 import { PrivacyPolicy } from "components/privacy-policy";
+import { CreateEvent } from "components/create-event";
 
 export function App() {
   const theme = useSelector(selectTheme);
@@ -64,6 +65,10 @@ export function App() {
 
       <Route routeKey="create_event">
         <AddEvent />
+      </Route>
+
+      <Route routeKey="create_event_new">
+        <CreateEvent />
       </Route>
 
       <Route routeKey="terms_of_use">

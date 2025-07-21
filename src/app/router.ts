@@ -375,6 +375,24 @@ const createEvent: RouteConfig<CreateEvent> = {
   writeRoute: (route) => "/events/create",
 };
 
+type CreateEventNew = {
+  key: "create_event_new";
+};
+
+const createEventNew: RouteConfig<CreateEventNew> = {
+  key: "create_event_new",
+  readRoute: (path: string) => {
+    if (path === "/events/create-new") {
+      return {
+        key: "create_event_new",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/events/create-new",
+};
+
 type UpdateEvent = {
   key: "update_event";
   eventId: string;
@@ -463,6 +481,7 @@ export const router = initRouter(
   forgetPassword,
   resetPassword,
   createEvent,
+  createEventNew,
   updateEvent,
   termsOfUse,
   privacyPolicy,
