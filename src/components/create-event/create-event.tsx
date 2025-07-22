@@ -7,6 +7,7 @@ import { DatePicker } from "components/time-picker";
 import styles from "./create-event.module.css";
 import { selectNextEventType } from "selectors";
 import { EventType } from "types";
+import { TestAnimation } from "./test-animation";
 
 const eventTypeTitles: { [key in EventType]: string } = {
   [EventType.WokeUp]: "Woke up",
@@ -32,6 +33,7 @@ export function CreateEvent() {
           <FormSubmit onSubmit={onSubmit} submitLabel="Submit" />
         </div>
       </div>
+      <TestAnimation />
     </div>
   );
 }

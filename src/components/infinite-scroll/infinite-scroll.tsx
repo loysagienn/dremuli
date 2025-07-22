@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
 } from "react";
 import styles from "./infinite-scroll.module.css";
@@ -15,7 +16,37 @@ type InfiniteScrollProps = {
   className?: string;
   children: ReactNode;
   onChange: (value: number) => void;
+  snapSize?: number;
 };
+
+function getDiffsPerFrame(lastDiffs: [number, number][]) {
+  const diffPerFrame: number[] = [];
+
+  for (let i = 1; i < lastDiffs.length; i++) {
+    const [prev] = lastDiffs[i - 1];
+    const [curr, diff] = lastDiffs[i];
+
+    const time = curr - prev;
+
+    diffPerFrame.push(diff);
+  }
+
+  return diffPerFrame;
+}
+
+function initDiffController() {
+  const lastDiffs: [number, number][] = [];
+
+  const pushDiff = (diff: number) => {
+    lastDiffs.push([performance.now(), diff]);
+
+    if (lastDiffs.length > 121) {
+      lastDiffs.shift();
+    }
+  };
+
+  return { lastDiffs, pushDiff };
+}
 
 export function InfiniteScroll({
   min,
@@ -24,8 +55,11 @@ export function InfiniteScroll({
   className,
   children,
   onChange,
+  snapSize,
 }: InfiniteScrollProps) {
+  const diffController = useMemo(initDiffController, []);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const frameDiffRef = useRef<HTMLDivElement>(null);
   const valueRef = useRef(defaultValue || 0);
   const scrollTopRef = useRef(5000);
 
@@ -59,6 +93,15 @@ export function InfiniteScroll({
     }
 
     scrollTopRef.current = scrollArea.scrollTop;
+
+    diffController.pushDiff(diff);
+
+    const diffPerFrame = getDiffsPerFrame(diffController.lastDiffs);
+
+    if (frameDiffRef.current) {
+      frameDiffRef.current.innerHTML = diffPerFrame.join(" ");
+      frameDiffRef.current.style.fontSize = `12px`;
+    }
   }, [onChange]);
 
   return (
@@ -69,7 +112,10 @@ export function InfiniteScroll({
         onScroll={onScroll}
       >
         <div className={styles.scrollable} />
-        <div className={styles.content}>{children}</div>
+        <div className={styles.content}>
+          {children}
+          <div ref={frameDiffRef} />
+        </div>
       </div>
     </div>
   );

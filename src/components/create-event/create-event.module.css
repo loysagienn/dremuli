@@ -8,7 +8,7 @@
   top: var(--header-height);
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 100px;
   overflow: auto;
 }
 
@@ -29,4 +29,33 @@
 .title {
   font-size: 22px;
   margin-bottom: 20px;
+}
+
+.testAnimation {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100px;
+}
+
+.draggable {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: red;
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  cursor: grab;
+}
+
+.animated {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: green;
+  position: absolute;
+  left: 0;
+  top: 10px;
 }

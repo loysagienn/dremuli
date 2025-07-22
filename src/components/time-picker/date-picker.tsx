@@ -10,14 +10,18 @@ type DatePickerProps = {
 export function DatePicker({ value, onChange }: DatePickerProps) {
   const ref = useRef<HTMLDivElement>(null);
   const onScrollChange = useCallback((value: number) => {
-    console.log("value", value);
+    // console.log("value", value);
     if (ref.current) {
       ref.current.innerHTML = String(value);
     }
   }, []);
 
   return (
-    <InfiniteScroll onChange={onScrollChange} className={styles.datePicker}>
+    <InfiniteScroll
+      onChange={onScrollChange}
+      className={styles.datePicker}
+      snapSize={40}
+    >
       Date picker
       <div ref={ref} />
     </InfiniteScroll>
