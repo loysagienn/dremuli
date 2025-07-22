@@ -38,7 +38,7 @@ function initDiffController() {
   const lastDiffs: [number, number][] = [];
 
   const pushDiff = (diff: number) => {
-    lastDiffs.push([performance.now(), diff]);
+    lastDiffs.push([performance.now(), Math.round(diff)]);
 
     if (lastDiffs.length > 121) {
       lastDiffs.shift();
