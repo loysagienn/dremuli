@@ -35,3 +35,10 @@
   position: absolute;
   inset: 0;
 }
+
+.mark {
+  box-sizing: border-box;
+  height: 50px;
+  border-bottom: 1px solid yellow;
+  opacity: 0.1;
+}

@@ -214,11 +214,6 @@ export function initScrollController({
 
     const diff = (scrollTop - currentScrollTop) * 1;
 
-    if (!inertiaScrollingInProcess) {
-      currentValue += diff;
-      onChange(currentValue);
-    }
-
     const bottomSpace = 10000 - scrollTop - offsetHeight;
 
     if (scrollTop < 1000 || bottomSpace < 1000) {
@@ -244,8 +239,17 @@ export function initScrollController({
     if (inertiaFactor > 6 && touchesCount === 0) {
       onInertiaScrolling();
     } else {
-      onUserScrolling();
+      // onUserScrolling();
+
+      startUserScrolling();
     }
+
+    if (!inertiaScrollingInProcess) {
+      currentValue += diff;
+      onChange(currentValue);
+    }
+
+    // startUserScrolling();
 
     if (stopScrollingTimeout !== null) {
       clearTimeout(stopScrollingTimeout);

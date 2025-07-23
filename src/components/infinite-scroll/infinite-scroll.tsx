@@ -52,7 +52,11 @@ function InfiniteScroll({
   return (
     <div className={cn(className, styles.container)}>
       <div className={styles.scrollArea} ref={scrollAreaRef}>
-        <div className={styles.scrollable} />
+        <div className={styles.scrollable}>
+          {new Array(200).fill(0).map((item, index) => (
+            <div className={styles.mark} key={index} />
+          ))}
+        </div>
         <div className={styles.content}>{children}</div>
       </div>
     </div>
