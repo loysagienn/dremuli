@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect, useState } from "react";
+import React, { useCallback, useCallback, useEffect, useState } from "react";
 import styles from "./time-picker.module.css";
 import { InfiniteItems } from "components/infinite-scroll";
 import { formatDate, getDaysDiff } from "utils/date";
@@ -20,15 +20,25 @@ export function DateTimePicker({
   onChange,
   className,
 }: DateTimePickerProps) {
+  const changeHanler = useCallback(
+    (value: Date) => {
+      onChange(value);
+
+      if (typeof navigator !== "undefined" && navigator.vibrate) {
+        navigator.vibrate(20);
+      }
+    },
+    [onChange]
+  );
   return (
     <div className={cn(className, styles.timePicker)}>
-      <DatePicker value={value} onChange={onChange} />
-      <HoursPicker value={value} onChange={onChange} />
+      <DatePicker value={value} onChange={changeHanler} />
+      <HoursPicker value={value} onChange={changeHanler} />
       <div className={styles.clock}>
         <div className={styles.dotTop} />
         <div className={styles.dotBottom} />
       </div>
-      <MinutesPicker value={value} onChange={onChange} />
+      <MinutesPicker value={value} onChange={changeHanler} />
     </div>
   );
 }
