@@ -75,6 +75,7 @@ export function InfiniteScroll({
   const frameDiffRef = useRef<HTMLDivElement>(null);
   const valueRef = useRef(defaultValue || 0);
   const scrollTopRef = useRef(5000);
+  const inertiaFactor = useRef(0);
 
   useLayoutEffect(() => {
     const scrollArea = scrollAreaRef.current;
@@ -110,11 +111,55 @@ export function InfiniteScroll({
     diffController.pushDiff(diff);
 
     const diffsPerFrame = getDiffsPerFrame(diffController.lastDiffs);
+    const diffOfDiffs: number[] = [];
+
+    for (let i = 1; i < diffsPerFrame.length; i++) {
+      diffOfDiffs.push(
+        Math.abs(diffsPerFrame[i] - diffsPerFrame[i - 1]) -
+          Math.abs(diffsPerFrame[i]) / 15
+      );
+    }
 
     if (frameDiffRef.current) {
-      frameDiffRef.current.innerHTML = diffsPerFrame
-        .map((val) => val.toFixed(1))
-        .join(" ");
+      let diffshtml = "";
+      if (diffsPerFrame.length > 15) {
+        const last10diffs = diffsPerFrame.slice(-15);
+        const totalDiff = Math.abs(last10diffs[0] - last10diffs[14]);
+        diffshtml += `<br/>${totalDiff}`;
+
+        let speedDownCount = 0;
+
+        for (let i = 1; i < last10diffs.length; i++) {
+          const prev = Math.abs(last10diffs[i - 1]);
+          const curr = Math.abs(last10diffs[i]);
+
+          if (curr <= prev + 0.03) {
+            speedDownCount += 1;
+          }
+        }
+        diffshtml += `<br/>${speedDownCount}`;
+
+        if (totalDiff < 20 && totalDiff > 1 && speedDownCount > 11) {
+          inertiaFactor.current += 1;
+        } else {
+          inertiaFactor.current -= 1;
+        }
+
+        if (inertiaFactor.current > 10) {
+          inertiaFactor.current = 10;
+        } else if (inertiaFactor.current < 0) {
+          inertiaFactor.current = 0;
+        }
+
+        diffshtml += `<br/>${inertiaFactor.current}`;
+
+        if (inertiaFactor.current > 6) {
+          diffshtml += `<br/>+++++++`;
+        } else {
+          diffshtml += `<br/>-------`;
+        }
+      }
+      frameDiffRef.current.innerHTML = diffshtml;
       frameDiffRef.current.style.fontSize = `12px`;
     }
   }, [onChange]);
