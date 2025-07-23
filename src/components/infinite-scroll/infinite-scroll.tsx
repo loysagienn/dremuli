@@ -1,20 +1,19 @@
 import React, {
   memo,
   ReactNode,
-  useCallback,
-  useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
+  useState,
 } from "react";
 import styles from "./infinite-scroll.module.css";
 import { cn } from "utils/cn";
-import { initScrollController } from "./scroll-controller";
+import { initScrollController, ScrollController } from "./scroll-controller";
 
 type InfiniteScrollProps = {
   min?: number;
   max?: number;
   defaultValue?: number;
+  externalValue?: number;
   className?: string;
   children: ReactNode;
   onChange: (value: number) => void;
@@ -25,12 +24,15 @@ function InfiniteScroll({
   min,
   max,
   defaultValue,
+  externalValue = null,
   className,
   children,
   onChange,
   snapSize,
 }: InfiniteScrollProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [scrollController, setScrollController] =
+    useState<ScrollController | null>(null);
 
   useLayoutEffect(() => {
     const scrollArea = scrollAreaRef.current;
@@ -43,20 +45,24 @@ function InfiniteScroll({
         onChange,
       });
 
+      setScrollController(scrollController);
+
       return () => {
         scrollController.destroy();
       };
     }
   }, [onChange, snapSize]);
 
+  useLayoutEffect(() => {
+    if (scrollController && externalValue !== null) {
+      scrollController.setValue(externalValue);
+    }
+  }, [externalValue]);
+
   return (
     <div className={cn(className, styles.container)}>
       <div className={styles.scrollArea} ref={scrollAreaRef}>
-        <div className={styles.scrollable}>
-          {new Array(200).fill(0).map((item, index) => (
-            <div className={styles.mark} key={index} />
-          ))}
-        </div>
+        <div className={styles.scrollable}></div>
         <div className={styles.content}>{children}</div>
       </div>
     </div>

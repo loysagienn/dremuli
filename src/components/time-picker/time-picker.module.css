@@ -3,9 +3,13 @@
 }
 
 .dateValue {
-  box-sizing: border-box;
-  padding: 10px;
-  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dateValueText {
+  padding: 6px;
   font-size: 18px;
-  text-align: center;
+  cursor: pointer;
 }

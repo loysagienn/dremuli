@@ -114,16 +114,29 @@ export function initScrollController({
   let currentScrollTop = 5000;
   let currentValue = defaultValue;
   let inertiaFactor = 0;
-  const diffController = initDiffController();
-  let inertiaScrollingTimeout: NodeJS.Timeout | null = null;
-  let userScrollingTimeout: NodeJS.Timeout | null = null;
-  let stopScrollingTimeout: NodeJS.Timeout | null = null;
-  let inertiaScrollingInProcess = false;
   let animationController: AnimationController | null = null;
   let touchesCount = 0;
 
+  const diffController = initDiffController();
+
+  const createAnimationController = () => {
+    if (!animationController) {
+      animationController = initAnimationController(currentValue, (value) => {
+        currentValue = value;
+        onChange(currentValue);
+      });
+    }
+  };
+
+  const destroyAnimationController = () => {
+    if (animationController) {
+      animationController.destroy();
+      animationController = null;
+    }
+  };
+
   const snapValue = (isInertial: boolean) => {
-    if (inertiaScrollingInProcess || !snapSize) {
+    if (animationController || !snapSize) {
       return;
     }
 
@@ -144,12 +157,7 @@ export function initScrollController({
         ? targetValue - diff
         : targetValue + Math.sign(diff) * snapSize - diff;
 
-    inertiaScrollingInProcess = true;
-
-    animationController = initAnimationController(currentValue, (value) => {
-      currentValue = value;
-      onChange(currentValue);
-    });
+    createAnimationController();
 
     const animationSpeed =
       diffsPerFrame.length > 0 ? diffsPerFrame[diffsPerFrame.length - 1] : 0;
@@ -157,52 +165,46 @@ export function initScrollController({
     animationController.move(snappedTargetValue, snapSize / 20, animationSpeed);
   };
 
-  const startUserScrolling = () => {
-    if (inertiaScrollingInProcess) {
-      inertiaScrollingInProcess = false;
-
-      if (animationController) {
-        animationController.destroy();
-        animationController = null;
-      }
+  const setValue = (value: number) => {
+    if (value === currentValue) {
+      return;
     }
+
+    createAnimationController();
+
+    animationController.move(value, (snapSize || 40) / 20);
   };
 
-  const onStopScrolling = () => {
+  const startUserScrolling = () => {
+    destroyAnimationController();
+  };
+
+  const stopScrolling = () => {
     if (touchesCount > 0) {
       return;
     }
+
     snapValue(false);
     diffController.reset();
     inertiaFactor = 0;
   };
 
-  const onInertiaScrolling = () => {
-    if (inertiaScrollingTimeout !== null || inertiaScrollingInProcess) {
-      return;
+  let stopScrollingTimeout: NodeJS.Timeout | null = null;
+
+  const requestStopScrolling = (timeout = 200) => {
+    if (stopScrollingTimeout !== null) {
+      clearTimeout(stopScrollingTimeout);
     }
 
-    inertiaScrollingTimeout = setTimeout(() => {
-      if (inertiaFactor > 6) {
-        snapValue(true);
-      }
-
-      inertiaScrollingTimeout = null;
-    }, 100);
+    stopScrollingTimeout = setTimeout(stopScrolling, timeout);
   };
 
-  const onUserScrolling = () => {
-    if (userScrollingTimeout !== null) {
+  const startInertiaScrolling = () => {
+    if (animationController) {
       return;
     }
 
-    userScrollingTimeout = setTimeout(() => {
-      if (inertiaFactor <= 6) {
-        startUserScrolling();
-      }
-
-      userScrollingTimeout = null;
-    }, 100);
+    snapValue(true);
   };
 
   const onScroll = () => {
@@ -237,25 +239,17 @@ export function initScrollController({
     }
 
     if (inertiaFactor > 6 && touchesCount === 0) {
-      onInertiaScrolling();
+      startInertiaScrolling();
     } else {
-      // onUserScrolling();
-
       startUserScrolling();
     }
 
-    if (!inertiaScrollingInProcess) {
+    if (!animationController) {
       currentValue += diff;
       onChange(currentValue);
     }
 
-    // startUserScrolling();
-
-    if (stopScrollingTimeout !== null) {
-      clearTimeout(stopScrollingTimeout);
-    }
-
-    stopScrollingTimeout = setTimeout(onStopScrolling, 200);
+    requestStopScrolling();
   };
 
   const onTouchStart = (event: TouchEvent) => {
@@ -265,11 +259,7 @@ export function initScrollController({
   const onTouchEnd = (event: TouchEvent) => {
     touchesCount = event.touches.length;
 
-    if (stopScrollingTimeout !== null) {
-      clearTimeout(stopScrollingTimeout);
-    }
-
-    stopScrollingTimeout = setTimeout(onStopScrolling, 200);
+    requestStopScrolling(60);
   };
 
   window.addEventListener("touchstart", onTouchStart);
@@ -279,14 +269,13 @@ export function initScrollController({
 
   const destroy = () => {
     scrollArea.removeEventListener("scroll", onScroll);
-
-    if (animationController) {
-      animationController.destroy();
-    }
-
     window.removeEventListener("touchstart", onTouchStart);
     window.removeEventListener("touchend", onTouchEnd);
+
+    destroyAnimationController();
   };
 
-  return { destroy };
+  return { destroy, setValue };
 }
+
+export type ScrollController = ReturnType<typeof initScrollController>;
