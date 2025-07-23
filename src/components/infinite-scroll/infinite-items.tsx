@@ -78,7 +78,7 @@ export function InfiniteItems({
       // const opacity = 1 / (1 + Math.abs(valueDiff) / 200);
       // const rotate = (val - value) / 1.5;
       const scale = (Math.cos(angle) + 1) / 2;
-      const opacity = Math.cos(angle);
+      const opacity = (1 - Math.abs(factor)) ** 1.5;
       const transform = `scale(${scale}, ${scale}) rotateX(${angle}rad)`;
 
       return (

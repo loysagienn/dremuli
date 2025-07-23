@@ -120,6 +120,7 @@ export function initScrollController({
   let stopScrollingTimeout: NodeJS.Timeout | null = null;
   let inertiaScrollingInProcess = false;
   let animationController: AnimationController | null = null;
+  let touchesCount = 0;
 
   const snapValue = (isInertial: boolean) => {
     if (inertiaScrollingInProcess || !snapSize) {
@@ -168,6 +169,9 @@ export function initScrollController({
   };
 
   const onStopScrolling = () => {
+    if (touchesCount > 0) {
+      return;
+    }
     snapValue(false);
     diffController.reset();
     inertiaFactor = 0;
@@ -208,7 +212,7 @@ export function initScrollController({
       return;
     }
 
-    const diff = scrollTop - currentScrollTop;
+    const diff = (scrollTop - currentScrollTop) * 1;
 
     if (!inertiaScrollingInProcess) {
       currentValue += diff;
@@ -237,7 +241,7 @@ export function initScrollController({
       inertiaFactor = 0;
     }
 
-    if (inertiaFactor > 6) {
+    if (inertiaFactor > 6 && touchesCount === 0) {
       onInertiaScrolling();
     } else {
       onUserScrolling();
@@ -250,6 +254,23 @@ export function initScrollController({
     stopScrollingTimeout = setTimeout(onStopScrolling, 200);
   };
 
+  const onTouchStart = (event: TouchEvent) => {
+    touchesCount = event.touches.length;
+  };
+
+  const onTouchEnd = (event: TouchEvent) => {
+    touchesCount = event.touches.length;
+
+    if (stopScrollingTimeout !== null) {
+      clearTimeout(stopScrollingTimeout);
+    }
+
+    stopScrollingTimeout = setTimeout(onStopScrolling, 200);
+  };
+
+  window.addEventListener("touchstart", onTouchStart);
+  window.addEventListener("touchend", onTouchEnd);
+
   scrollArea.addEventListener("scroll", onScroll);
 
   const destroy = () => {
@@ -258,6 +279,9 @@ export function initScrollController({
     if (animationController) {
       animationController.destroy();
     }
+
+    window.removeEventListener("touchstart", onTouchStart);
+    window.removeEventListener("touchend", onTouchEnd);
   };
 
   return { destroy };
