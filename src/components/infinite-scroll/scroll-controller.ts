@@ -48,7 +48,7 @@ function isInertiaScrolling(lastDiffs: [number, number][]) {
       }
     }
 
-    return totalDiff < 20 && totalDiff > 1 && speedDownCount > 11;
+    return totalDiff < 8 && totalDiff > 1 && speedDownCount > 11;
   }
 
   return false;
@@ -95,7 +95,7 @@ function predictFinalValue(currentValue: number, diffsPerFrame: number[]) {
 
   let value = currentValue;
 
-  while (diff > 0.3) {
+  while (Math.abs(diff) > 0.3) {
     value += diff;
 
     diff /= slowdownFactor;
@@ -128,8 +128,6 @@ export function initScrollController({
 
     const diffsPerFrame = getDiffsPerFrame(diffController.lastDiffs);
 
-    // console.log("start inertia scroll");
-
     const targetValue = isInertial
       ? predictFinalValue(currentValue, diffsPerFrame)
       : currentValue;
@@ -141,35 +139,25 @@ export function initScrollController({
     }
 
     const snappedTargetValue =
-      diff < snapSize / 2 ? targetValue - diff : targetValue + snapSize - diff;
-
-    // console.log("snappedTargetValue", snappedTargetValue);
+      Math.abs(diff) < snapSize / 2
+        ? targetValue - diff
+        : targetValue + Math.sign(diff) * snapSize - diff;
 
     inertiaScrollingInProcess = true;
 
-    animationController = initAnimationController(
-      currentValue,
-      (value) => {
-        currentValue = value;
-        onChange(currentValue);
-      }
-      // () => {
-      //   inertiaScrollingInProcess = false;
-      //   animationController.destroy();
-      //   animationController = null;
-      //   console.log("stop inertia scroll");
-      // }
-    );
+    animationController = initAnimationController(currentValue, (value) => {
+      currentValue = value;
+      onChange(currentValue);
+    });
 
     const animationSpeed =
       diffsPerFrame.length > 0 ? diffsPerFrame[diffsPerFrame.length - 1] : 0;
 
-    animationController.move(snappedTargetValue, snapSize / 4, animationSpeed);
+    animationController.move(snappedTargetValue, snapSize / 20, animationSpeed);
   };
 
   const startUserScrolling = () => {
     if (inertiaScrollingInProcess) {
-      // console.log("start user scrolling");
       inertiaScrollingInProcess = false;
 
       if (animationController) {
@@ -210,7 +198,7 @@ export function initScrollController({
       }
 
       userScrollingTimeout = null;
-    }, 50);
+    }, 100);
   };
 
   const onScroll = () => {
@@ -251,17 +239,15 @@ export function initScrollController({
 
     if (inertiaFactor > 6) {
       onInertiaScrolling();
-      // console.log("inertia scrolling");
     } else {
       onUserScrolling();
-      // console.log("user scrolling");
     }
 
     if (stopScrollingTimeout !== null) {
       clearTimeout(stopScrollingTimeout);
     }
 
-    stopScrollingTimeout = setTimeout(onStopScrolling, 60);
+    stopScrollingTimeout = setTimeout(onStopScrolling, 200);
   };
 
   scrollArea.addEventListener("scroll", onScroll);

@@ -1,3 +1,11 @@
 .datePicker {
   height: 160px;
 }
+
+.dateValue {
+  box-sizing: border-box;
+  padding: 10px;
+  line-height: 20px;
+  font-size: 18px;
+  text-align: center;
+}

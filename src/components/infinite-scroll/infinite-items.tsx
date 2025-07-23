@@ -18,6 +18,7 @@ type InfiniteItemsProps = {
   onChange: (value: number) => void;
   getValue: (value: number) => ReactNode;
   snapSize: number;
+  containerHeight: number;
 };
 
 export function InfiniteItems({
@@ -26,7 +27,9 @@ export function InfiniteItems({
   onChange,
   getValue,
   snapSize,
+  containerHeight,
 }: InfiniteItemsProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(defaultValue ?? 0);
 
   const changeHandler = useCallback(
@@ -45,23 +48,52 @@ export function InfiniteItems({
     values.unshift(currentValue - snapSize);
     values.unshift(currentValue - snapSize * 2);
     values.unshift(currentValue - snapSize * 3);
+    values.unshift(currentValue - snapSize * 4);
+    values.unshift(currentValue - snapSize * 5);
     values.push(currentValue + snapSize);
     values.push(currentValue + snapSize * 2);
     values.push(currentValue + snapSize * 3);
+    values.push(currentValue + snapSize * 4);
+    values.push(currentValue + snapSize * 5);
 
     const items = values.map((val) => {
-      const top = val - value;
+      const radius = containerHeight / 2 - 5;
+      const sectorLength = (Math.PI * radius) / 2;
+      let valueDiff = val - value;
+      if (valueDiff > sectorLength) {
+        valueDiff = sectorLength;
+      } else if (valueDiff < -sectorLength) {
+        valueDiff = -sectorLength;
+      }
+
+      const factor = valueDiff / sectorLength;
+
+      const angle = (Math.PI / 2) * factor;
+      const top = Math.sin(angle) * radius - snapSize / 2 + containerHeight / 2;
+
+      const sizeFactor = 1 / (1 + Math.abs(valueDiff) / 200);
+      // const top = valueDiff - snapSize / 2 + containerHeight / 2;
       const height = snapSize;
+      // const scale = 1 / (1 + Math.abs(valueDiff) / 200);
+      // const opacity = 1 / (1 + Math.abs(valueDiff) / 200);
+      // const rotate = (val - value) / 1.5;
+      const scale = (Math.cos(angle) + 1) / 2;
+      const opacity = Math.cos(angle);
+      const transform = `scale(${scale}, ${scale}) rotateX(${angle}rad)`;
 
       return (
-        <div key={val} style={{ top, height }} className={styles.item}>
+        <div
+          key={val}
+          style={{ top, height, transform, opacity }}
+          className={styles.item}
+        >
           {getValue(val)}
         </div>
       );
     });
 
     return items;
-  }, [value, snapSize]);
+  }, [value, snapSize, containerHeight]);
 
   return (
     <InfiniteScroll
@@ -70,7 +102,9 @@ export function InfiniteItems({
       onChange={changeHandler}
       snapSize={snapSize}
     >
-      {items}
+      <div className={styles.itemsContainer} ref={containerRef}>
+        {items}
+      </div>
     </InfiniteScroll>
   );
 }

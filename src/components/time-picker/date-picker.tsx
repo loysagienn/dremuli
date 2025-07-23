@@ -1,6 +1,7 @@
 import React, { useCallback, WheelEvent, useRef } from "react";
 import styles from "./time-picker.module.css";
 import { InfiniteScroll, InfiniteItems } from "components/infinite-scroll";
+import { formatDate } from "utils/date";
 
 type DatePickerProps = {
   value: Date;
@@ -16,7 +17,13 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
     }
   }, []);
 
-  const getItem = useCallback((value: number) => <div>{value}</div>, []);
+  const getItem = useCallback((value: number) => {
+    const daysDiff = Math.round(value / 40);
+    const date = new Date();
+    date.setDate(date.getDate() + daysDiff);
+
+    return <div className={styles.dateValue}>{formatDate(date)}</div>;
+  }, []);
 
   return (
     <InfiniteItems
@@ -24,6 +31,7 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
       getValue={getItem}
       className={styles.datePicker}
       snapSize={40}
+      containerHeight={160}
     />
   );
 }

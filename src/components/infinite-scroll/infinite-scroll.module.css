@@ -29,5 +29,9 @@
   position: absolute;
   left: 0;
   right: 0;
-  border-top: 1px solid red;
+}
+
+.itemsContainer {
+  position: absolute;
+  inset: 0;
 }
