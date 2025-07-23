@@ -20,27 +20,40 @@ type InfiniteScrollProps = {
 };
 
 function getDiffsPerFrame(lastDiffs: [number, number][]) {
-  const diffPerFrame: number[] = [];
+  const diffsPerFrame: number[] = [];
 
-  for (let i = 1; i < lastDiffs.length; i++) {
-    const [prev] = lastDiffs[i - 1];
-    const [curr, diff] = lastDiffs[i];
+  for (let i = 4; i < lastDiffs.length; i++) {
+    let totalTimeDiff = 0;
+    let totalDiff = 0;
+    for (let j = 0; j < 5; j++) {
+      const [timeDiff, diff] = lastDiffs[i - j];
 
-    const time = curr - prev;
+      totalTimeDiff += timeDiff;
+      totalDiff += diff;
+    }
 
-    diffPerFrame.push(diff);
+    const diffPerMs = totalDiff / totalTimeDiff;
+
+    const diffPerFrame = diffPerMs * 16.7;
+
+    diffsPerFrame.push(diffPerFrame);
   }
 
-  return diffPerFrame;
+  return diffsPerFrame;
 }
 
 function initDiffController() {
   const lastDiffs: [number, number][] = [];
+  let time = performance.now();
 
   const pushDiff = (diff: number) => {
-    lastDiffs.push([performance.now(), Math.round(diff)]);
+    const now = performance.now();
 
-    if (lastDiffs.length > 121) {
+    const diffTime = now - time < 100 ? now - time : 16;
+    time = now;
+    lastDiffs.push([diffTime, diff]);
+
+    if (lastDiffs.length > 71) {
       lastDiffs.shift();
     }
   };
@@ -96,10 +109,12 @@ export function InfiniteScroll({
 
     diffController.pushDiff(diff);
 
-    const diffPerFrame = getDiffsPerFrame(diffController.lastDiffs);
+    const diffsPerFrame = getDiffsPerFrame(diffController.lastDiffs);
 
     if (frameDiffRef.current) {
-      frameDiffRef.current.innerHTML = diffPerFrame.join(" ");
+      frameDiffRef.current.innerHTML = diffsPerFrame
+        .map((val) => val.toFixed(1))
+        .join(" ");
       frameDiffRef.current.style.fontSize = `12px`;
     }
   }, [onChange]);
