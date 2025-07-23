@@ -2,11 +2,13 @@ import React, {
   memo,
   ReactNode,
   useLayoutEffect,
+  useEffect,
   useRef,
   useState,
 } from "react";
 import styles from "./infinite-scroll.module.css";
 import { cn } from "utils/cn";
+import { usePersistentCallback } from "utils/hooks";
 import { initScrollController, ScrollController } from "./scroll-controller";
 
 type InfiniteScrollProps = {
@@ -31,8 +33,13 @@ function InfiniteScroll({
   snapSize,
 }: InfiniteScrollProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const [hasMounted, setHasMounted] = useState(false);
+
   const [scrollController, setScrollController] =
     useState<ScrollController | null>(null);
+
+  const changeHandler = usePersistentCallback(onChange);
 
   useLayoutEffect(() => {
     const scrollArea = scrollAreaRef.current;
@@ -42,7 +49,9 @@ function InfiniteScroll({
         scrollArea,
         defaultValue,
         snapSize,
-        onChange,
+        onChange: changeHandler,
+        min,
+        max,
       });
 
       setScrollController(scrollController);
@@ -51,7 +60,7 @@ function InfiniteScroll({
         scrollController.destroy();
       };
     }
-  }, [onChange, snapSize]);
+  }, [snapSize]);
 
   useLayoutEffect(() => {
     if (scrollController && externalValue !== null) {
@@ -59,11 +68,22 @@ function InfiniteScroll({
     }
   }, [externalValue]);
 
+  // client-side rendering only
+  useEffect(() => {
+    const scrollArea = scrollAreaRef.current;
+
+    if (scrollArea) {
+      scrollArea.style.opacity = "1";
+    }
+
+    setHasMounted(true);
+  }, []);
+
   return (
     <div className={cn(className, styles.container)}>
       <div className={styles.scrollArea} ref={scrollAreaRef}>
         <div className={styles.scrollable}></div>
-        <div className={styles.content}>{children}</div>
+        <div className={styles.content}>{hasMounted ? children : 0}</div>
       </div>
     </div>
   );

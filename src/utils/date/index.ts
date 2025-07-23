@@ -3,3 +3,4 @@ export * from "./format-time";
 export * from "./format-duration";
 export * from "./format-date";
 export * from "./get-current-minute";
+export * from "./days-diff";

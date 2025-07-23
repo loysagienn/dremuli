@@ -105,9 +105,6 @@ export function Naps({ className }: NapsProps) {
 
   const nextEventType = useSelector(selectNextEventType);
 
-  const lastEvent =
-    napEvents.length > 0 ? napEvents[napEvents.length - 1] : null;
-
   return (
     <div className={cn(className, styles.root)} ref={rootRef}>
       <div className={styles.napsActiveDay}>

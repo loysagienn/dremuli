@@ -1,5 +1,19 @@
-.datePicker {
+.picker {
+  box-sizing: border-box;
   height: 160px;
+  /* border: 1px solid red; */
+}
+
+.datePicker {
+  width: 80px;
+}
+
+.hoursPicker {
+  width: 52px;
+}
+
+.minutesPicker {
+  width: 52px;
 }
 
 .dateValue {
@@ -10,6 +24,51 @@
 
 .dateValueText {
   padding: 6px;
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 24px;
+  margin-top: 2px;
   cursor: pointer;
+}
+
+.datePicker .dateValueText {
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.hoursPicker .dateValueText {
+  padding-left: 12px;
+}
+
+.minutesPicker .dateValueText {
+  padding-right: 12px;
+}
+
+.timePicker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock {
+  position: relative;
+  width: 3px;
+  height: 12px;
+}
+
+.dotTop,
+.dotBottom {
+  position: absolute;
+  left: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 3px;
+  background-color: #ffffff;
+}
+
+.dotTop {
+  top: 2px;
+}
+
+.dotBottom {
+  bottom: 0;
 }

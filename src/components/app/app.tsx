@@ -64,7 +64,7 @@ export function App() {
       </Route>
 
       <Route routeKey="create_event">
-        <AddEvent />
+        <CreateEvent />
       </Route>
 
       <Route routeKey="create_event_new">

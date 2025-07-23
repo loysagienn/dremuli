@@ -4,7 +4,7 @@ import { InfiniteItems } from "components/infinite-scroll";
 import { formatDate, getDaysDiff } from "utils/date";
 import { cn } from "utils/cn";
 
-type DatePickerProps = {
+type MinutesPickerProps = {
   value: Date;
   onChange: (value: Date) => void;
   className?: string;
@@ -12,33 +12,41 @@ type DatePickerProps = {
 
 const snapSize = 40;
 
-export function DatePicker({ value, onChange, className }: DatePickerProps) {
-  const daysDiff = useMemo(() => getDaysDiff(value), [value]);
+export function MinutesPicker({
+  value,
+  onChange,
+  className,
+}: MinutesPickerProps) {
+  const minutes = value.getMinutes();
 
-  const [defaultValue] = useState(-daysDiff * snapSize);
+  const [defaultValue] = useState(minutes * snapSize);
 
   const onScrollChange = useCallback(
     (pixelValue: number) => {
-      const newDaysDiff = -Math.round(pixelValue / snapSize);
-
-      if (newDaysDiff !== daysDiff) {
+      let newMinutes = Math.round(pixelValue / snapSize) % 60;
+      if (newMinutes < 0) {
+        newMinutes += 60;
+      }
+      if (newMinutes !== minutes) {
         const newDate = new Date(value);
-        newDate.setDate(newDate.getDate() - newDaysDiff + daysDiff);
+        newDate.setMinutes(newMinutes);
         onChange(newDate);
       }
     },
-    [value, daysDiff, onChange]
+    [value, minutes, onChange]
   );
 
   const getItem = useCallback((pixelValue: number, onClick: () => void) => {
-    const daysDiff = Math.round(pixelValue / snapSize);
-    const date = new Date();
-    date.setDate(date.getDate() + daysDiff);
+    let minutes = Math.round(pixelValue / snapSize) % 60;
+    if (minutes < 0) {
+      minutes += 60;
+    }
+    const minutesStr = String(minutes).padStart(2, "0");
 
     return (
       <div className={styles.dateValue}>
         <div className={styles.dateValueText} onClick={onClick}>
-          {formatDate(date)}
+          {minutesStr}
         </div>
       </div>
     );
@@ -49,11 +57,9 @@ export function DatePicker({ value, onChange, className }: DatePickerProps) {
       defaultValue={defaultValue}
       onChange={onScrollChange}
       getValue={getItem}
-      className={cn(className, styles.picker, styles.datePicker)}
+      className={cn(className, styles.picker, styles.minutesPicker)}
       snapSize={snapSize}
       containerHeight={160}
-      min={-snapSize * 364}
-      max={0}
     />
   );
 }

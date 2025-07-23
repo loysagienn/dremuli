@@ -5,6 +5,8 @@ type ScrollControllerOptions = {
   defaultValue?: number;
   onChange: (value: number) => void;
   snapSize?: number;
+  min?: number;
+  max?: number;
 };
 
 function getDiffsPerFrame(lastDiffs: [number, number][]) {
@@ -109,6 +111,8 @@ export function initScrollController({
   defaultValue = 0,
   onChange,
   snapSize,
+  min = null,
+  max = null,
 }: ScrollControllerOptions) {
   scrollArea.scrollTop = 5000;
   let currentScrollTop = 5000;
@@ -119,12 +123,24 @@ export function initScrollController({
 
   const diffController = initDiffController();
 
+  const setCurrentValue = (value: number) => {
+    currentValue = value;
+    if (max !== null && currentValue > max) {
+      currentValue = max;
+    }
+
+    if (min !== null && currentValue < min) {
+      currentValue = min;
+    }
+    onChange(currentValue);
+  };
+
   const createAnimationController = () => {
     if (!animationController) {
-      animationController = initAnimationController(currentValue, (value) => {
-        currentValue = value;
-        onChange(currentValue);
-      });
+      animationController = initAnimationController(
+        currentValue,
+        setCurrentValue
+      );
     }
   };
 
@@ -245,8 +261,7 @@ export function initScrollController({
     }
 
     if (!animationController) {
-      currentValue += diff;
-      onChange(currentValue);
+      setCurrentValue(currentValue + diff);
     }
 
     requestStopScrolling();

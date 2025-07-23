@@ -15,6 +15,8 @@ type InfiniteItemsProps = {
   getValue: (value: number, onClick: () => void) => ReactNode;
   snapSize: number;
   containerHeight: number;
+  min?: number;
+  max?: number;
 };
 
 export function InfiniteItems({
@@ -24,6 +26,8 @@ export function InfiniteItems({
   getValue,
   snapSize,
   containerHeight,
+  min = null,
+  max = null,
 }: InfiniteItemsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(defaultValue ?? 0);
@@ -40,14 +44,17 @@ export function InfiniteItems({
   const items = useMemo(() => {
     const currentValue = value - (value % snapSize);
 
-    const values: number[] = [currentValue];
+    const values: number[] = [];
 
-    values.unshift(currentValue - snapSize);
-    values.unshift(currentValue - snapSize * 2);
-    values.unshift(currentValue - snapSize * 3);
-    values.push(currentValue + snapSize);
-    values.push(currentValue + snapSize * 2);
-    values.push(currentValue + snapSize * 3);
+    for (let i = -4; i <= 4; i++) {
+      const val = currentValue + snapSize * i;
+
+      if ((min !== null && val < min) || (max !== null && val > max)) {
+        continue;
+      }
+
+      values.push(val);
+    }
 
     const items = values.map((val) => {
       const radius = containerHeight / 2 - 5;
@@ -90,6 +97,8 @@ export function InfiniteItems({
       className={className}
       onChange={changeHandler}
       snapSize={snapSize}
+      min={min}
+      max={max}
     >
       <div className={styles.itemsContainer} ref={containerRef}>
         {items}

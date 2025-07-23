@@ -1,13 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createEventAction } from "actions";
 import { Header } from "components/header";
-import { FormInput, FormSubmit } from "components/form";
-import { DatePicker } from "components/time-picker";
+import { FormSubmit } from "components/form";
+import { DateTimePicker } from "components/time-picker";
 import styles from "./create-event.module.css";
-import { selectNextEventType } from "selectors";
+import { createEventAction } from "actions";
+import { selectCurrentTime, selectNextEventType } from "selectors";
 import { EventType } from "types";
-import { TestAnimation } from "./test-animation";
 
 const eventTypeTitles: { [key in EventType]: string } = {
   [EventType.WokeUp]: "Woke up",
@@ -15,7 +14,8 @@ const eventTypeTitles: { [key in EventType]: string } = {
 };
 
 export function CreateEvent() {
-  const [timeValue, setTimeValue] = useState(() => new Date());
+  const currentTime = useSelector(selectCurrentTime);
+  const [timeValue, setTimeValue] = useState(() => currentTime);
   const dispatch = useDispatch();
   const nextEventType = useSelector(selectNextEventType);
 
@@ -29,11 +29,10 @@ export function CreateEvent() {
       <div className={styles.content}>
         <div className={styles.page}>
           <div className={styles.title}>{eventTypeTitles[nextEventType]}</div>
-          <DatePicker value={timeValue} onChange={setTimeValue} />
+          <DateTimePicker value={timeValue} onChange={setTimeValue} />
           <FormSubmit onSubmit={onSubmit} submitLabel="Submit" />
         </div>
       </div>
-      <TestAnimation />
     </div>
   );
 }
