@@ -12,17 +12,28 @@ type TimePickerProps = {
   className?: string;
 };
 
-const snapSize = 40;
+const SNAP_SIZE = 44;
+const CONTAINER_HEIGHT = 200;
 
 export function TimePicker({ value, onChange, className }: TimePickerProps) {
   return (
     <div className={cn(className, styles.timePicker)}>
-      <HoursPicker value={value} onChange={onChange} />
+      <HoursPicker
+        value={value}
+        onChange={onChange}
+        containerHeight={CONTAINER_HEIGHT}
+        snapSize={SNAP_SIZE}
+      />
       <div className={styles.clock}>
         <div className={styles.dotTop} />
         <div className={styles.dotBottom} />
       </div>
-      <MinutesPicker value={value} onChange={onChange} />
+      <MinutesPicker
+        value={value}
+        onChange={onChange}
+        containerHeight={CONTAINER_HEIGHT}
+        snapSize={SNAP_SIZE}
+      />
     </div>
   );
 }

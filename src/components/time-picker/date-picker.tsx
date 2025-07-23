@@ -8,11 +8,17 @@ type DatePickerProps = {
   value: Date;
   onChange: (value: Date) => void;
   className?: string;
+  containerHeight: number;
+  snapSize: number;
 };
 
-const snapSize = 40;
-
-export function DatePicker({ value, onChange, className }: DatePickerProps) {
+export function DatePicker({
+  value,
+  onChange,
+  className,
+  containerHeight,
+  snapSize,
+}: DatePickerProps) {
   const daysDiff = useMemo(() => getDaysDiff(value), [value]);
 
   const [defaultValue] = useState(-daysDiff * snapSize);
@@ -51,7 +57,7 @@ export function DatePicker({ value, onChange, className }: DatePickerProps) {
       getValue={getItem}
       className={cn(className, styles.picker, styles.datePicker)}
       snapSize={snapSize}
-      containerHeight={160}
+      containerHeight={containerHeight}
       min={-snapSize * 364}
       max={0}
     />

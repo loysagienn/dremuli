@@ -8,14 +8,16 @@ type MinutesPickerProps = {
   value: Date;
   onChange: (value: Date) => void;
   className?: string;
+  containerHeight: number;
+  snapSize: number;
 };
-
-const snapSize = 40;
 
 export function MinutesPicker({
   value,
   onChange,
   className,
+  containerHeight,
+  snapSize,
 }: MinutesPickerProps) {
   const minutes = value.getMinutes();
 
@@ -59,7 +61,7 @@ export function MinutesPicker({
       getValue={getItem}
       className={cn(className, styles.picker, styles.minutesPicker)}
       snapSize={snapSize}
-      containerHeight={160}
+      containerHeight={containerHeight}
     />
   );
 }

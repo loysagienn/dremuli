@@ -8,11 +8,17 @@ type HoursPickerProps = {
   value: Date;
   onChange: (value: Date) => void;
   className?: string;
+  containerHeight: number;
+  snapSize: number;
 };
 
-const snapSize = 40;
-
-export function HoursPicker({ value, onChange, className }: HoursPickerProps) {
+export function HoursPicker({
+  value,
+  onChange,
+  className,
+  containerHeight,
+  snapSize,
+}: HoursPickerProps) {
   const hour = value.getHours();
 
   const [defaultValue] = useState(hour * snapSize);
@@ -55,7 +61,7 @@ export function HoursPicker({ value, onChange, className }: HoursPickerProps) {
       getValue={getItem}
       className={cn(className, styles.picker, styles.hoursPicker)}
       snapSize={snapSize}
-      containerHeight={160}
+      containerHeight={containerHeight}
     />
   );
 }

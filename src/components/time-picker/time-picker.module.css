@@ -1,19 +1,19 @@
 .picker {
   box-sizing: border-box;
-  height: 160px;
+  height: 200px;
   /* border: 1px solid red; */
 }
 
 .datePicker {
-  width: 80px;
+  width: 120px;
 }
 
 .hoursPicker {
-  width: 52px;
+  width: 72px;
 }
 
 .minutesPicker {
-  width: 52px;
+  width: 72px;
 }
 
 .dateValue {
@@ -24,15 +24,13 @@
 
 .dateValueText {
   padding: 6px;
-  font-size: 20px;
-  line-height: 24px;
-  margin-top: 2px;
+  font-size: 26px;
+  line-height: 32px;
   cursor: pointer;
 }
 
 .datePicker .dateValueText {
-  font-size: 18px;
-  margin-top: 2px;
+  font-size: 22px;
 }
 
 .hoursPicker .dateValueText {

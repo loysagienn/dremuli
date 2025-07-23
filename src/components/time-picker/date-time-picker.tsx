@@ -1,7 +1,5 @@
-import React, { useCallback, useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import styles from "./time-picker.module.css";
-import { InfiniteItems } from "components/infinite-scroll";
-import { formatDate, getDaysDiff } from "utils/date";
 import { cn } from "utils/cn";
 import { HoursPicker } from "./hours-picker";
 import { MinutesPicker } from "./minutes-picker";
@@ -13,7 +11,8 @@ type DateTimePickerProps = {
   className?: string;
 };
 
-const snapSize = 40;
+const SNAP_SIZE = 44;
+const CONTAINER_HEIGHT = 200;
 
 export function DateTimePicker({
   value,
@@ -32,13 +31,28 @@ export function DateTimePicker({
   );
   return (
     <div className={cn(className, styles.timePicker)}>
-      <DatePicker value={value} onChange={changeHanler} />
-      <HoursPicker value={value} onChange={changeHanler} />
+      <DatePicker
+        value={value}
+        onChange={changeHanler}
+        containerHeight={CONTAINER_HEIGHT}
+        snapSize={SNAP_SIZE}
+      />
+      <HoursPicker
+        value={value}
+        onChange={changeHanler}
+        containerHeight={CONTAINER_HEIGHT}
+        snapSize={SNAP_SIZE}
+      />
       <div className={styles.clock}>
         <div className={styles.dotTop} />
         <div className={styles.dotBottom} />
       </div>
-      <MinutesPicker value={value} onChange={changeHanler} />
+      <MinutesPicker
+        value={value}
+        onChange={changeHanler}
+        containerHeight={CONTAINER_HEIGHT}
+        snapSize={SNAP_SIZE}
+      />
     </div>
   );
 }
