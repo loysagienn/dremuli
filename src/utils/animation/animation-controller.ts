@@ -1,9 +1,13 @@
 export type AnimationController = {
   // Set value with animation
-  move: (value: number, distanceFactor: number) => void;
+  move: (
+    value: number,
+    distanceFactor: number,
+    startAnimationSpeed?: number
+  ) => void;
   // Set value without animation
   set: (value: number) => void;
-  reset: () => void;
+  destroy: () => void;
 };
 
 // 60 frames per second
@@ -121,7 +125,11 @@ export function initAnimationController(
     requestFrame(animate);
   };
 
-  const move = (value: number, newDistanceFactor: number) => {
+  const move = (
+    value: number,
+    newDistanceFactor: number,
+    startAnimationSpeed?: number
+  ) => {
     if (targetValue === value) {
       return;
     }
@@ -130,6 +138,10 @@ export function initAnimationController(
     distanceFactor = newDistanceFactor;
     treshold = newDistanceFactor / 500;
 
+    if (startAnimationSpeed && animationSpeed === 0) {
+      animationSpeed = startAnimationSpeed;
+    }
+
     if (!active) {
       active = true;
 
@@ -137,9 +149,9 @@ export function initAnimationController(
     }
   };
 
-  const reset = () => {
+  const destroy = () => {
     destroyed = true;
   };
 
-  return { move, set, reset };
+  return { move, set, destroy };
 }

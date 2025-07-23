@@ -1,6 +1,6 @@
 import React, { useCallback, WheelEvent, useRef } from "react";
 import styles from "./time-picker.module.css";
-import { InfiniteScroll } from "components/infinite-scroll";
+import { InfiniteScroll, InfiniteItems } from "components/infinite-scroll";
 
 type DatePickerProps = {
   value: Date;
@@ -16,14 +16,14 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
     }
   }, []);
 
+  const getItem = useCallback((value: number) => <div>{value}</div>, []);
+
   return (
-    <InfiniteScroll
+    <InfiniteItems
       onChange={onScrollChange}
+      getValue={getItem}
       className={styles.datePicker}
       snapSize={40}
-    >
-      Date picker
-      <div ref={ref} />
-    </InfiniteScroll>
+    />
   );
 }
