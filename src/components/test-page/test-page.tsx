@@ -19,13 +19,11 @@ export function TestPage() {
   const value = useStore(scrollController.$value);
 
   const items = useMemo(() => {
-    const containerHeight = containerRef.current?.clientHeight ?? 500;
-
     const currentValue = value - (value % snapSize);
 
     const values: number[] = [];
 
-    for (let i = -4; i <= 4; i++) {
+    for (let i = -8; i <= 8; i++) {
       const val = currentValue + snapSize * i;
 
       values.push(val);
@@ -47,7 +45,7 @@ export function TestPage() {
               {items.map((item) => {
                 const containerHeight =
                   containerRef.current?.clientHeight ?? 500;
-                const top = item - value - snapSize / 2 + containerHeight / 2;
+                const top = item - value - snapSize / 2;
 
                 return (
                   <div

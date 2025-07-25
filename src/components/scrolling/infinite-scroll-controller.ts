@@ -3,6 +3,8 @@ import { initAnimationController, AnimationController } from "utils/animation";
 import { addWindowEvent, removeWindowEvent } from "utils/window-events";
 import styles from "./infinite-scroll.module.css";
 
+const scrollableSize = 20000;
+
 type InfiniteScrollControllerOptions = {
   direction: "horizontal" | "vertical";
   defaultValue?: number;
@@ -72,28 +74,28 @@ function setSnapElements(
   value: number,
   scrollValue: number
 ) {
-  scrollArea.style.scrollSnapType = "";
+  // scrollArea.style.scrollSnapType = "";
   scrollableNode.innerHTML = "";
 
-  let top = 0;
+  const valueDiff = value % snapSize;
+  const center = scrollValue - snapSize / 2 + scrollArea.offsetHeight / 2;
+  let top = (center % snapSize) - valueDiff;
 
-  while (top + snapSize < 10000) {
+  while (top + snapSize < scrollableSize) {
     const node = document.createElement("div");
     node.classList.add(styles.snapTarget);
     node.style.top = `${top}px`;
     node.style.height = `${snapSize}px`;
-    node.style.backgroundColor = `rgba(${Math.round(
-      (255 * top) / 10000
-    )}, 0, 0, 0.5)`;
+    // node.style.backgroundColor = `rgba(${Math.round(
+    //   (255 * top) / scrollableSize
+    // )}, 0, 0, 0.5)`;
 
     scrollableNode.appendChild(node);
 
     top += snapSize;
   }
 
-  setTimeout(() => {
-    scrollArea.style.scrollSnapType = "y mandatory";
-  }, 1000);
+  // scrollArea.style.scrollSnapType = "y mandatory";
 }
 
 export function initInfiniteScrollController({
@@ -104,7 +106,7 @@ export function initInfiniteScrollController({
   maxValue = null,
 }: InfiniteScrollControllerOptions = defaultOptions) {
   const $value = atom(defaultValue || 0);
-  const $scrollValue = atom(5000);
+  const $scrollValue = atom(scrollableSize / 2);
   const $touchesCount = atom(0);
   const $scrolling = atom(false);
 
@@ -187,6 +189,35 @@ export function initInfiniteScrollController({
     requestStopScrolling(60);
   };
 
+  const recenterScroll = () => {
+    const [scrollValue, elementSize] = getScrollPosition();
+
+    const bottomSpace = scrollableSize - scrollValue - elementSize * 2;
+
+    if (scrollValue < 3000 || bottomSpace < 3000) {
+      scrollableNode.innerHTML = "";
+
+      $scrollValue.set(scrollableSize / 2);
+      setScrollPosition(scrollableSize / 2);
+
+      if (snapSize) {
+        setSnapElements(
+          scrollArea,
+          scrollableNode,
+          snapSize,
+          $value.get(),
+          scrollableSize / 2
+        );
+      }
+    }
+  };
+
+  $scrolling.listen((scrolling) => {
+    if (!scrolling) {
+      recenterScroll();
+    }
+  });
+
   const onScroll = () => {
     if (!scrollArea) {
       return;
@@ -208,35 +239,9 @@ export function initInfiniteScrollController({
 
     const diff = scrollValue - currentScrollValue;
 
-    console.log(
-      "scrollValue",
-      scrollValue,
-      "currentScrollValue",
-      currentScrollValue,
-      "diff",
-      diff
-    );
-
     setValue($value.get() + diff);
 
-    const bottomSpace = 10000 - scrollValue - elementSize;
-
-    if (scrollValue < 1000 || bottomSpace < 1000) {
-      if (snapSize) {
-        setSnapElements(
-          scrollArea,
-          scrollableNode,
-          snapSize,
-          $value.get(),
-          5000
-        );
-      }
-
-      $scrollValue.set(5000);
-      setScrollPosition(5000);
-    } else {
-      $scrollValue.set(scrollValue);
-    }
+    $scrollValue.set(scrollValue);
 
     requestStopScrolling();
   };
@@ -249,13 +254,19 @@ export function initInfiniteScrollController({
     scrollArea = scrollAreaNode;
     scrollableNode = scrollable;
 
-    $scrollValue.set(5000);
-    setScrollPosition(5000);
+    $scrollValue.set(scrollableSize / 2);
+    setScrollPosition(scrollableSize / 2);
 
     if (snapSize) {
       const value = $value.get();
 
-      setSnapElements(scrollArea, scrollableNode, snapSize, value, 5000);
+      setSnapElements(
+        scrollArea,
+        scrollableNode,
+        snapSize,
+        value,
+        scrollableSize / 2
+      );
     }
 
     scrollArea.addEventListener("scroll", onScroll);

@@ -1,8 +1,9 @@
 .container {
   position: relative;
   overflow: hidden;
-  --scrollbar-overflow: 0;
-  --neg-scrollbar-overflow: 0;
+  --scrollbar-overflow: 20px;
+  --neg-scrollbar-overflow: -20px;
+  --scrollable-size: 20000px;
 }
 
 .scrollArea {
@@ -32,12 +33,12 @@
 .container.vertical .scrollable {
   position: relative;
   width: 100%;
-  min-height: 10000px;
+  min-height: var(--scrollable-size);
 }
 
 .container.horizontal .scrollable {
   position: relative;
-  min-width: 10000px;
+  min-width: var(--scrollable-size);
   height: 100%;
 }
 
@@ -67,5 +68,4 @@
   position: absolute;
   left: 0;
   right: 0;
-  border-bottom: 1px solid greenyellow;
 }
