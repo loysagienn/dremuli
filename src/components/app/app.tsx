@@ -20,6 +20,7 @@ import { AddEvent } from "components/add-event";
 import { TermsOfUse } from "components/terms-of-use";
 import { PrivacyPolicy } from "components/privacy-policy";
 import { CreateEvent } from "components/create-event";
+import { TestPage } from "components/test-page";
 
 export function App() {
   const theme = useSelector(selectTheme);
@@ -77,6 +78,10 @@ export function App() {
 
       <Route routeKey="privacy_policy">
         <PrivacyPolicy />
+      </Route>
+
+      <Route routeKey="test_page">
+        <TestPage />
       </Route>
     </div>
   );

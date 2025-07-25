@@ -471,6 +471,24 @@ const apiCsrfToken: RouteConfig<ApiCsrfToken> = {
   writeRoute: (route) => "/api/csrf-token",
 };
 
+type TestPage = {
+  key: "test_page";
+};
+
+const testPage: RouteConfig<TestPage> = {
+  key: "test_page",
+  readRoute: (path: string) => {
+    if (path === "/test") {
+      return {
+        key: "test_page",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/test",
+};
+
 export const router = initRouter(
   home,
   login,
@@ -485,6 +503,7 @@ export const router = initRouter(
   updateEvent,
   termsOfUse,
   privacyPolicy,
+  testPage,
   apiSettings,
   apiRegisterUser,
   apiLogin,

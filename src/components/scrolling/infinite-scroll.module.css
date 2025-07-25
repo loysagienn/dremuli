@@ -1,0 +1,71 @@
+.container {
+  position: relative;
+  overflow: hidden;
+  --scrollbar-overflow: 0;
+  --neg-scrollbar-overflow: 0;
+}
+
+.scrollArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  overflow: auto;
+}
+
+.container.snapValue .scrollArea {
+  scroll-snap-type: y mandatory;
+}
+
+.container.vertical .scrollArea {
+  bottom: 0;
+  right: var(--neg-scrollbar-overflow);
+  flex-direction: column;
+}
+
+.container.horizontal .scrollArea {
+  bottom: var(--neg-scrollbar-overflow);
+  flex-direction: row;
+  right: 0;
+}
+
+.container.vertical .scrollable {
+  position: relative;
+  width: 100%;
+  min-height: 10000px;
+}
+
+.container.horizontal .scrollable {
+  position: relative;
+  min-width: 10000px;
+  height: 100%;
+}
+
+.content {
+  position: sticky;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.container.vertical .content {
+  width: calc(100% - var(--scrollbar-overflow));
+  height: 100%;
+  min-height: 100%;
+}
+
+.container.horizontal .content {
+  height: calc(100% - var(--scrollbar-overflow));
+  width: 100%;
+  min-width: 100%;
+}
+
+.snapTarget {
+  scroll-snap-align: center;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid greenyellow;
+}

@@ -59,6 +59,10 @@ export function initAnimationController(
   let destroyed = false;
 
   const updateValue = (value: number) => {
+    if (destroyed) {
+      return;
+    }
+
     activeValue = value;
     setValue(value);
   };
@@ -75,6 +79,10 @@ export function initAnimationController(
   };
 
   const set = (value: number) => {
+    if (destroyed) {
+      return;
+    }
+
     if (value !== activeValue) {
       targetValue = value;
       updateValue(value);
@@ -130,6 +138,10 @@ export function initAnimationController(
     newDistanceFactor: number,
     startAnimationSpeed?: number
   ) => {
+    if (destroyed) {
+      return;
+    }
+
     if (targetValue === value) {
       return;
     }

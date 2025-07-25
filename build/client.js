@@ -19,6 +19,8 @@ function getOptions(NODE_ENV, APP_VERSION) {
       redux: "https://esm.sh/redux@5.0.1",
       "react-redux": "https://esm.sh/react-redux@9.2.0",
       "@reduxjs/toolkit": "https://esm.sh/@reduxjs/toolkit@2.8.2",
+      nanostores: "https://esm.sh/nanostores@1.0.1",
+      "@nanostores/react": "https://esm.sh/@nanostores/react@1.0.0",
       config: "config/client",
     },
     define: {
