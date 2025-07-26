@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useRef } from "react";
 import styles from "./test-page.module.css";
 import { Header } from "components/header";
 import {
-  InfiniteScroll,
   initInfiniteScrollController,
   InfiniteItems,
 } from "components/scrolling";
@@ -11,7 +10,6 @@ import { useStore } from "@nanostores/react";
 const snapSize = 100;
 
 export function TestPage() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const scrollController = useMemo(
     () => initInfiniteScrollController({ direction: "vertical", snapSize }),
     []
@@ -44,7 +42,7 @@ export function TestPage() {
     <div className={styles.root}>
       <Header />
       <div className={styles.content}>
-        <div className={styles.container} ref={containerRef}>
+        <div className={styles.container}>
           <InfiniteItems
             scrollController={scrollController}
             className={styles.scroll}

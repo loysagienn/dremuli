@@ -30,7 +30,11 @@ export function CreateEvent() {
         <div className={styles.page}>
           <div className={styles.title}>{eventTypeTitles[nextEventType]}</div>
           <DateTimePicker value={timeValue} onChange={setTimeValue} />
-          <FormSubmit onSubmit={onSubmit} submitLabel="Submit" />
+          <FormSubmit
+            onSubmit={onSubmit}
+            submitLabel="Submit"
+            className={styles.formSubmit}
+          />
         </div>
       </div>
     </div>

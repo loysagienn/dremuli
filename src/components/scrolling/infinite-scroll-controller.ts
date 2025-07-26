@@ -17,56 +17,6 @@ const defaultOptions: InfiniteScrollControllerOptions = {
   direction: "vertical",
 };
 
-// function snapValue(
-//   $value: Atom<number>,
-//   $scrolling: Atom<boolean>,
-//   snapSize: number,
-//   setValue: (value: number) => void
-// ) {
-//   let animationController: AnimationController | null = null;
-
-//   const getSnappedValue = () => {
-//     const value = $value.get();
-
-//     const diff = value % snapSize;
-
-//     const snappedValue =
-//       Math.abs(diff) < snapSize / 2
-//         ? value - diff
-//         : value + Math.sign(diff) * snapSize - diff;
-
-//     return snappedValue;
-//   };
-
-//   const createAnimationController = () => {
-//     if (!animationController) {
-//       const value = $value.get();
-
-//       animationController = initAnimationController(value, setValue);
-//     }
-//   };
-
-//   const destroyAnimationController = () => {
-//     if (animationController) {
-//       animationController.destroy();
-
-//       animationController = null;
-//     }
-//   };
-
-//   $scrolling.listen((scrolling) => {
-//     if (scrolling) {
-//       destroyAnimationController();
-//     } else {
-//       createAnimationController();
-
-//       const snappedValue = getSnappedValue();
-
-//       animationController.move(snappedValue, snapSize / 20);
-//     }
-//   });
-// }
-
 function setSnapElements(
   scrollArea: HTMLDivElement,
   scrollableNode: HTMLDivElement,
@@ -310,7 +260,7 @@ export function initInfiniteScrollController({
       }
     });
 
-    animationController.move(value, snapSize ? snapSize / 20 : 2);
+    animationController.move(value, snapSize ? snapSize / 5 : 20);
   };
 
   return {
