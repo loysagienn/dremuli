@@ -4,7 +4,7 @@ import { Header } from "components/header";
 import { FormSubmit } from "components/form";
 import { DateTimePicker } from "components/time-picker";
 import styles from "./create-event.module.css";
-import { createEventAction } from "actions";
+import { createEventAction, routeToAction } from "actions";
 import { selectCurrentTime, selectNextEventType } from "selectors";
 import { EventType } from "types";
 
@@ -23,6 +23,10 @@ export function CreateEvent() {
     dispatch(createEventAction(nextEventType, timeValue));
   }, [timeValue]);
 
+  const onCancel = useCallback(() => {
+    dispatch(routeToAction({ key: "home" }));
+  }, []);
+
   return (
     <div className={styles.root}>
       <Header />
@@ -30,11 +34,14 @@ export function CreateEvent() {
         <div className={styles.page}>
           <div className={styles.title}>{eventTypeTitles[nextEventType]}</div>
           <DateTimePicker value={timeValue} onChange={setTimeValue} />
-          <FormSubmit
-            onSubmit={onSubmit}
-            submitLabel="Submit"
-            className={styles.formSubmit}
-          />
+          <div className={styles.formSubmit}>
+            <FormSubmit onSubmit={onSubmit} submitLabel="Submit" />
+            <FormSubmit
+              onSubmit={onCancel}
+              submitLabel="Cancel"
+              style="outline"
+            />
+          </div>
         </div>
       </div>
     </div>

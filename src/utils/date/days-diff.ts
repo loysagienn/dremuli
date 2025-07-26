@@ -1,14 +1,14 @@
 export function getDaysDiff(pastDate: Date): number {
   const today = new Date();
   const utcToday = Date.UTC(
-    today.getUTCFullYear(),
-    today.getUTCMonth(),
-    today.getUTCDate()
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
   );
   const utcPast = Date.UTC(
-    pastDate.getUTCFullYear(),
-    pastDate.getUTCMonth(),
-    pastDate.getUTCDate()
+    pastDate.getFullYear(),
+    pastDate.getMonth(),
+    pastDate.getDate()
   );
 
   const msPerDay = 1000 * 60 * 60 * 24;

@@ -38,5 +38,5 @@
 }
 
 .formSubmit {
-  justify-self: end;
+  display: block;
 }
