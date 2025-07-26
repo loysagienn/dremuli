@@ -23,26 +23,16 @@ export function DateTimePicker({
     (value: Date) => {
       onChange(value);
 
-      if (typeof navigator !== "undefined" && navigator.vibrate) {
-        navigator.vibrate(20);
-      }
+      // if (typeof navigator !== "undefined" && navigator.vibrate) {
+      //   navigator.vibrate(20);
+      // }
     },
     [onChange]
   );
   return (
     <div className={cn(className, styles.timePicker)}>
-      <DatePicker
-        value={value}
-        onChange={changeHanler}
-        containerHeight={CONTAINER_HEIGHT}
-        snapSize={SNAP_SIZE}
-      />
-      <HoursPicker
-        value={value}
-        onChange={changeHanler}
-        containerHeight={CONTAINER_HEIGHT}
-        snapSize={SNAP_SIZE}
-      />
+      <DatePicker value={value} onChange={changeHanler} snapSize={SNAP_SIZE} />
+      <HoursPicker value={value} onChange={changeHanler} snapSize={SNAP_SIZE} />
       <div className={styles.clock}>
         <div className={styles.dotTop} />
         <div className={styles.dotBottom} />

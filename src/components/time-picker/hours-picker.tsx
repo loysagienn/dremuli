@@ -10,7 +10,6 @@ type HoursPickerProps = {
   value: Date;
   onChange: (value: Date) => void;
   className?: string;
-  containerHeight: number;
   snapSize: number;
 };
 
@@ -46,7 +45,7 @@ export function HoursPicker({
         onChange(newDate);
       }
     });
-  }, [scrollController, onChange]);
+  }, [scrollController, onChange, hour, value]);
 
   const getValueContent = useCallback(
     (pixelValue: number, onClick: () => void) => {

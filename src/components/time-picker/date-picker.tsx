@@ -1,6 +1,9 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useEffect, useState } from "react";
 import styles from "./time-picker.module.css";
-import { InfiniteItems } from "components/infinite-scroll";
+import {
+  initInfiniteScrollController,
+  InfiniteItems,
+} from "components/scrolling";
 import { formatDate, getDaysDiff } from "utils/date";
 import { cn } from "utils/cn";
 
@@ -8,7 +11,6 @@ type DatePickerProps = {
   value: Date;
   onChange: (value: Date) => void;
   className?: string;
-  containerHeight: number;
   snapSize: number;
 };
 
@@ -16,50 +18,57 @@ export function DatePicker({
   value,
   onChange,
   className,
-  containerHeight,
   snapSize,
 }: DatePickerProps) {
   const daysDiff = useMemo(() => getDaysDiff(value), [value]);
 
-  const [defaultValue] = useState(-daysDiff * snapSize);
+  const scrollController = useMemo(
+    () =>
+      initInfiniteScrollController({
+        direction: "vertical",
+        defaultValue: -daysDiff * snapSize,
+        snapSize,
+        minValue: -snapSize * 364,
+        maxValue: 0,
+      }),
+    []
+  );
 
-  const onScrollChange = useCallback(
-    (pixelValue: number) => {
+  useEffect(() => {
+    return scrollController.$value.listen((pixelValue) => {
       const newDaysDiff = -Math.round(pixelValue / snapSize);
 
       if (newDaysDiff !== daysDiff) {
         const newDate = new Date(value);
         newDate.setDate(newDate.getDate() - newDaysDiff + daysDiff);
+
         onChange(newDate);
       }
-    },
-    [value, daysDiff, onChange]
-  );
+    });
+  }, [scrollController, onChange, daysDiff, value]);
 
-  const getItem = useCallback((pixelValue: number, onClick: () => void) => {
-    const daysDiff = Math.round(pixelValue / snapSize);
-    const date = new Date();
-    date.setDate(date.getDate() + daysDiff);
+  const getValueContent = useCallback(
+    (pixelValue: number, onClick: () => void) => {
+      const daysDiff = Math.round(pixelValue / snapSize);
+      const date = new Date();
+      date.setDate(date.getDate() + daysDiff);
 
-    return (
-      <div className={styles.dateValue}>
-        <div className={styles.dateValueText} onClick={onClick}>
-          {formatDate(date)}
+      return (
+        <div className={styles.dateValue}>
+          <div className={styles.dateValueText} onClick={onClick}>
+            {formatDate(date)}
+          </div>
         </div>
-      </div>
-    );
-  }, []);
+      );
+    },
+    []
+  );
 
   return (
     <InfiniteItems
-      defaultValue={defaultValue}
-      onChange={onScrollChange}
-      getValue={getItem}
       className={cn(className, styles.picker, styles.datePicker)}
-      snapSize={snapSize}
-      containerHeight={containerHeight}
-      min={-snapSize * 364}
-      max={0}
+      scrollController={scrollController}
+      getValueContent={getValueContent}
     />
   );
 }
