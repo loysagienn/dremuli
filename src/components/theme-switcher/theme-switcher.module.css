@@ -2,7 +2,7 @@
   position: relative;
   width: 48px;
   height: 24px;
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-border);
   border-radius: 12px;
   cursor: pointer;
 }
