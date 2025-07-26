@@ -1,7 +1,6 @@
 .picker {
   box-sizing: border-box;
-  height: 200px;
-  /* border: 1px solid red; */
+  height: 240px;
 }
 
 .datePicker {
@@ -42,6 +41,7 @@
 }
 
 .timePicker {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +60,7 @@
   width: 3px;
   height: 3px;
   border-radius: 3px;
-  background-color: #ffffff;
+  background-color: var(--color-text);
 }
 
 .dotTop {
@@ -69,4 +69,15 @@
 
 .dotBottom {
   bottom: 0;
+}
+
+.border {
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 23px);
+  height: 46px;
+  border-radius: 6px;
+  border: 2px solid var(--color-border);
 }

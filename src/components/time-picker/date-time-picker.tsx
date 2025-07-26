@@ -31,6 +31,7 @@ export function DateTimePicker({
   );
   return (
     <div className={cn(className, styles.timePicker)}>
+      <div className={styles.border} />
       <DatePicker value={value} onChange={changeHanler} snapSize={SNAP_SIZE} />
       <HoursPicker value={value} onChange={changeHanler} snapSize={SNAP_SIZE} />
       <div className={styles.clock}>

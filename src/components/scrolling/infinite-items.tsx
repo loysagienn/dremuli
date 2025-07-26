@@ -33,7 +33,8 @@ export function InfiniteItems({
     }
 
     const { snapSize, minValue, maxValue, direction } = scrollController;
-    const currentValue = value - (value % snapSize);
+
+    const currentValue = Math.round(value / snapSize) * snapSize;
 
     const values: number[] = [];
 
@@ -70,7 +71,8 @@ export function InfiniteItems({
         Math.sin(angle) * radius - snapSize / 2 + containerSize / 2;
       const size = snapSize;
       const scale = (Math.cos(angle) + 1) / 2;
-      const opacity = (1 - Math.abs(factor)) ** 1.5;
+      const opacity =
+        val === currentValue ? 1 : (1 - Math.abs(factor)) ** 2 * 0.8;
       const transform = `scale(${scale}, ${scale}) ${
         direction === "vertical" ? "rotateX" : "rotateY"
       }(${angle}rad)`;
