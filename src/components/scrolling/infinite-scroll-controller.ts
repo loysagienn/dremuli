@@ -17,64 +17,64 @@ const defaultOptions: InfiniteScrollControllerOptions = {
   direction: "vertical",
 };
 
-function snapValue(
-  $value: Atom<number>,
-  $scrolling: Atom<boolean>,
-  snapSize: number,
-  setValue: (value: number) => void
-) {
-  let animationController: AnimationController | null = null;
+// function snapValue(
+//   $value: Atom<number>,
+//   $scrolling: Atom<boolean>,
+//   snapSize: number,
+//   setValue: (value: number) => void
+// ) {
+//   let animationController: AnimationController | null = null;
 
-  const getSnappedValue = () => {
-    const value = $value.get();
+//   const getSnappedValue = () => {
+//     const value = $value.get();
 
-    const diff = value % snapSize;
+//     const diff = value % snapSize;
 
-    const snappedValue =
-      Math.abs(diff) < snapSize / 2
-        ? value - diff
-        : value + Math.sign(diff) * snapSize - diff;
+//     const snappedValue =
+//       Math.abs(diff) < snapSize / 2
+//         ? value - diff
+//         : value + Math.sign(diff) * snapSize - diff;
 
-    return snappedValue;
-  };
+//     return snappedValue;
+//   };
 
-  const createAnimationController = () => {
-    if (!animationController) {
-      const value = $value.get();
+//   const createAnimationController = () => {
+//     if (!animationController) {
+//       const value = $value.get();
 
-      animationController = initAnimationController(value, setValue);
-    }
-  };
+//       animationController = initAnimationController(value, setValue);
+//     }
+//   };
 
-  const destroyAnimationController = () => {
-    if (animationController) {
-      animationController.destroy();
+//   const destroyAnimationController = () => {
+//     if (animationController) {
+//       animationController.destroy();
 
-      animationController = null;
-    }
-  };
+//       animationController = null;
+//     }
+//   };
 
-  $scrolling.listen((scrolling) => {
-    if (scrolling) {
-      destroyAnimationController();
-    } else {
-      createAnimationController();
+//   $scrolling.listen((scrolling) => {
+//     if (scrolling) {
+//       destroyAnimationController();
+//     } else {
+//       createAnimationController();
 
-      const snappedValue = getSnappedValue();
+//       const snappedValue = getSnappedValue();
 
-      animationController.move(snappedValue, snapSize / 20);
-    }
-  });
-}
+//       animationController.move(snappedValue, snapSize / 20);
+//     }
+//   });
+// }
 
 function setSnapElements(
   scrollArea: HTMLDivElement,
   scrollableNode: HTMLDivElement,
   snapSize: number,
+  direction: "vertical" | "horizontal",
   value: number,
   scrollValue: number
 ) {
-  // scrollArea.style.scrollSnapType = "";
   scrollableNode.innerHTML = "";
 
   const valueDiff = value % snapSize;
@@ -84,18 +84,18 @@ function setSnapElements(
   while (top + snapSize < scrollableSize) {
     const node = document.createElement("div");
     node.classList.add(styles.snapTarget);
-    node.style.top = `${top}px`;
-    node.style.height = `${snapSize}px`;
-    // node.style.backgroundColor = `rgba(${Math.round(
-    //   (255 * top) / scrollableSize
-    // )}, 0, 0, 0.5)`;
+    if (direction === "vertical") {
+      node.style.top = `${top}px`;
+      node.style.height = `${snapSize}px`;
+    } else {
+      node.style.left = `${top}px`;
+      node.style.width = `${snapSize}px`;
+    }
 
     scrollableNode.appendChild(node);
 
     top += snapSize;
   }
-
-  // scrollArea.style.scrollSnapType = "y mandatory";
 }
 
 export function initInfiniteScrollController({
@@ -106,6 +106,7 @@ export function initInfiniteScrollController({
   maxValue = null,
 }: InfiniteScrollControllerOptions = defaultOptions) {
   const $value = atom(defaultValue || 0);
+  const $containerSize = atom(0);
   const $scrollValue = atom(scrollableSize / 2);
   const $touchesCount = atom(0);
   const $scrolling = atom(false);
@@ -122,10 +123,6 @@ export function initInfiniteScrollController({
       $value.set(value);
     }
   };
-
-  // if (snapSize) {
-  //   snapValue($value, $scrolling, snapSize, setValue);
-  // }
 
   const getScrollPosition = (): [number, number] => {
     if (!scrollArea) {
@@ -194,7 +191,7 @@ export function initInfiniteScrollController({
 
     const bottomSpace = scrollableSize - scrollValue - elementSize * 2;
 
-    if (scrollValue < 3000 || bottomSpace < 3000) {
+    if (scrollValue < 4000 || bottomSpace < 4000) {
       scrollableNode.innerHTML = "";
 
       $scrollValue.set(scrollableSize / 2);
@@ -205,6 +202,7 @@ export function initInfiniteScrollController({
           scrollArea,
           scrollableNode,
           snapSize,
+          direction,
           $value.get(),
           scrollableSize / 2
         );
@@ -223,18 +221,18 @@ export function initInfiniteScrollController({
       return;
     }
 
-    const scrolling = $scrolling.get();
-
-    if (!scrolling) {
-      $scrolling.set(true);
-    }
-
-    const [scrollValue, elementSize] = getScrollPosition();
+    const [scrollValue] = getScrollPosition();
 
     const currentScrollValue = $scrollValue.get();
 
     if (currentScrollValue === scrollValue) {
       return;
+    }
+
+    const scrolling = $scrolling.get();
+
+    if (!scrolling) {
+      $scrolling.set(true);
     }
 
     const diff = scrollValue - currentScrollValue;
@@ -254,6 +252,11 @@ export function initInfiniteScrollController({
     scrollArea = scrollAreaNode;
     scrollableNode = scrollable;
 
+    $containerSize.set(
+      direction === "vertical"
+        ? scrollArea.clientHeight
+        : scrollArea.clientWidth
+    );
     $scrollValue.set(scrollableSize / 2);
     setScrollPosition(scrollableSize / 2);
 
@@ -264,6 +267,7 @@ export function initInfiniteScrollController({
         scrollArea,
         scrollableNode,
         snapSize,
+        direction,
         value,
         scrollableSize / 2
       );
@@ -284,12 +288,41 @@ export function initInfiniteScrollController({
     removeWindowEvent("touchend", onTouchEnd);
   };
 
+  const updateValue = (value: number) => {
+    if ($scrolling.get() || $value.get() === value) {
+      return;
+    }
+
+    const reset = () => {
+      animationController.destroy();
+      unsubscribeScrolling();
+    };
+
+    const animationController = initAnimationController(
+      $value.get(),
+      setValue,
+      reset
+    );
+
+    const unsubscribeScrolling = $scrolling.listen((scrolling) => {
+      if (scrolling) {
+        reset();
+      }
+    });
+
+    animationController.move(value, snapSize ? snapSize / 20 : 2);
+  };
+
   return {
     init,
     destroy,
+    updateValue,
     direction,
     snapSize,
+    minValue,
+    maxValue,
     $value,
+    $containerSize,
   };
 }
 

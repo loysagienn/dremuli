@@ -37,8 +37,9 @@
 
 .item {
   position: absolute;
-  left: 0;
-  right: 0;
-  box-sizing: border-box;
-  border-top: 1px solid red;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
 }

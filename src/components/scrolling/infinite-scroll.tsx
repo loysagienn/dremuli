@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  ReactNode,
-  useLayoutEffect,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { memo, ReactNode, useLayoutEffect, useRef } from "react";
 import styles from "./infinite-scroll.module.css";
 import { cn } from "utils/cn";
 import { InfiniteScrollController } from "./infinite-scroll-controller";

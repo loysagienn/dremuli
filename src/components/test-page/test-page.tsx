@@ -1,9 +1,10 @@
-import React, { useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import styles from "./test-page.module.css";
 import { Header } from "components/header";
 import {
   InfiniteScroll,
   initInfiniteScrollController,
+  InfiniteItems,
 } from "components/scrolling";
 import { useStore } from "@nanostores/react";
 
@@ -32,33 +33,23 @@ export function TestPage() {
     return values;
   }, [value]);
 
+  const getValueContent = useCallback((value: number, onClick: () => void) => {
+    return (
+      <div className={styles.item} key={value} onClick={onClick}>
+        {value}
+      </div>
+    );
+  }, []);
   return (
     <div className={styles.root}>
       <Header />
       <div className={styles.content}>
         <div className={styles.container} ref={containerRef}>
-          <InfiniteScroll
+          <InfiniteItems
             scrollController={scrollController}
             className={styles.scroll}
-          >
-            <div className={styles.values}>
-              {items.map((item) => {
-                const containerHeight =
-                  containerRef.current?.clientHeight ?? 500;
-                const top = item - value - snapSize / 2;
-
-                return (
-                  <div
-                    className={styles.item}
-                    key={item}
-                    style={{ top, height: snapSize }}
-                  >
-                    {item}
-                  </div>
-                );
-              })}
-            </div>
-          </InfiniteScroll>
+            getValueContent={getValueContent}
+          ></InfiniteItems>
         </div>
       </div>
     </div>

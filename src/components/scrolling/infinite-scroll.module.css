@@ -14,8 +14,12 @@
   overflow: auto;
 }
 
-.container.snapValue .scrollArea {
+.container.vertical.snapValue .scrollArea {
   scroll-snap-type: y mandatory;
+}
+
+.container.horizontal.snapValue .scrollArea {
+  scroll-snap-type: x mandatory;
 }
 
 .container.vertical .scrollArea {
@@ -66,6 +70,37 @@
   scroll-snap-align: center;
   box-sizing: border-box;
   position: absolute;
+}
+
+.container.vertical .snapTarget {
   left: 0;
   right: 0;
+}
+
+.container.horizontal .snapTarget {
+  top: 0;
+  bottom: 0;
+}
+
+.itemsContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.item {
+  box-sizing: border-box;
+  position: absolute;
+}
+
+.container.vertical .item {
+  left: 0;
+  right: 0;
+}
+
+.container.horizontal .item {
+  top: 0;
+  bottom: 0;
 }
