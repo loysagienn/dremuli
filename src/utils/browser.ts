@@ -1,3 +1,5 @@
+import { Size } from "types";
+
 export function addWindowEvent<K extends keyof WindowEventMap>(
   type: K,
   listener: (event: WindowEventMap[K]) => void
@@ -18,4 +20,15 @@ export function removeWindowEvent<K extends keyof WindowEventMap>(
   }
 
   window.removeEventListener(type, listener);
+}
+
+export function getWindowSize(): Size {
+  if (typeof window === "undefined") {
+    return { width: 1600, height: 1000 };
+  }
+
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  return { width, height };
 }

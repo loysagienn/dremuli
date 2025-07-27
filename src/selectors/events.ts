@@ -32,6 +32,10 @@ export const selectNapEvents = createSelector(
   getNapEvents
 );
 
+export const selectSleepEvents = createSelector(selectNapEvents, (napEvents) =>
+  napEvents.filter((event) => event.type === EventType.FellAsleep)
+);
+
 export const selectLastEvent = createSelector(selectNapEvents, (napEvents) => {
   if (napEvents.length === 0) {
     return null;

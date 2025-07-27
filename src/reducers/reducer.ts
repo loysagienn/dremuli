@@ -7,6 +7,7 @@ import { activeDay } from "./active-day";
 import { pageVisibility } from "./page-visibility";
 import { admin } from "./admin";
 import { events } from "./events";
+import { windowSize } from "./window-size";
 
 export const reducer = combineReducers({
   router,
@@ -17,6 +18,7 @@ export const reducer = combineReducers({
   pageVisibility,
   admin,
   events,
+  windowSize,
 });
 
 export type State = ReturnType<typeof reducer>;

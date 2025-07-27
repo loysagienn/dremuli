@@ -1,8 +1,14 @@
 import { Store } from "types";
-import { selectCurrentTime, selectTimeZone } from "selectors";
-import { setCurrentTimeAction, setPageVisible, setTimeZone } from "actions";
+import { selectCurrentTime, selectTimeZone, selectWindowSize } from "selectors";
+import {
+  setCurrentTimeAction,
+  setPageVisible,
+  setTimeZone,
+  setWindowSizeAction,
+} from "actions";
 import { getCurrentMinute } from "utils/date";
 import { selectPageVisible } from "selectors/page";
+import { getWindowSize } from "utils/browser";
 
 export function setDefaults({ subscribe, getState, dispatch }: Store) {
   const activeTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -32,4 +38,20 @@ export function setDefaults({ subscribe, getState, dispatch }: Store) {
       dispatch(setPageVisible(isVisible));
     }
   });
+
+  const updateWindowSize = () => {
+    const windowSize = selectWindowSize(getState());
+
+    const actualWindowSize = getWindowSize();
+
+    if (
+      actualWindowSize.width !== windowSize.width ||
+      actualWindowSize.height !== windowSize.height
+    ) {
+      dispatch(setWindowSizeAction(actualWindowSize));
+    }
+  };
+
+  updateWindowSize();
+  window.addEventListener("resize", updateWindowSize);
 }

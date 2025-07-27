@@ -1,6 +1,6 @@
 import { Atom, atom } from "nanostores";
 import { initAnimationController, AnimationController } from "utils/animation";
-import { addWindowEvent, removeWindowEvent } from "utils/window-events";
+import { addWindowEvent, removeWindowEvent } from "utils/browser";
 import styles from "./infinite-scroll.module.css";
 
 const scrollableSize = 20000;
