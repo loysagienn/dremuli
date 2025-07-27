@@ -375,24 +375,6 @@ const createEvent: RouteConfig<CreateEvent> = {
   writeRoute: (route) => "/events/create",
 };
 
-type CreateEventNew = {
-  key: "create_event_new";
-};
-
-const createEventNew: RouteConfig<CreateEventNew> = {
-  key: "create_event_new",
-  readRoute: (path: string) => {
-    if (path === "/events/create-new") {
-      return {
-        key: "create_event_new",
-      };
-    }
-
-    return null;
-  },
-  writeRoute: (route) => "/events/create-new",
-};
-
 type UpdateEvent = {
   key: "update_event";
   eventId: string;
@@ -489,6 +471,42 @@ const testPage: RouteConfig<TestPage> = {
   writeRoute: (route) => "/test",
 };
 
+type Settings = {
+  key: "settings";
+};
+
+const settings: RouteConfig<Settings> = {
+  key: "settings",
+  readRoute: (path: string) => {
+    if (path === "/settings") {
+      return {
+        key: "settings",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/settings",
+};
+
+type Statistics = {
+  key: "statistics";
+};
+
+const statistics: RouteConfig<Statistics> = {
+  key: "statistics",
+  readRoute: (path: string) => {
+    if (path === "/statistics") {
+      return {
+        key: "statistics",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/statistics",
+};
+
 export const router = initRouter(
   home,
   login,
@@ -499,10 +517,11 @@ export const router = initRouter(
   forgetPassword,
   resetPassword,
   createEvent,
-  createEventNew,
   updateEvent,
   termsOfUse,
   privacyPolicy,
+  settings,
+  statistics,
   testPage,
   apiSettings,
   apiRegisterUser,

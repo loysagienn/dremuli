@@ -7,6 +7,7 @@ import styles from "./create-event.module.css";
 import { createEventAction, routeToAction } from "actions";
 import { selectCurrentTime, selectNextEventType } from "selectors";
 import { EventType } from "types";
+import { Layout } from "components/layout";
 
 const eventTypeTitles: { [key in EventType]: string } = {
   [EventType.WokeUp]: "Woke up",
@@ -28,8 +29,7 @@ export function CreateEvent() {
   }, []);
 
   return (
-    <div className={styles.root}>
-      <Header />
+    <Layout>
       <div className={styles.content}>
         <div className={styles.page}>
           <div className={styles.title}>{eventTypeTitles[nextEventType]}</div>
@@ -44,6 +44,6 @@ export function CreateEvent() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

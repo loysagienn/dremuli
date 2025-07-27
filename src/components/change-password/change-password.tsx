@@ -4,6 +4,7 @@ import { changePassword } from "actions";
 import { FormInput, FormSubmit } from "components/form";
 import styles from "./change-password.module.css";
 import { Header } from "components/header";
+import { Layout } from "components/layout";
 
 export function ChangePassword() {
   const [password, setPassword] = useState("");
@@ -19,8 +20,7 @@ export function ChangePassword() {
   }, [newPassword, password]);
 
   return (
-    <div className={styles.root}>
-      <Header />
+    <Layout>
       <div className={styles.content}>
         <div className={styles.page}>
           <div className={styles.title}>Change password</div>
@@ -41,6 +41,6 @@ export function ChangePassword() {
           <FormSubmit onSubmit={onSubmit} submitLabel="Change password" />
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

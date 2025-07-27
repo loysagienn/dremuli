@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "components/button";
 import { ThemeSwitcher } from "components/theme-switcher";
 import Profile from "svg/profile.svg";
 import Home from "svg/home.svg";

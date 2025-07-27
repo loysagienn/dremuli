@@ -8,7 +8,9 @@ import styles from "./welcome-page.module.css";
 export function WelcomePage() {
   return (
     <div className={styles.root}>
-      <Header />
+      <div className={styles.header}>
+        <ThemeSwitcher />
+      </div>
       <div className={styles.content}>
         <div className={styles.logo}>
           <Logo className={styles.logoSvg} />

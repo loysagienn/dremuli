@@ -29,8 +29,8 @@ export function Naps({ className }: NapsProps) {
     const napsList = napsListRef.current;
 
     if (root && napsList) {
-      if (napsList.scrollHeight > napsList.offsetHeight) {
-        napsList.scrollTop = napsList.scrollHeight - napsList.offsetHeight;
+      if (napsList.scrollHeight > napsList.clientHeight) {
+        napsList.scrollTop = napsList.scrollHeight - napsList.clientHeight;
       }
 
       root.style.opacity = "1";

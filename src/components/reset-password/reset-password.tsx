@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetPassword } from "actions";
-import { Link } from "components/router";
 import { selectRoute } from "selectors";
 import styles from "./reset-password.module.css";
 import { Header } from "components/header";

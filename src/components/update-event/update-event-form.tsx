@@ -6,6 +6,7 @@ import { FormSubmit } from "components/form";
 import styles from "./update-event.module.css";
 import { Event, EventType } from "types";
 import { DateTimePicker } from "components/time-picker";
+import { Layout } from "components/layout";
 
 const eventTitles: { [key in EventType]: string } = {
   [EventType.FellAsleep]: "Fell asleep",
@@ -40,8 +41,7 @@ export function UpdateEventForm({ event }: UpdateEventFormProps) {
   }, []);
 
   return (
-    <div className={styles.root}>
-      <Header />
+    <Layout>
       <div className={styles.content}>
         <div className={styles.page}>
           <div className={styles.title}>
@@ -64,6 +64,6 @@ export function UpdateEventForm({ event }: UpdateEventFormProps) {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

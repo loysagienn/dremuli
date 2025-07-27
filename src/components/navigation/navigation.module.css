@@ -1,0 +1,83 @@
+.content {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 8px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tab {
+  box-sizing: border-box;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  color: var(--color-text-secondary);
+  border-bottom: 2px solid transparent;
+  border-top: 2px solid transparent;
+  gap: 8px;
+}
+
+.tabIcon {
+  width: 20px;
+  height: 20px;
+  fill: var(--color-text-secondary);
+}
+
+.tabIcon.statistics,
+.tabIcon.settings {
+  stroke: var(--color-text-secondary);
+  fill: none;
+}
+
+.tab.isActive {
+  color: var(--color-text);
+  border-bottom: 2px solid var(--color-action);
+}
+
+.tab.isActive .tabIcon {
+  fill: var(--color-text);
+}
+.tab.isActive .tabIcon.statistics,
+.tab.isActive .tabIcon.settings {
+  stroke: var(--color-text);
+  fill: none;
+}
+
+.tab:hover {
+  color: var(--color-text);
+}
+
+.tab:hover .tabIcon {
+  fill: var(--color-text);
+}
+.tab:hover .tabIcon.statistics,
+.tab:hover .tabIcon.settings {
+  stroke: var(--color-text);
+  fill: none;
+}
+
+@media (max-width: 440px) {
+  .content {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .tab {
+    flex-basis: 25%;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+    padding-bottom: 16px;
+  }
+
+  .tab.isActive {
+    border-bottom: 2px solid transparent;
+    border-top: 2px solid var(--color-action);
+  }
+}

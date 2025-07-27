@@ -6,7 +6,7 @@ import darkStyles from "app/styles/dark.module.css";
 import commonStyles from "app/styles/common.module.css";
 import { useSelector } from "react-redux";
 import { selectTheme, selectUser } from "selectors";
-import { Route, Link } from "components/router";
+import { Route } from "components/router";
 import { Registration } from "components/registration";
 import { ChangePassword } from "components/change-password";
 import { ForgetPassword } from "components/forget-password";
@@ -16,11 +16,12 @@ import { Profile } from "components/profile";
 import { Home } from "components/home";
 import { Login } from "components/login";
 import { UpdateEvent } from "components/update-event";
-import { AddEvent } from "components/add-event";
 import { TermsOfUse } from "components/terms-of-use";
 import { PrivacyPolicy } from "components/privacy-policy";
 import { CreateEvent } from "components/create-event";
 import { TestPage } from "components/test-page";
+import { SettingsPage } from "components/settings-page";
+import { StatisticsPage } from "components/statistics-page";
 
 export function App() {
   const theme = useSelector(selectTheme);
@@ -68,16 +69,20 @@ export function App() {
         <CreateEvent />
       </Route>
 
-      <Route routeKey="create_event_new">
-        <CreateEvent />
-      </Route>
-
       <Route routeKey="terms_of_use">
         <TermsOfUse />
       </Route>
 
       <Route routeKey="privacy_policy">
         <PrivacyPolicy />
+      </Route>
+
+      <Route routeKey="settings">
+        <SettingsPage />
+      </Route>
+
+      <Route routeKey="statistics">
+        <StatisticsPage />
       </Route>
 
       <Route routeKey="test_page">

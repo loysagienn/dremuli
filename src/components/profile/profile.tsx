@@ -1,16 +1,15 @@
 import React from "react";
 import styles from "./profile.module.css";
-import { Header } from "components/header";
 import { Link } from "components/router";
 import { useSelector } from "react-redux";
 import { selectUser } from "selectors";
+import { Layout } from "components/layout";
 
 export function Profile() {
   const user = useSelector(selectUser);
 
   return (
-    <div className={styles.root}>
-      <Header />
+    <Layout>
       <div className={styles.content}>
         <div className={styles.page}>
           <div className={styles.title}>Profile</div>
@@ -31,6 +30,6 @@ export function Profile() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

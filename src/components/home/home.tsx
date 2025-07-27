@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import styles from "./home.module.css";
-import { Header } from "components/header";
 import { Naps } from "components/naps";
+import { Layout } from "components/layout";
 
 export function Home() {
   const [hasMounted, setHasMounted] = useState(false);
@@ -12,10 +12,5 @@ export function Home() {
     setHasMounted(true);
   }, []);
 
-  return (
-    <div className={styles.root}>
-      <Header />
-      {hasMounted && <Naps className={styles.content} />}
-    </div>
-  );
+  return <Layout>{hasMounted && <Naps className={styles.content} />}</Layout>;
 }

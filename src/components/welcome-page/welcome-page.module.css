@@ -3,6 +3,18 @@
   inset: 0;
 }
 
+.header {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--header-height);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .content {
   position: absolute;
   top: var(--header-height);
