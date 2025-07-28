@@ -17,10 +17,11 @@ function getOptions(NODE_ENV, APP_VERSION) {
       "react-dom/client": "https://esm.sh/react-dom@19.1.0/client",
       react: "https://esm.sh/react@19.1.0",
       redux: "https://esm.sh/redux@5.0.1",
-      "react-redux": "https://esm.sh/react-redux@9.2.0",
+      "react-redux": "https://esm.sh/react-redux@9.2.0?deps=react@19.1.0",
       "@reduxjs/toolkit": "https://esm.sh/@reduxjs/toolkit@2.8.2",
       nanostores: "https://esm.sh/nanostores@1.0.1",
-      "@nanostores/react": "https://esm.sh/@nanostores/react@1.0.0",
+      "@nanostores/react":
+        "https://esm.sh/@nanostores/react@1.0.0?deps=react@19.1.0",
       config: "config/client",
     },
     define: {
