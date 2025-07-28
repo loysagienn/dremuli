@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { Lang } from "types";
 import { createReducer } from "utils/create-reducer";
 
 const theme = createReducer<"light" | "dark">(
@@ -15,4 +16,12 @@ const timeZone = createReducer<string>(
   ""
 );
 
-export const sessionSettings = combineReducers({ theme, timeZone });
+const language = createReducer<Lang>(
+  {
+    SET_LANGUAGE: (state, { language }) => language,
+    SET_USER: (state, { userSettings }) => userSettings?.language ?? state,
+  },
+  "en"
+);
+
+export const settings = combineReducers({ theme, timeZone, language });

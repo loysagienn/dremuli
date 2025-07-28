@@ -6,7 +6,11 @@ function getOptions(NODE_ENV, APP_VERSION) {
    * @type {esbuild.BuildOptions}
    */
   const options = {
-    entryPoints: ["./src/client/app.tsx"],
+    entryPoints: [
+      "./src/client/app.tsx",
+      "./src/client/inject-en.ts",
+      "./src/client/inject-ru.ts",
+    ],
     bundle: true,
     outdir: "./public/bundle",
     format: "esm",

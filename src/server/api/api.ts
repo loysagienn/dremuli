@@ -1,5 +1,5 @@
 import { AppContext, EventType, EventUpdate, User } from "types";
-import { SessionSettings, Api } from "types";
+import { SessionSettings, UserSettings, Api } from "types";
 import {
   hashPassword,
   comparePassword,
@@ -23,21 +23,54 @@ const getSessionSettingsFactory = (ctx: AppContext) => async () => {
   return ctx.db.getSessionSettings(session.id);
 };
 
+const setUserSettingsFactory =
+  (ctx: AppContext) => async (userSettings: UserSettings) => {
+    const { user } = ctx.state;
+
+    if (user) {
+      return ctx.db.setUserSettings(user.id, userSettings);
+    }
+
+    throw new Error("No user");
+  };
+
+const getUserSettingsFactory = (ctx: AppContext) => async () => {
+  const { user } = ctx.state;
+
+  if (user) {
+    return ctx.db.getUserSettings(user.id);
+  }
+
+  return null;
+};
+
 const registerUserFactory =
   (ctx: AppContext) =>
   async (email: string, password: string): Promise<User> => {
+    const { session } = ctx.state;
     const passwordHash = await hashPassword(password);
 
     const user = await ctx.db.createUser(email, passwordHash);
 
     await ctx.db.linkUserToSession(ctx.state.session.id, user.id);
 
+    const sessionSettings = await ctx.db.getSessionSettings(
+      ctx.state.session.id
+    );
+
+    const language = sessionSettings?.language ?? "en";
+
+    await ctx.db.setUserSettings(user.id, { language });
+
     return user;
   };
 
 const loginFactory =
   (ctx: AppContext) =>
-  async (email: string, password: string): Promise<User> => {
+  async (
+    email: string,
+    password: string
+  ): Promise<{ user: User; userSettings: UserSettings }> => {
     const user = await ctx.db.getUserByEmail(email);
 
     if (!user) {
@@ -54,13 +87,19 @@ const loginFactory =
 
     await ctx.db.linkUserToSession(ctx.state.session.id, user.id);
 
+    let userSettings = await ctx.db.getUserSettings(user.id);
+
+    if (!userSettings) {
+      userSettings = { language: "en" };
+    }
+
     sendEmailBackground({
       to: email,
       subject: "Dremuli: new login",
       content: "Hello, there is a new login to your account",
     });
 
-    return user;
+    return { user, userSettings };
   };
 
 const chnagePasswordFactory =
@@ -205,6 +244,8 @@ const getEventsFactory = (ctx: AppContext) => async () => {
 export function initApi(ctx: AppContext): Api {
   const setSessionSettings = setSessionSettingsFactory(ctx);
   const getSessionSettings = getSessionSettingsFactory(ctx);
+  const getUserSettings = getUserSettingsFactory(ctx);
+  const setUserSettings = setUserSettingsFactory(ctx);
   const registerUser = registerUserFactory(ctx);
   const login = loginFactory(ctx);
   const changePassword = chnagePasswordFactory(ctx);
@@ -218,6 +259,8 @@ export function initApi(ctx: AppContext): Api {
   return {
     setSessionSettings,
     getSessionSettings,
+    getUserSettings,
+    setUserSettings,
     registerUser,
     login,
     changePassword,

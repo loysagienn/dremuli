@@ -4,6 +4,7 @@ import type { Session } from "./db";
 import type { State } from "./store";
 import type { Api } from "./api";
 import type { User } from "./db";
+import type { UserSettings } from "./user";
 import { AppRoute } from "app/router";
 
 export type AppState = {
@@ -13,6 +14,7 @@ export type AppState = {
   api: Api;
   isAdmin: boolean;
   user: User | null;
+  userSettings: UserSettings | null;
 };
 
 export type AppContextExtend = {

@@ -5,6 +5,7 @@ import {
   EventType,
   Event,
   EventUpdate,
+  UserSettings,
 } from "types";
 import { request } from "./request";
 
@@ -22,6 +23,20 @@ async function setSessionSettings(sessionSettings: SessionSettings) {
   return result as SessionSettings;
 }
 
+async function getUserSettings() {
+  const userSettings = await request({ key: "api_user_settings" }, "GET");
+
+  return userSettings as UserSettings | null;
+}
+
+async function setUserSettings(userSettings: UserSettings) {
+  const result = await request({ key: "api_user_settings" }, "POST", {
+    data: userSettings,
+  });
+
+  return result as UserSettings;
+}
+
 async function registerUser(email: string, password: string) {
   const result = await request({ key: "api_register_user" }, "POST", {
     data: { email, password },
@@ -35,7 +50,7 @@ async function login(email: string, password: string) {
     data: { email, password },
   });
 
-  return result as User;
+  return result as { user: User; userSettings: UserSettings };
 }
 
 async function changePassword(password: string, newPassword: string) {
@@ -103,6 +118,8 @@ async function getEvents(): Promise<Event[]> {
 export const api: Api = {
   getSessionSettings,
   setSessionSettings,
+  getUserSettings,
+  setUserSettings,
   registerUser,
   login,
   changePassword,

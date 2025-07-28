@@ -16,7 +16,8 @@
       "action-handlers": ["./action-handlers"],
       "reducers": ["./reducers"],
       "selectors": ["./selectors"],
-      "svg": ["./svg"]
+      "svg": ["./svg"],
+      "lang": ["./lang"]
     },
     "allowSyntheticDefaultImports": true
   }

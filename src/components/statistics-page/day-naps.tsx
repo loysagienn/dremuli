@@ -34,7 +34,6 @@ function DayNaps({ date, height, headerHeight, dayWidth }: DayNapsProps) {
     });
   }, [date, sleepEvents]);
 
-  console.log(date, dayEvents);
   const napWidth = Math.min(dayWidth / 2, 32);
   const left = (dayWidth - napWidth) / 2;
   const right = left;

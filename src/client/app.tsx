@@ -4,7 +4,7 @@ import { connectStoreToHistory } from "./router";
 import { setDefaults } from "./set-defaults";
 import { registerServiceWorker } from "./register-sw";
 import { api } from "./api";
-import { getWindowSize } from "utils/browser";
+import { initText } from "./text";
 import { getCurrentDay, getCurrentMinute } from "utils/date";
 
 const { __INITIAL_STATE__: initialState } = window;
@@ -18,6 +18,6 @@ const store = initStore(initialState, api);
 setDefaults(store);
 connectStoreToHistory(store);
 
-hydrateRoot(document.getElementById("root"), renderApp(store));
+hydrateRoot(document.getElementById("root"), renderApp(store, initText(store)));
 
 registerServiceWorker();

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import { router } from "./router";
-import { sessionSettings } from "./session-settings";
+import { settings } from "./settings";
 import { user } from "./user";
 import { currentTime } from "./current-time";
 import { activeDay } from "./active-day";
@@ -11,7 +11,7 @@ import { windowSize } from "./window-size";
 
 export const reducer = combineReducers({
   router,
-  sessionSettings,
+  settings,
   user,
   currentTime,
   activeDay,

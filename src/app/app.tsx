@@ -1,16 +1,32 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { App } from "components/app";
-import { Store, State, AnyAction, Api } from "types";
+import { Store, State, AnyAction, Api, Text } from "types";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { reducer } from "reducers";
 import { actionHandlersMiddleware } from "utils/action-handlers-middleware";
 import { basicHandlers } from "action-handlers";
+import { Atom } from "nanostores";
+import { TextProvider } from "lang/context";
+import { useStore } from "@nanostores/react";
 
-export function renderApp(store: Store) {
+type LangProviderProps = {
+  $text: Atom<Text>;
+  children: ReactNode;
+};
+
+function LangProvider({ $text, children }: LangProviderProps) {
+  const text = useStore($text);
+
+  return <TextProvider value={text}>{children}</TextProvider>;
+}
+
+export function renderApp(store: Store, $text: Atom<Text>) {
   return (
     <Provider store={store}>
-      <App />
+      <LangProvider $text={$text}>
+        <App />
+      </LangProvider>
     </Provider>
   );
 }

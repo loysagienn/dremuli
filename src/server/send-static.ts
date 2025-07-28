@@ -34,7 +34,7 @@ export async function sendStatic(ctx: AppContext, next: AppNext) {
     if (
       process.env.NODE_ENV === "production" &&
       ctx.query.v === __APP_VERSION__ &&
-      (staticPath === "app.js" || staticPath === "app.css")
+      staticPath.startsWith("bundle/")
     ) {
       ctx.set("Cache-Control", "public, max-age=31536000, immutable");
     }

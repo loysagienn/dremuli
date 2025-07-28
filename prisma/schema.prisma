@@ -32,6 +32,7 @@ model User {
   email       String              @unique
   credentials UserCredentials?
   resetToken  PasswordResetToken?
+  settings    UserSettings?
 
   sessions      Session[]
   sleepSessions SleepSession[]
@@ -46,6 +47,14 @@ model UserCredentials {
   user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_credentials")
+}
+
+model UserSettings {
+  userId   String @id @map("id")
+  language String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
 }
 
 model PasswordResetToken {
@@ -79,12 +88,12 @@ enum EventType {
 }
 
 model Event {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
   timestamp DateTime
   type      EventType
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id])
 
@@ -98,9 +107,10 @@ enum Theme {
 }
 
 model SessionSettings {
-  id    String @id
-  theme Theme
+  id       String  @id
+  theme    Theme
   timeZone String? @map("time_zone")
+  language String?
 
   session Session @relation(fields: [id], references: [id], onDelete: Cascade)
 

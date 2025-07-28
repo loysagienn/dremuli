@@ -1,5 +1,5 @@
 import { ActionHandler } from "types";
-import { routeToAction, setUser } from "actions";
+import { routeToAction, setUserAction } from "actions";
 
 export const registerUser: ActionHandler<"REGISTER_USER"> = async ({
   action,
@@ -14,7 +14,7 @@ export const registerUser: ActionHandler<"REGISTER_USER"> = async ({
   try {
     const user = await api.registerUser(email, password);
 
-    dispatch(setUser(user));
+    dispatch(setUserAction(user));
     dispatch(routeToAction({ key: "home" }));
   } catch (error) {
     console.error(error);

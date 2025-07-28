@@ -2,15 +2,29 @@ import { AppContext, AppNext, User, SessionSettings, Event } from "types";
 import { getCurrentMinute } from "utils/date";
 import { getWindowSize } from "utils/browser";
 
-const DEFAULT_SESSION_SETTINGS: SessionSettings = {
+const DEFAULT_SETTINGS: SessionSettings = {
   theme: "dark",
   timeZone: null,
+  language: "en",
 };
 
-export async function initialState(ctx: AppContext, next: AppNext) {
-  const { route, session } = ctx.state;
+async function getSettings(ctx: AppContext): Promise<SessionSettings> {
+  const { session, userSettings } = ctx.state;
 
   const sessionSettings = await ctx.db.getSessionSettings(session.id);
+
+  const theme = sessionSettings?.theme ?? DEFAULT_SETTINGS.theme;
+  const timeZone = sessionSettings?.timeZone ?? DEFAULT_SETTINGS.timeZone;
+  const language =
+    userSettings?.language ??
+    sessionSettings?.language ??
+    DEFAULT_SETTINGS.language;
+
+  return { theme, timeZone, language };
+}
+
+export async function initialState(ctx: AppContext, next: AppNext) {
+  const { route } = ctx.state;
 
   const user = ctx.state.user;
   let events: Event[] = [];
@@ -25,6 +39,8 @@ export async function initialState(ctx: AppContext, next: AppNext) {
     users = await ctx.db.getUsers();
   }
 
+  const settings = await getSettings(ctx);
+
   const firstEvent = events.length > 0 ? events[0] : null;
   const activeDay = firstEvent ? firstEvent.timestamp : null;
 
@@ -38,7 +54,7 @@ export async function initialState(ctx: AppContext, next: AppNext) {
   ctx.state.initialState = {
     router: { route },
     user,
-    sessionSettings: sessionSettings ?? DEFAULT_SESSION_SETTINGS,
+    settings,
     currentTime: { time: currentTime, date: currentDate },
     activeDay,
     pageVisibility: true,

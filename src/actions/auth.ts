@@ -1,5 +1,5 @@
 import { AppRoute } from "app/router";
-import { User } from "types";
+import { User, UserSettings } from "types";
 
 export type RegisterUser = {
   type: "REGISTER_USER";
@@ -32,12 +32,17 @@ export function loginUser(email: string, password: string): LoginUser {
 export type SetUser = {
   type: "SET_USER";
   user: User;
+  userSettings?: UserSettings;
 };
 
-export function setUser(user: User): SetUser {
+export function setUserAction(
+  user: User,
+  userSettings?: UserSettings
+): SetUser {
   return {
     type: "SET_USER",
     user,
+    userSettings,
   };
 }
 

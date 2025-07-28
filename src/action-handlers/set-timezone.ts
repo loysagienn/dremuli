@@ -1,5 +1,5 @@
 import { ActionHandler } from "types";
-import { selectSessionSettings } from "selectors";
+import { selectSettings } from "selectors";
 
 export const setTimeZone: ActionHandler<"SET_TIME_ZONE"> = async ({
   action,
@@ -9,10 +9,10 @@ export const setTimeZone: ActionHandler<"SET_TIME_ZONE"> = async ({
 }) => {
   next(action);
 
-  const sessionSettings = selectSessionSettings(getState());
+  const settings = selectSettings(getState());
 
   try {
-    await api.setSessionSettings(sessionSettings);
+    await api.setSessionSettings(settings);
   } catch (error) {
     console.error(error);
   }

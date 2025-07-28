@@ -1,5 +1,11 @@
 import { AppRouteKey } from "app/router";
-import { AppContext, AppNext, EventType, SessionSettings } from "types";
+import {
+  AppContext,
+  AppNext,
+  EventType,
+  SessionSettings,
+  UserSettings,
+} from "types";
 import { parseDate } from "utils/parse-date";
 
 export function isValidEmail(email: string): boolean {
@@ -14,13 +20,33 @@ function getBodySessionSettings(ctx: AppContext): SessionSettings | null {
     return null;
   }
 
-  const { theme, timeZone } = data;
+  const { theme, timeZone, language } = data;
 
   if (!theme || (theme !== "light" && theme !== "dark")) {
     return null;
   }
 
-  return { theme, timeZone: timeZone ?? null };
+  if (!language) {
+    return null;
+  }
+
+  return { theme, language, timeZone: timeZone ?? null };
+}
+
+function getBodyUserSettings(ctx: AppContext): UserSettings | null {
+  const data = ctx.request.body?.data;
+
+  if (!data || typeof data !== "object") {
+    return null;
+  }
+
+  const { language } = data;
+
+  if (!language) {
+    return null;
+  }
+
+  return { language };
 }
 
 type BodyChangePassword = {
@@ -189,6 +215,7 @@ const authorizedRequests: AppRouteKey[] = [
   "api_register_user",
   "api_reset_password",
   "api_settings",
+  "api_user_settings",
 ];
 
 export async function apiHandler(ctx: AppContext, next: AppNext) {
@@ -244,6 +271,34 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
     }
   }
 
+  if (route.key === "api_user_settings") {
+    if (ctx.method === "GET") {
+      const userSettings = await api.getUserSettings();
+
+      ctx.body = {
+        data: userSettings,
+      };
+
+      return;
+    }
+
+    if (ctx.method === "POST") {
+      const bodyUserSettings = getBodyUserSettings(ctx);
+
+      if (!bodyUserSettings) {
+        return badRequest(ctx);
+      }
+
+      const userSettings = await api.setUserSettings(bodyUserSettings);
+
+      ctx.body = {
+        data: userSettings,
+      };
+
+      return;
+    }
+  }
+
   if (route.key === "api_login") {
     if (ctx.method === "POST") {
       const userData = getBodyUserRegistration(ctx);
@@ -255,10 +310,10 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
       const { email, password } = userData;
 
       try {
-        const user = await api.login(email, password);
+        const { user, userSettings } = await api.login(email, password);
 
         ctx.body = {
-          data: user,
+          data: { user, userSettings },
         };
 
         return;

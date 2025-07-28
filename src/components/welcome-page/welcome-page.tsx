@@ -1,7 +1,6 @@
 import React from "react";
 import { Button } from "components/button";
 import { ThemeSwitcher } from "components/theme-switcher";
-import { Header } from "components/header";
 import Logo from "svg/logo.svg";
 import styles from "./welcome-page.module.css";
 
@@ -22,6 +21,7 @@ export function WelcomePage() {
           Easily monitor your baby's sleep patterns and track naps with helpful
           insights
         </div>
+        <div></div>
         <div className={styles.buttons}>
           <Button route={{ key: "login" }} style="outline">
             Sign in

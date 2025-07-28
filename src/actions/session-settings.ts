@@ -1,4 +1,5 @@
 import { AppRoute } from "app/router";
+import { Lang } from "types";
 
 export type SetTheme = {
   type: "SET_THEME";
@@ -21,5 +22,17 @@ export function setTimeZone(timeZone: string): SetTimeZone {
   return {
     type: "SET_TIME_ZONE",
     timeZone,
+  };
+}
+
+export type SetLanguage = {
+  type: "SET_LANGUAGE";
+  language: Lang;
+};
+
+export function setLanguage(language: Lang): SetLanguage {
+  return {
+    type: "SET_LANGUAGE",
+    language,
   };
 }

@@ -7,6 +7,7 @@ import { forgetPassword } from "./forget-password";
 import { resetPassword } from "./reset-password";
 import { cerateEvent } from "./create-event";
 import { setTimeZone } from "./set-timezone";
+import { setLanguage } from "./set-language";
 import { updateEvent } from "./update-event";
 import { deleteEvent } from "./delete-event";
 import { setPageVisibility } from "./set-page-visibility";
@@ -21,6 +22,7 @@ export const basicHandlers: ActionHandlers = {
   CREATE_EVENT: cerateEvent,
   UPDATE_EVENT: updateEvent,
   SET_TIME_ZONE: setTimeZone,
+  SET_LANGUAGE: setLanguage,
   DELETE_EVENT: deleteEvent,
   SET_PAGE_VISIBILITY: setPageVisibility,
 };

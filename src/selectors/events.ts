@@ -1,6 +1,6 @@
 import { State, EventType } from "types";
 import { createSelector } from "@reduxjs/toolkit";
-import { selectTimeZone } from "./session-settings";
+import { selectTimeZone } from "./settings";
 import { getNapEvents } from "utils/nap-events";
 import { selectRoute } from "./router";
 import { selectCurrentTime } from "./current-time";
