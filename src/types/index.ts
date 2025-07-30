@@ -7,3 +7,4 @@ export * from "./api";
 export * from "./events";
 export * from "./ui";
 export * from "./lang";
+export * from "./options";

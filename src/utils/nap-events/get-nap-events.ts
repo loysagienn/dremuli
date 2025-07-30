@@ -1,11 +1,12 @@
-import { NapEvent, Event } from "types";
+import { NapEvent, Event, Lang } from "types";
 import { formatTime, formatDuration, formatDate } from "utils/date";
 import { labelNightEvents } from "./label-night-events";
 
 export function getNapEvents(
   events: Event[],
   timeZone: string,
-  currentTime: Date
+  currentTime: Date,
+  lang: Lang
 ) {
   const napEvents: NapEvent[] = [];
 
@@ -45,7 +46,10 @@ export function getNapEvents(
   }
 
   if (napEvents.length > 0) {
-    napEvents[0].dayStartStr = formatDate(napEvents[0].timestamp, timeZone);
+    napEvents[0].dayStartStr = formatDate(napEvents[0].timestamp, {
+      timeZone,
+      lang,
+    });
   }
 
   for (let i = 1; i < napEvents.length; i++) {
@@ -53,7 +57,7 @@ export function getNapEvents(
     const event = napEvents[i];
 
     if (prev.timestamp.getDate() !== event.timestamp.getDate()) {
-      event.dayStartStr = formatDate(event.timestamp, timeZone);
+      event.dayStartStr = formatDate(event.timestamp, { timeZone, lang });
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import styles from "./naps.module.css";
 import { cn } from "utils/cn";
 import { Event } from "./event";
@@ -8,21 +8,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectNapEvents, selectNextEventType } from "selectors";
 import { setActiveDayAction } from "actions";
 import { EventType } from "types";
+import { useText } from "lang/context";
 
 type NapsProps = {
   className?: string;
 };
 
-const eventTypeTitles: { [key in EventType]: string } = {
-  [EventType.WokeUp]: "Woke up",
-  [EventType.FellAsleep]: "Fell asleep",
-};
-
 export function Naps({ className }: NapsProps) {
+  const text = useText();
   const rootRef = useRef<HTMLDivElement>(null);
   const napsListRef = useRef<HTMLDivElement>(null);
   const napEvents = useSelector(selectNapEvents);
   const dispatch = useDispatch();
+
+  const eventTypeTitles = useMemo<{ [key in EventType]: string }>(
+    () => ({
+      [EventType.WokeUp]: text.timelinePage.wokeUp,
+      [EventType.FellAsleep]: text.timelinePage.fellAsleep,
+    }),
+    [text]
+  );
 
   useLayoutEffect(() => {
     const root = rootRef.current;

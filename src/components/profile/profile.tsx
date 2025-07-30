@@ -4,6 +4,7 @@ import { Link } from "components/router";
 import { useSelector } from "react-redux";
 import { selectUser } from "selectors";
 import { Layout } from "components/layout";
+import { LangSwitcher } from "components/lang-switcher";
 
 export function Profile() {
   const user = useSelector(selectUser);
@@ -13,6 +14,10 @@ export function Profile() {
       <div className={styles.content}>
         <div className={styles.page}>
           <div className={styles.title}>Profile</div>
+
+          <div className={styles.line}>
+            <LangSwitcher />
+          </div>
           <div className={styles.line}>{user?.email}</div>
           <div className={styles.line}>
             <Link route={{ key: "profile_password" }}>Change password</Link>

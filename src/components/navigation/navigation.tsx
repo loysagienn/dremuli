@@ -9,6 +9,7 @@ import TimelineSvg from "svg/timeline.svg";
 import ProfileSvg from "svg/profile.svg";
 import StatisticsSvg from "svg/statistics.svg";
 import SettingsSvg from "svg/settings-2.svg";
+import { useText } from "lang/context";
 
 type NavigationProps = {
   className?: string;
@@ -21,6 +22,7 @@ const statisticsRoutes: AppRouteKey[] = ["statistics"];
 
 export function Navigation({ className }: NavigationProps) {
   const route = useSelector(selectRoute);
+  const { navigation: text } = useText();
 
   return (
     <div className={cn(className, styles.navigation)}>
@@ -33,7 +35,7 @@ export function Navigation({ className }: NavigationProps) {
           route={{ key: "home" }}
         >
           <TimelineSvg className={styles.tabIcon} />
-          Timeline
+          {text.timeline}
         </Link>
         <Link
           className={cn(
@@ -43,7 +45,7 @@ export function Navigation({ className }: NavigationProps) {
           route={{ key: "statistics" }}
         >
           <StatisticsSvg className={cn(styles.tabIcon, styles.statistics)} />
-          Statistics
+          {text.statistics}
         </Link>
         <Link
           className={cn(
@@ -53,7 +55,7 @@ export function Navigation({ className }: NavigationProps) {
           route={{ key: "profile" }}
         >
           <ProfileSvg className={cn(styles.tabIcon, styles.profile)} />
-          Profile
+          {text.profile}
         </Link>
         <Link
           className={cn(
@@ -63,7 +65,7 @@ export function Navigation({ className }: NavigationProps) {
           route={{ key: "settings" }}
         >
           <SettingsSvg className={cn(styles.tabIcon, styles.settings)} />
-          Settings
+          {text.settings}
         </Link>
       </div>
     </div>

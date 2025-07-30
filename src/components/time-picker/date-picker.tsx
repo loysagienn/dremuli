@@ -6,6 +6,8 @@ import {
 } from "components/scrolling";
 import { formatDate, getDaysDiff } from "utils/date";
 import { cn } from "utils/cn";
+import { useSelector } from "react-redux";
+import { selectLanguage } from "selectors";
 
 type DatePickerProps = {
   value: Date;
@@ -21,6 +23,7 @@ export function DatePicker({
   snapSize,
 }: DatePickerProps) {
   const daysDiff = useMemo(() => getDaysDiff(value), [value]);
+  const lang = useSelector(selectLanguage);
 
   const scrollController = useMemo(
     () =>
@@ -56,7 +59,7 @@ export function DatePicker({
       return (
         <div className={styles.dateValue}>
           <div className={styles.dateValueText} onClick={onClick}>
-            {formatDate(date)}
+            {formatDate(date, { lang })}
           </div>
         </div>
       );

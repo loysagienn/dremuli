@@ -1,4 +1,5 @@
 .root {
   --header-height: 48px;
   --font-size-main: 16px;
+  --mobile-view-breakpoint: 440px;
 }

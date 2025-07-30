@@ -3,6 +3,7 @@ import { NapEvent, EventType } from "types";
 import styles from "./naps.module.css";
 import { Link } from "components/router";
 import { AppRoute } from "app/router";
+import { useText } from "lang/context";
 
 type EventProps = {
   napEvent: NapEvent;
@@ -14,9 +15,18 @@ const titles: { [key in EventType]: string } = {
 };
 
 export function Event({ napEvent }: EventProps) {
+  const { timelinePage: text, timeDuration } = useText();
   const napRoute = useMemo<AppRoute>(
     () => ({ key: "update_event", eventId: napEvent.event.id }),
     [napEvent]
+  );
+
+  const titles = useMemo<{ [key in EventType]: string }>(
+    () => ({
+      [EventType.WokeUp]: text.wokeUp,
+      [EventType.FellAsleep]: text.fellAsleep,
+    }),
+    [text]
   );
 
   return (
@@ -32,11 +42,11 @@ export function Event({ napEvent }: EventProps) {
       <div className={styles.napEvent} id={napEvent.id}>
         <div className={styles.napEventTime}>{napEvent.timeStr}</div>
         <Link className={styles.napEventTitle} route={napRoute}>
-          {napEvent.isNightSleep
-            ? `${titles[napEvent.type]} night`
-            : titles[napEvent.type]}
+          {napEvent.isNightSleep ? text.fellAsleepNight : titles[napEvent.type]}
         </Link>
-        <div className={styles.napEventDuration}>{napEvent.durationStr}</div>
+        <div className={styles.napEventDuration}>
+          {timeDuration(napEvent.duration)}
+        </div>
         <div className={styles.napEventLine} />
         <div className={styles.napEventPointer} />
       </div>

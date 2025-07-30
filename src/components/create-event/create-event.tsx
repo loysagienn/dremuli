@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Header } from "components/header";
 import { FormSubmit } from "components/form";
@@ -8,6 +8,7 @@ import { createEventAction, routeToAction } from "actions";
 import { selectCurrentTime, selectNextEventType } from "selectors";
 import { EventType } from "types";
 import { Layout } from "components/layout";
+import { useText } from "lang/context";
 
 const eventTypeTitles: { [key in EventType]: string } = {
   [EventType.WokeUp]: "Woke up",
@@ -15,6 +16,15 @@ const eventTypeTitles: { [key in EventType]: string } = {
 };
 
 export function CreateEvent() {
+  const { createEvent: text } = useText();
+
+  const eventTypeTitles = useMemo<{ [key in EventType]: string }>(
+    () => ({
+      [EventType.WokeUp]: text.wokeUp,
+      [EventType.FellAsleep]: text.fellAsleep,
+    }),
+    [text]
+  );
   const currentTime = useSelector(selectCurrentTime);
   const [timeValue, setTimeValue] = useState(() => currentTime);
   const dispatch = useDispatch();
@@ -35,10 +45,10 @@ export function CreateEvent() {
           <div className={styles.title}>{eventTypeTitles[nextEventType]}</div>
           <DateTimePicker value={timeValue} onChange={setTimeValue} />
           <div className={styles.formSubmit}>
-            <FormSubmit onSubmit={onSubmit} submitLabel="Submit" />
+            <FormSubmit onSubmit={onSubmit} submitLabel={text.submit} />
             <FormSubmit
               onSubmit={onCancel}
-              submitLabel="Cancel"
+              submitLabel={text.cancel}
               style="outline"
             />
           </div>

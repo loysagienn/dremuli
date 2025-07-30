@@ -1,6 +1,6 @@
 import { State, EventType } from "types";
 import { createSelector } from "@reduxjs/toolkit";
-import { selectTimeZone } from "./settings";
+import { selectLanguage, selectTimeZone } from "./settings";
 import { getNapEvents } from "utils/nap-events";
 import { selectRoute } from "./router";
 import { selectCurrentTime } from "./current-time";
@@ -29,6 +29,7 @@ export const selectNapEvents = createSelector(
   selectEventsReverse,
   selectTimeZone,
   selectCurrentTime,
+  selectLanguage,
   getNapEvents
 );
 

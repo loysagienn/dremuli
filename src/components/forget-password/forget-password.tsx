@@ -4,8 +4,10 @@ import { forgetPassword } from "actions";
 import { Header } from "components/header";
 import { FormInput, FormSubmit } from "components/form";
 import styles from "./forget-password.module.css";
+import { useText } from "lang/context";
 
 export function ForgetPassword() {
+  const { restorePasswordPage } = useText();
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
   const dispatch = useDispatch();
@@ -25,18 +27,23 @@ export function ForgetPassword() {
 
       <div className={styles.content}>
         <div className={styles.page}>
-          <div className={styles.title}>Restore password</div>
-          {done && <div>Reset password link has been sent to your email</div>}
+          <div className={styles.title}>
+            {restorePasswordPage.restorePassword}
+          </div>
+          {done && <div>{restorePasswordPage.successMessage}</div>}
           {!done && (
             <>
               <FormInput
-                label="Email"
+                label={restorePasswordPage.email}
                 value={email}
                 onChange={setEmail}
                 type="email"
                 autoFocus
               />
-              <FormSubmit onSubmit={onSubmit} submitLabel="Submit" />
+              <FormSubmit
+                onSubmit={onSubmit}
+                submitLabel={restorePasswordPage.submit}
+              />
             </>
           )}
         </div>

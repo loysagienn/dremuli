@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from "react";
 import styles from "./statistics-page.module.css";
 import { formatDate } from "utils/date";
-import { selectSleepEvents } from "selectors";
+import { selectLanguage, selectSleepEvents } from "selectors";
 import { useSelector } from "react-redux";
 import { cn } from "utils/cn";
 
@@ -16,6 +16,7 @@ const dayMs = 1000 * 60 * 60 * 24;
 
 function DayNaps({ date, height, headerHeight, dayWidth }: DayNapsProps) {
   const sleepEvents = useSelector(selectSleepEvents);
+  const lang = useSelector(selectLanguage);
 
   const dayStartTs = date.getTime();
   const dayHeight = height - headerHeight;
@@ -40,7 +41,7 @@ function DayNaps({ date, height, headerHeight, dayWidth }: DayNapsProps) {
 
   return (
     <>
-      <div className={styles.dayHeader}>{formatDate(date)}</div>
+      <div className={styles.dayHeader}>{formatDate(date, { lang })}</div>
       {dayEvents.map((event) => {
         const eventStart = event.timestamp.getTime();
         const eventEnd = event.endTime.getTime();

@@ -6,8 +6,10 @@ import { Link } from "components/router";
 import { FormInput, FormSubmit } from "components/form";
 import { CheckboxText } from "components/checkbox";
 import styles from "./registration.module.css";
+import { useText } from "lang/context";
 
 export function Registration() {
+  const { registrationPage } = useText();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [termsOfUseConfirmed, confirmTermsOfUse] = useState(false);
@@ -26,16 +28,16 @@ export function Registration() {
       <Header />
       <div className={styles.content}>
         <div className={styles.page}>
-          <div className={styles.title}>Sign up</div>
+          <div className={styles.title}>{registrationPage.title}</div>
           <FormInput
-            label="Email"
+            label={registrationPage.email}
             value={email}
             onChange={setEmail}
             autoFocus
             type="email"
           />
           <FormInput
-            label="Password"
+            label={registrationPage.password}
             value={password}
             onChange={setPassword}
             type="password"
@@ -45,12 +47,19 @@ export function Registration() {
             onChange={confirmTermsOfUse}
             className={styles.termsOfUse}
           >
-            I agree to the{" "}
-            <Link route={{ key: "privacy_policy" }}>Privacy Policy</Link>{" "}
-            and&nbsp;
-            <Link route={{ key: "terms_of_use" }}>Terms of Use</Link>
+            {registrationPage.agreement(
+              <Link route={{ key: "privacy_policy" }}>
+                {registrationPage.privacyPolicy}
+              </Link>,
+              <Link route={{ key: "terms_of_use" }}>
+                {registrationPage.termsOfUse}
+              </Link>
+            )}
           </CheckboxText>
-          <FormSubmit onSubmit={onSubmit} submitLabel="Sign up" />
+          <FormSubmit
+            onSubmit={onSubmit}
+            submitLabel={registrationPage.submit}
+          />
         </div>
       </div>
     </div>

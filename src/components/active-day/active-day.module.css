@@ -26,14 +26,15 @@
 }
 
 .dataBlock {
-  width: 37%;
+  width: 35%;
 }
 
 .dataBlock.nightSplitBlock {
-  width: 26%;
+  width: 30%;
 }
 
 .dataTitle {
+  white-space: nowrap;
   font-size: 12px;
   line-height: 16px;
   color: var(--color-text-secondary);

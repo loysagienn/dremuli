@@ -1,15 +1,19 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectActiveDay, selectActiveDayStat } from "selectors/active-day";
-import { formatDate, formatDuration } from "utils/date";
+import { formatDate } from "utils/date";
 import styles from "./active-day.module.css";
 import { cn } from "utils/cn";
+import { useText } from "lang/context";
+import { selectLanguage } from "selectors";
 
 type ActiveDayProps = {
   className?: string;
 };
 
 export function ActiveDay({ className }: ActiveDayProps) {
+  const { daySummary: text, timeDuration } = useText();
+  const lang = useSelector(selectLanguage);
   const activeDay = useSelector(selectActiveDay);
   const activeDayStat = useSelector(selectActiveDayStat);
 
@@ -19,43 +23,43 @@ export function ActiveDay({ className }: ActiveDayProps) {
 
   return (
     <div className={cn(className, styles.root)}>
-      <div className={styles.dateTitle}>{formatDate(activeDay)}</div>
+      <div className={styles.dateTitle}>{formatDate(activeDay, { lang })}</div>
 
       <div className={styles.content}>
         <div className={styles.dataBlock}>
-          <div className={styles.dataTitle}>Total sleep</div>
+          <div className={styles.dataTitle}>{text.totalSleep}</div>
           <div className={styles.dataValue}>
-            {formatDuration(activeDayStat.totalSleepDuration)}
+            {timeDuration(activeDayStat.totalSleepDuration)}
           </div>
         </div>
         <div className={styles.dataBlock}>
-          <div className={styles.dataTitle}>Night sleep</div>
+          <div className={styles.dataTitle}>{text.nightSleep}</div>
           <div className={styles.dataValue}>
-            {formatDuration(activeDayStat.nightSleepDuration)}
+            {timeDuration(activeDayStat.nightSleepDuration)}
           </div>
         </div>
         <div className={cn(styles.dataBlock, styles.nightSplitBlock)}>
           {activeDayStat.nightAwakeDuration > 0 && (
             <>
-              <div className={styles.dataTitle}>Night split</div>
+              <div className={styles.dataTitle}>{text.nightSplit}</div>
               <div className={styles.dataValue}>
-                {formatDuration(activeDayStat.nightAwakeDuration)}
+                {timeDuration(activeDayStat.nightAwakeDuration)}
               </div>
             </>
           )}
         </div>
         <div className={styles.dataBlock}>
-          <div className={styles.dataTitle}>{`${
-            activeDayStat.dayNapsCount
-          } nap${activeDayStat.dayNapsCount > 1 ? "s" : ""}`}</div>
+          <div className={styles.dataTitle}>
+            {text.napsCount(activeDayStat.dayNapsCount)}
+          </div>
           <div className={styles.dataValue}>
-            {formatDuration(activeDayStat.daySleepDuration)}
+            {timeDuration(activeDayStat.daySleepDuration)}
           </div>
         </div>
         <div className={styles.dataBlock}>
-          <div className={styles.dataTitle}>Awake</div>
+          <div className={styles.dataTitle}>{text.awake}</div>
           <div className={styles.dataValue}>
-            {formatDuration(activeDayStat.dayAwakeDuration)}
+            {timeDuration(activeDayStat.dayAwakeDuration)}
           </div>
         </div>
       </div>

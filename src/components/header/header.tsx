@@ -1,5 +1,6 @@
 import React from "react";
 import { ThemeSwitcher } from "components/theme-switcher";
+import { LangSwitcher } from "components/lang-switcher";
 import Profile from "svg/profile.svg";
 import Home from "svg/home.svg";
 import { Link } from "components/router";
@@ -25,6 +26,7 @@ export function Header() {
         </Link>
       )}
       {routeName && <div className={styles.routeName}>{routeName}</div>}
+      <LangSwitcher />
       <ThemeSwitcher />
       {user && (
         <Link route={{ key: "profile" }} className={styles.profileLink}>

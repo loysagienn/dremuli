@@ -127,12 +127,13 @@
 
 .napEventDayStartText {
   margin-left: -16px;
+  margin-right: 8px;
   margin-bottom: -2px;
-  width: 66px;
+  /* width: 66px; */
   font-size: 16px;
   font-weight: 600;
   line-height: 32px;
   border-bottom: 2px solid var(--color-border);
   background-color: var(--color-bg-main);
-  text-align: right;
+  text-align: center;
 }
