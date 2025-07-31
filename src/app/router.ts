@@ -419,6 +419,7 @@ const updateEvent: RouteConfig<UpdateEvent> = {
 
 type TermsOfUse = {
   key: "terms_of_use";
+  lang: "en" | "ru";
 };
 
 const termsOfUse: RouteConfig<TermsOfUse> = {
@@ -427,16 +428,25 @@ const termsOfUse: RouteConfig<TermsOfUse> = {
     if (path === "/legal/terms-of-use") {
       return {
         key: "terms_of_use",
+        lang: "en",
+      };
+    }
+    if (path === "/legal/terms-of-use/ru") {
+      return {
+        key: "terms_of_use",
+        lang: "ru",
       };
     }
 
     return null;
   },
-  writeRoute: (route) => "/legal/terms-of-use",
+  writeRoute: (route) =>
+    route.lang === "en" ? "/legal/terms-of-use" : "/legal/terms-of-use/ru",
 };
 
 type PrivacyPolicy = {
   key: "privacy_policy";
+  lang: "en" | "ru";
 };
 
 const privacyPolicy: RouteConfig<PrivacyPolicy> = {
@@ -445,12 +455,20 @@ const privacyPolicy: RouteConfig<PrivacyPolicy> = {
     if (path === "/legal/privacy-policy") {
       return {
         key: "privacy_policy",
+        lang: "en",
+      };
+    }
+    if (path === "/legal/privacy-policy/ru") {
+      return {
+        key: "privacy_policy",
+        lang: "ru",
       };
     }
 
     return null;
   },
-  writeRoute: (route) => "/legal/privacy-policy",
+  writeRoute: (route) =>
+    route.lang === "en" ? "/legal/privacy-policy" : "/legal/privacy-policy/ru",
 };
 
 type ApiCsrfToken = {

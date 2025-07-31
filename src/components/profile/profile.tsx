@@ -2,12 +2,13 @@ import React from "react";
 import styles from "./profile.module.css";
 import { Link } from "components/router";
 import { useSelector } from "react-redux";
-import { selectUser } from "selectors";
+import { selectLanguage, selectUser } from "selectors";
 import { Layout } from "components/layout";
 import { LangSwitcher } from "components/lang-switcher";
 
 export function Profile() {
   const user = useSelector(selectUser);
+  const lang = useSelector(selectLanguage);
 
   return (
     <Layout>
@@ -23,10 +24,10 @@ export function Profile() {
             <Link route={{ key: "profile_password" }}>Change password</Link>
           </div>
           <div className={styles.line}>
-            <Link route={{ key: "terms_of_use" }}>Terms of Use</Link>
+            <Link route={{ key: "terms_of_use", lang }}>Terms of Use</Link>
           </div>
           <div className={styles.line}>
-            <Link route={{ key: "privacy_policy" }}>Privacy Policy</Link>
+            <Link route={{ key: "privacy_policy", lang }}>Privacy Policy</Link>
           </div>
           <div className={styles.line}>
             <Link route={{ key: "logout" }} web>

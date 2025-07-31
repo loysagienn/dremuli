@@ -14,9 +14,10 @@ const routeNames: { [key in AppRoute["key"]]?: string } = {};
 
 export function Header() {
   const route = useSelector(selectRoute);
-  const user = useSelector(selectUser);
 
   const routeName = routeNames[route?.key];
+  const isLegal =
+    route?.key === "terms_of_use" || route?.key === "privacy_policy";
 
   return (
     <div className={cn(styles.root, route.key === "home" && styles.home)}>
@@ -26,13 +27,8 @@ export function Header() {
         </Link>
       )}
       {routeName && <div className={styles.routeName}>{routeName}</div>}
-      <LangSwitcher />
+      {!isLegal && <LangSwitcher />}
       <ThemeSwitcher />
-      {user && (
-        <Link route={{ key: "profile" }} className={styles.profileLink}>
-          <Profile className={styles.profileSvg} />
-        </Link>
-      )}
     </div>
   );
 }
