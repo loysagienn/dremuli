@@ -86,6 +86,26 @@ export const en = {
     cancel: "Cancel",
     delete: "Delete",
   },
+  profilePage: {
+    title: "Profile",
+    language: "Language",
+    changePassword: "Change password",
+    termsOfUse: "Terms of Use",
+    privacyPolicy: "Privacy Policy",
+    logout: "Logout",
+  },
+  changePasswordPage: {
+    title: "Change password",
+    currentPassword: "Current password",
+    newPassword: "New password",
+    submit: "Change password",
+  },
+  settingsPage: {
+    title: "Settings",
+    theme: "Theme",
+    termsOfUse: "Terms of Use",
+    privacyPolicy: "Privacy Policy",
+  },
   timeDuration,
 };
 

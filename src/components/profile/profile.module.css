@@ -26,3 +26,9 @@
 .line {
   margin-top: 8px;
 }
+
+.prop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

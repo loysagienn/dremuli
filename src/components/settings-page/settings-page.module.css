@@ -22,3 +22,13 @@
   font-size: 22px;
   margin-bottom: 16px;
 }
+
+.line {
+  margin-top: 12px;
+}
+
+.prop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

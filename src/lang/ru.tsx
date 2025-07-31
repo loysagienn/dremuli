@@ -92,5 +92,25 @@ export const ru: Text = {
     cancel: "Отмена",
     delete: "Удалить",
   },
+  profilePage: {
+    title: "Профиль",
+    language: "Язык",
+    changePassword: "Изменить пароль",
+    termsOfUse: "Условия использования",
+    privacyPolicy: "Политика конфиденциальности",
+    logout: "Выйти",
+  },
+  changePasswordPage: {
+    title: "Изменить пароль",
+    currentPassword: "Текущий пароль",
+    newPassword: "Новый пароль",
+    submit: "Изменить пароль",
+  },
+  settingsPage: {
+    title: "Настройки",
+    theme: "Тема",
+    termsOfUse: "Условия использования",
+    privacyPolicy: "Политика конфиденциальности",
+  },
   timeDuration,
 } as const;
