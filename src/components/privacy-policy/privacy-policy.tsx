@@ -10,8 +10,6 @@ const ContentRu = lazy(() => import("./content-ru"));
 export function PrivacyPolicy() {
   const route = useSelector(selectRoute);
 
-  console.log("route", route);
-
   const isRuVersion = route.key === "privacy_policy" && route.lang === "ru";
 
   return (
