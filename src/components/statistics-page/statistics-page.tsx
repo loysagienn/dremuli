@@ -3,6 +3,7 @@ import styles from "./statistics-page.module.css";
 import { Layout } from "components/layout";
 import { useSelector } from "react-redux";
 import { NapsChart } from "components/naps-chart";
+import { StatChart } from "components/stat-chart";
 import { selectContentSize, selectRoute } from "selectors";
 import { Link, Route } from "components/router";
 import { useText } from "lang/context";
@@ -62,7 +63,9 @@ export function StatisticsPage() {
             <Route routeKey={"statistics_naps"}>
               <NapsChart contentSize={innerContentSize} />
             </Route>
-            <Route routeKey={"statistics_charts"}>charts</Route>
+            <Route routeKey={"statistics_charts"}>
+              <StatChart contentSize={innerContentSize} />
+            </Route>
           </>
         )}
       </div>
