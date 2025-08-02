@@ -9,9 +9,7 @@ const DEFAULT_SETTINGS: SessionSettings = {
 };
 
 async function getSettings(ctx: AppContext): Promise<SessionSettings> {
-  const { session, userSettings } = ctx.state;
-
-  const sessionSettings = await ctx.db.getSessionSettings(session.id);
+  const { userSettings, sessionSettings } = ctx.state;
 
   const theme = sessionSettings?.theme ?? DEFAULT_SETTINGS.theme;
   const timeZone = sessionSettings?.timeZone ?? DEFAULT_SETTINGS.timeZone;

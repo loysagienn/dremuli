@@ -18,9 +18,9 @@ const setSessionSettingsFactory =
   };
 
 const getSessionSettingsFactory = (ctx: AppContext) => async () => {
-  const { session } = ctx.state;
+  const { sessionSettings } = ctx.state;
 
-  return ctx.db.getSessionSettings(session.id);
+  return sessionSettings;
 };
 
 const setUserSettingsFactory =
@@ -47,16 +47,12 @@ const getUserSettingsFactory = (ctx: AppContext) => async () => {
 const registerUserFactory =
   (ctx: AppContext) =>
   async (email: string, password: string): Promise<User> => {
-    const { session } = ctx.state;
+    const { sessionSettings } = ctx.state;
     const passwordHash = await hashPassword(password);
 
     const user = await ctx.db.createUser(email, passwordHash);
 
     await ctx.db.linkUserToSession(ctx.state.session.id, user.id);
-
-    const sessionSettings = await ctx.db.getSessionSettings(
-      ctx.state.session.id
-    );
 
     const language = sessionSettings?.language ?? "en";
 

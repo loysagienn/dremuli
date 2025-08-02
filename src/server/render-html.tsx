@@ -32,7 +32,7 @@ const favicon = `
 `;
 
 export async function renderHtml(ctx: AppContext) {
-  const { initialState, api } = ctx.state;
+  const { initialState, api, userSettings, sessionSettings } = ctx.state;
   const { language } = initialState.settings;
 
   const text = langs[language];
@@ -56,6 +56,10 @@ export async function renderHtml(ctx: AppContext) {
 </head>
 <body>
   <div id="root">${content}</div>
+  <script>window.__SETTINGS__ = ${JSON.stringify({
+    userSettings,
+    sessionSettings,
+  })}</script>
   <script>window.__INITIAL_STATE__ = ${serializeState(initialState)}</script>
   <script type="module" src="/static/bundle/inject-${language}.js?v=${__APP_VERSION__}"></script>
   <script type="module" src="/static/bundle/app.js?v=${__APP_VERSION__}"></script>

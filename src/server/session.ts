@@ -41,8 +41,10 @@ const getSession = async (ctx: AppContext): Promise<Session> => {
 
 export const session = async (ctx: AppContext, next: AppNext) => {
   const session = await getSession(ctx);
+  const sessionSettings = await ctx.db.getSessionSettings(session.id);
 
   ctx.state.session = session;
+  ctx.state.sessionSettings = sessionSettings ?? null;
 
   return next();
 };
