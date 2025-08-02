@@ -81,7 +81,7 @@ export function App() {
         <SettingsPage />
       </Route>
 
-      <Route routeKey="statistics">
+      <Route routeKey={["statistics_naps", "statistics_charts"]}>
         <StatisticsPage />
       </Route>
 

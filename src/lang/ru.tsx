@@ -112,5 +112,10 @@ export const ru: Text = {
     termsOfUse: "Условия использования",
     privacyPolicy: "Политика конфиденциальности",
   },
+  statisticsPage: {
+    naps: "Интервалы сна",
+    charts: "Графики",
+    chartsInDevelopment: "Графики в разработке",
+  },
   timeDuration,
 } as const;

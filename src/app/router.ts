@@ -525,22 +525,40 @@ const settings: RouteConfig<Settings> = {
   writeRoute: (route) => "/settings",
 };
 
-type Statistics = {
-  key: "statistics";
+type StatisticsNaps = {
+  key: "statistics_naps";
 };
 
-const statistics: RouteConfig<Statistics> = {
-  key: "statistics",
+const statisticsNaps: RouteConfig<StatisticsNaps> = {
+  key: "statistics_naps",
   readRoute: (path: string) => {
-    if (path === "/statistics") {
+    if (path === "/statistics/naps") {
       return {
-        key: "statistics",
+        key: "statistics_naps",
       };
     }
 
     return null;
   },
-  writeRoute: (route) => "/statistics",
+  writeRoute: (route) => "/statistics/naps",
+};
+
+type StatisticsCharts = {
+  key: "statistics_charts";
+};
+
+const statisticsCharts: RouteConfig<StatisticsCharts> = {
+  key: "statistics_charts",
+  readRoute: (path: string) => {
+    if (path === "/statistics/charts") {
+      return {
+        key: "statistics_charts",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/statistics/charts",
 };
 
 export const router = initRouter(
@@ -557,7 +575,8 @@ export const router = initRouter(
   termsOfUse,
   privacyPolicy,
   settings,
-  statistics,
+  statisticsNaps,
+  statisticsCharts,
   testPage,
   apiSettings,
   apiUserSettings,

@@ -1,13 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./statistics-page.module.css";
 import { Layout } from "components/layout";
 import { useSelector } from "react-redux";
-import { selectContentSize } from "selectors";
-import { Statistics } from "./statistics";
+import { NapsChart } from "components/naps-chart";
+import { selectContentSize, selectRoute } from "selectors";
+import { Link, Route } from "components/router";
+import { useText } from "lang/context";
+import { cn } from "utils/cn";
 
 export function StatisticsPage() {
+  const { statisticsPage: text } = useText();
+  const contentSize = useSelector(selectContentSize);
   const [hasMounted, setHasMounted] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const route = useSelector(selectRoute);
 
   // client-side rendering only
   useEffect(() => {
@@ -20,10 +26,45 @@ export function StatisticsPage() {
     setHasMounted(true);
   }, []);
 
+  const innerContentSize = useMemo(
+    () => ({
+      height: contentSize.height - 50,
+      width: contentSize.width,
+    }),
+    [contentSize]
+  );
+
   return (
     <Layout>
+      <div className={styles.header}>
+        <Link
+          route={{ key: "statistics_naps" }}
+          className={cn(
+            styles.link,
+            route.key === "statistics_naps" && styles.isActive
+          )}
+        >
+          {text.naps}
+        </Link>
+        <Link
+          route={{ key: "statistics_charts" }}
+          className={cn(
+            styles.link,
+            route.key === "statistics_charts" && styles.isActive
+          )}
+        >
+          {text.charts}
+        </Link>
+      </div>
       <div className={styles.content} ref={contentRef}>
-        {hasMounted && <Statistics />}
+        {hasMounted && (
+          <>
+            <Route routeKey={"statistics_naps"}>
+              <NapsChart contentSize={innerContentSize} />
+            </Route>
+            <Route routeKey={"statistics_charts"}>charts</Route>
+          </>
+        )}
       </div>
     </Layout>
   );

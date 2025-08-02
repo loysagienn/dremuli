@@ -1,8 +1,7 @@
 import React from "react";
-import styles from "./statistics-page.module.css";
-import { useSelector } from "react-redux";
-import { selectContentSize } from "selectors";
+import styles from "./naps-chart.module.css";
 import { Timeline } from "./timeline";
+import { Size } from "types";
 
 const hoursMarks = [];
 
@@ -10,11 +9,14 @@ for (let i = 0; i < 24; i++) {
   hoursMarks.push(i);
 }
 
-const headerHeight = 40;
+const headerHeight = 50;
 const sidebarWidth = 60;
 
-export function Statistics() {
-  const contentSize = useSelector(selectContentSize);
+type StatisticsProps = {
+  contentSize: Size;
+};
+
+export function NapsChart({ contentSize }: StatisticsProps) {
   const hourSize = (contentSize.height - headerHeight) / 24;
 
   const skipRate = hourSize > 30 ? 1 : hourSize > 15 ? 2 : 3;

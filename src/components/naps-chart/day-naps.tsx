@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import styles from "./statistics-page.module.css";
+import styles from "./naps-chart.module.css";
 import { formatDate } from "utils/date";
 import { selectLanguage, selectSleepEvents } from "selectors";
 import { useSelector } from "react-redux";

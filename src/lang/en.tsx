@@ -106,6 +106,11 @@ export const en = {
     termsOfUse: "Terms of Use",
     privacyPolicy: "Privacy Policy",
   },
+  statisticsPage: {
+    naps: "Naps",
+    charts: "Charts",
+    chartsInDevelopment: "Charts in development",
+  },
   timeDuration,
 };
 

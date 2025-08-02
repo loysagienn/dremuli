@@ -4,14 +4,18 @@ import { ReactNode } from "react";
 import { AppRoute } from "app/router";
 
 type RouteProps = {
-  routeKey: AppRoute["key"];
+  routeKey: AppRoute["key"] | AppRoute["key"][];
   children: ReactNode;
 };
 
 export function Route({ routeKey, children }: RouteProps) {
   const currentRoute = useSelector(selectRoute);
 
-  if (currentRoute.key !== routeKey) {
+  if (
+    Array.isArray(routeKey)
+      ? !routeKey.includes(currentRoute.key)
+      : currentRoute.key !== routeKey
+  ) {
     return null;
   }
 

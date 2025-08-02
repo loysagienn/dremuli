@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef } from "react";
-import styles from "./statistics-page.module.css";
+import styles from "./naps-chart.module.css";
 import {
   InfiniteScroll,
   initInfiniteScrollController,
@@ -14,6 +14,9 @@ type TimelineProps = {
   width: number;
   headerHeight: number;
 };
+
+const MAX_DAY_WIDTH = 120;
+const MIN_DAY_WIDTH = 68;
 
 function useDateByDiff() {
   const datesByDiff = useRef<{ [key: number]: Date }>({});
@@ -55,7 +58,7 @@ function Timeline({ width, height, headerHeight }: TimelineProps) {
   );
   const getDateByDiff = useDateByDiff();
   const value = useStore(scrollController.$value);
-  const dayWidth = Math.max(Math.min(120, width / 10), 60);
+  const dayWidth = Math.max(Math.min(MAX_DAY_WIDTH, width / 10), MIN_DAY_WIDTH);
 
   const daysCount = Math.ceil(width / dayWidth);
 

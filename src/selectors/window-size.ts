@@ -8,7 +8,7 @@ export const selectContentSize = createSelector(
   (windowSize) => {
     const { width, height } = windowSize;
 
-    const contentHeight = width <= 440 ? height - 80 : height - 48;
+    const contentHeight = width <= 560 ? height - 80 : height - 48;
 
     return {
       width,

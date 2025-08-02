@@ -18,7 +18,10 @@ type NavigationProps = {
 const timelineRoutes: AppRouteKey[] = ["home"];
 const profileRoutes: AppRouteKey[] = ["profile", "profile_password"];
 const settingsRoutes: AppRouteKey[] = ["settings"];
-const statisticsRoutes: AppRouteKey[] = ["statistics"];
+const statisticsRoutes: AppRouteKey[] = [
+  "statistics_naps",
+  "statistics_charts",
+];
 
 export function Navigation({ className }: NavigationProps) {
   const route = useSelector(selectRoute);
@@ -42,7 +45,7 @@ export function Navigation({ className }: NavigationProps) {
             styles.tab,
             statisticsRoutes.includes(route.key) && styles.isActive
           )}
-          route={{ key: "statistics" }}
+          route={{ key: "statistics_naps" }}
         >
           <StatisticsSvg className={cn(styles.tabIcon, styles.statistics)} />
           {text.statistics}
