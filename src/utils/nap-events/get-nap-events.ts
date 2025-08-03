@@ -1,5 +1,5 @@
 import { NapEvent, Event, Lang } from "types";
-import { formatTime, formatDuration, formatDate } from "utils/date";
+import { formatTime, formatDate } from "utils/date";
 import { labelNightEvents } from "./label-night-events";
 
 export function getNapEvents(
@@ -40,7 +40,6 @@ export function getNapEvents(
       endTime,
       timeStr: formatTime(timestamp, timeZone),
       duration,
-      durationStr: formatDuration(duration),
       isNightSleep: false,
     });
   }

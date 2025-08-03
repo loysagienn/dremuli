@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./stat-chart.module.css";
-import { Lang, NapEvent, Size } from "types";
+import { Lang, NapEvent, Size, Text } from "types";
 import { cn } from "utils/cn";
 import {
   InfiniteScroll,
@@ -155,7 +155,8 @@ function initChartRenderer(
   sidebarNode: HTMLDivElement,
   lang: Lang,
   theme: "light" | "dark",
-  footerHeight: number
+  footerHeight: number,
+  text: Text
 ) {
   const { $days, dayWidth } = chartState;
   const { $value } = scrollController;
@@ -235,7 +236,7 @@ function initChartRenderer(
     while (duration < topDuration) {
       const node = document.createElement("div");
       node.classList.add(styles.durationTime);
-      node.appendChild(document.createTextNode(formatDuration(duration)));
+      node.appendChild(document.createTextNode(text.timeDuration(duration)));
 
       const bottom = duration / verticalScale - 10;
       node.style.bottom = `${bottom}px`;
@@ -366,7 +367,8 @@ export function StatChart({ className, contentSize }: StatChartProps) {
   const napEvents = useSelector(selectNapEvents);
   const currentDay = useSelector(selectCurrentDay);
   const theme = useSelector(selectTheme);
-  const { statisticsPage: text } = useText();
+  const text = useText();
+  const { statisticsPage } = text;
 
   const footerHeight = useMemo(
     () => (contentSize.width <= 560 ? 80 : 50),
@@ -409,11 +411,12 @@ export function StatChart({ className, contentSize }: StatChartProps) {
       sidebarNode,
       lang,
       theme,
-      footerHeight
+      footerHeight,
+      text
     );
 
     return () => chartRenderer.destroy();
-  }, [chartState, scrollController, lang, theme, footerHeight]);
+  }, [chartState, scrollController, lang, theme, footerHeight, text]);
 
   return (
     <InfiniteScroll
@@ -444,19 +447,19 @@ export function StatChart({ className, contentSize }: StatChartProps) {
           className={styles.colorCaption}
           style={{ color: colors.totalSleep }}
         >
-          {text.totalSleep}
+          {statisticsPage.totalSleep}
         </div>
         <div
           className={styles.colorCaption}
           style={{ color: colors.nightSleep }}
         >
-          {text.nightSleep}
+          {statisticsPage.nightSleep}
         </div>
         <div className={styles.colorCaption} style={{ color: colors.daySleep }}>
-          {text.daySleep}
+          {statisticsPage.daySleep}
         </div>
         <div className={styles.colorCaption} style={{ color: colors.dayAwake }}>
-          {text.awake}
+          {statisticsPage.awake}
         </div>
       </div>
     </InfiniteScroll>

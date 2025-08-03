@@ -23,7 +23,6 @@ export type NapEvent = {
   endTime: Date;
   timeStr: string;
   duration: number;
-  durationStr: string;
   dayStartStr?: string;
   isNightSleep: boolean;
 };
