@@ -15,7 +15,7 @@ import {
   selectTheme,
 } from "selectors";
 import { useStore } from "@nanostores/react";
-import { formatDate, formatDuration } from "utils/date";
+import { formatDate } from "utils/date";
 import { useText } from "lang/context";
 import { atom, Atom, computed } from "nanostores";
 import { DayStat, getDayStat } from "utils/nap-events";
@@ -31,11 +31,6 @@ const colors = {
   nightSleep: "#d436f4",
   daySleep: "#ea9b07",
   dayAwake: "#4CAF50",
-
-  // totalSleep: "#4CAF50",
-  // nightSleep: "#546bf0",
-  // daySleep: "#ffa807",
-  // dayAwake: "#F44336",
 };
 
 const MAX_DAY_WIDTH = 120;
@@ -45,35 +40,6 @@ const SIDEBAR_WIDTH = 60;
 
 const darkBorderColor = "#38475c";
 const lightBorderColor = "#a1b6d4";
-
-function useDateByDiff() {
-  const datesByDiff = useRef<{ [key: number]: Date }>({});
-  const currentDay = useSelector(selectCurrentDay);
-  const currentDayRef = useRef<Date>(currentDay);
-
-  if (currentDay !== currentDayRef.current) {
-    currentDayRef.current = currentDay;
-    datesByDiff.current = {};
-  }
-
-  const getDateByDiff = useCallback(
-    (diff: number) => {
-      if (datesByDiff.current[diff]) {
-        return datesByDiff.current[diff];
-      }
-
-      const date = new Date(currentDay);
-      date.setDate(date.getDate() + diff);
-
-      datesByDiff.current[diff] = date;
-
-      return date;
-    },
-    [currentDay]
-  );
-
-  return getDateByDiff;
-}
 
 function initChartState(
   contentSize: Size,
