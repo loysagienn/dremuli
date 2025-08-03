@@ -110,6 +110,10 @@ export const en = {
     naps: "Naps",
     charts: "Charts",
     chartsInDevelopment: "Charts in development",
+    totalSleep: "Total sleep",
+    nightSleep: "Night sleep",
+    daySleep: "Day sleep",
+    awake: "Awake",
   },
   timeDuration,
 };

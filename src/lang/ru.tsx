@@ -116,6 +116,10 @@ export const ru: Text = {
     naps: "Интервалы сна",
     charts: "Графики",
     chartsInDevelopment: "Графики в разработке",
+    totalSleep: "Весь сон",
+    nightSleep: "Ночной сон",
+    daySleep: "Дневной сон",
+    awake: "Бодрствование",
   },
   timeDuration,
 } as const;

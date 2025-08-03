@@ -1,12 +1,20 @@
 import { NapEvent, EventType } from "types";
 
+const HOUR_MS = 1000 * 60 * 60;
+
 function findFirstNightSleep(napEvents: NapEvent[], dayStart: Date) {
   const timestamp = dayStart.getTime();
+  const searchEndTimestamp = timestamp + 15 * HOUR_MS;
 
-  let index = napEvents.findIndex(
-    (event) =>
-      event.isNightSleep && event.endTime && event.endTime.getTime() > timestamp
-  );
+  let index = napEvents.findIndex((event) => {
+    if (!event.isNightSleep || !event.endTime) {
+      return false;
+    }
+
+    const endTimestamp = event.endTime.getTime();
+
+    return endTimestamp > timestamp && endTimestamp < searchEndTimestamp;
+  });
 
   if (index === -1) {
     return null;
@@ -33,8 +41,6 @@ function findFirstNightSleep(napEvents: NapEvent[], dayStart: Date) {
 
   return index;
 }
-
-const HOUR_MS = 1000 * 60 * 60;
 
 function calculateStat(napEvents: NapEvent[], firstNightSleepIndex: number) {
   let index = firstNightSleepIndex;
@@ -107,3 +113,5 @@ export function getDayStat(day: Date, napEvents: NapEvent[]) {
 
   return stat;
 }
+
+export type DayStat = ReturnType<typeof getDayStat>;
