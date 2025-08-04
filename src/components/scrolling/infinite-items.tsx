@@ -7,10 +7,7 @@ import React, {
 } from "react";
 import styles from "./infinite-scroll.module.css";
 import { InfiniteScroll } from "./infinite-scroll";
-import {
-  initInfiniteScrollController,
-  InfiniteScrollController,
-} from "./infinite-scroll-controller";
+import { InfiniteScrollController } from "./scroll-controller";
 import { useStore } from "@nanostores/react";
 
 type InfiniteItemsProps = {

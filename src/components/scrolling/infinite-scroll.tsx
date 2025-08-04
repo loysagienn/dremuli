@@ -1,7 +1,7 @@
 import React, { memo, ReactNode, useLayoutEffect, useRef } from "react";
 import styles from "./infinite-scroll.module.css";
 import { cn } from "utils/cn";
-import { InfiniteScrollController } from "./infinite-scroll-controller";
+import { InfiniteScrollController } from "./scroll-controller";
 
 type InfiniteScrollProps = {
   scrollController: InfiniteScrollController;
