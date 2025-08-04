@@ -244,7 +244,7 @@ function initChartRenderer(
     const verticalScale = $verticalScale.get();
 
     const daysLeft = days.map((day) => {
-      const right = value - (day.dayDiff + 0.5) * dayWidth;
+      const right = value - (day.dayDiff - 0.5) * dayWidth;
       const left = canvasWidth - right;
 
       return left;
