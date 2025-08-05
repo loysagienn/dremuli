@@ -1,4 +1,5 @@
 import { NapEvent, EventType } from "types";
+import { getDayStart } from "utils/date";
 
 const HOUR_MS = 1000 * 60 * 60;
 
@@ -108,12 +109,7 @@ function calculateStat(
 }
 
 export function getDayStat(day: Date, napEvents: NapEvent[]) {
-  const dayStart = new Date(day);
-
-  dayStart.setHours(0);
-  dayStart.setMinutes(0);
-  dayStart.setSeconds(0);
-  dayStart.setMilliseconds(0);
+  const dayStart = getDayStart(day);
 
   const firstNightSleepIndex = findFirstNightSleep(napEvents, dayStart);
 
