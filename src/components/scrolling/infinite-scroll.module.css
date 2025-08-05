@@ -22,7 +22,7 @@
   scroll-snap-type: x mandatory;
 }
 
-.container.vertical.scalingEnabled .scrollArea {
+.container.scalingEnabled .scrollArea {
   overscroll-behavior-x: contain;
 }
 
