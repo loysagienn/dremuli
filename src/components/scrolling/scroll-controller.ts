@@ -8,10 +8,12 @@ import { initScaling } from "./scaling";
 type InfiniteScrollControllerOptions = {
   direction: "horizontal" | "vertical";
   defaultValue?: number;
-  defaultScale?: number;
+  scale?: number;
   snapSize?: number;
   minValue?: number | null;
   maxValue?: number | null;
+  scalingEnabled?: boolean;
+  valuePositionFactor?: number;
 };
 
 const defaultOptions: InfiniteScrollControllerOptions = {
@@ -41,15 +43,19 @@ function initValue(
 export function initInfiniteScrollController({
   direction = "vertical",
   defaultValue,
-  defaultScale,
+  scale = 1,
   snapSize,
   minValue = null,
   maxValue = null,
+  scalingEnabled,
+  valuePositionFactor,
 }: InfiniteScrollControllerOptions = defaultOptions) {
+  const $scale = atom(scale);
   const [$value, setValue] = initValue(defaultValue | 0, minValue, maxValue);
 
   const onScroll = (diff: number) => {
-    const newValue = $value.get() + diff;
+    const scale = $scale.get();
+    const newValue = $value.get() + diff * scale;
 
     setValue(newValue);
 
@@ -73,19 +79,60 @@ export function initInfiniteScrollController({
 
   const scaling = initScaling(
     $value,
+    $scale,
     setValue,
     scrollManager,
-    defaultScale,
-    direction
+    direction,
+    scalingEnabled,
+    valuePositionFactor ?? 1
   );
 
-  const { $scale } = scaling;
+  let updateValueAnimationReset: (() => void) | null = null;
+
+  const updateValue = (value: number) => {
+    if (scrollManager.$scrolling.get() || $value.get() === value) {
+      return;
+    }
+
+    if (updateValueAnimationReset) {
+      updateValueAnimationReset();
+    }
+
+    updateValueAnimationReset = () => {
+      animationController.destroy();
+      unsubscribeScrolling();
+      updateSnapElements();
+      updateValueAnimationReset = null;
+    };
+
+    const animationController = initAnimationController(
+      $value.get(),
+      setValue,
+      updateValueAnimationReset
+    );
+
+    const unsubscribeScrolling = scrollManager.$scrolling.listen(
+      (scrolling) => {
+        if (scrolling) {
+          updateValueAnimationReset();
+        }
+      }
+    );
+
+    const scale = $scale.get();
+
+    const distanceFactor = snapSize ? (snapSize * scale) / 10 : scale;
+
+    animationController.move(value, distanceFactor);
+  };
 
   const [updateSnapElements] = initSnapping(
     scrollManager,
     snapSize,
     direction,
-    $value
+    $value,
+    $scale,
+    updateValue
   );
 
   const updateSnapElementsDebounced = debounce(updateSnapElements, 100);
@@ -97,33 +144,6 @@ export function initInfiniteScrollController({
     scrollManager.setNodes(scrollAreaNode, scrollableNode);
 
     updateSnapElements();
-  };
-
-  const updateValue = (value: number) => {
-    if (scrollManager.$scrolling.get() || $value.get() === value) {
-      return;
-    }
-
-    const reset = () => {
-      animationController.destroy();
-      unsubscribeScrolling();
-    };
-
-    const animationController = initAnimationController(
-      $value.get(),
-      setValue,
-      reset
-    );
-
-    const unsubscribeScrolling = scrollManager.$scrolling.listen(
-      (scrolling) => {
-        if (scrolling) {
-          reset();
-        }
-      }
-    );
-
-    animationController.move(value, snapSize ? snapSize / 5 : 20);
   };
 
   const destroy = () => {
@@ -142,6 +162,7 @@ export function initInfiniteScrollController({
     $value,
     $scale,
     $containerSize: scrollManager.$containerSize,
+    scalingEnabled: scalingEnabled ?? false,
   };
 }
 

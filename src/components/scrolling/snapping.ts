@@ -1,41 +1,42 @@
 import { ScrollManager } from "./scroll-manager";
-import { Atom } from "nanostores";
+import { Atom, computed } from "nanostores";
 import styles from "./infinite-scroll.module.css";
 import { SCROLLABLE_SIZE } from "./constants";
+import { debounce } from "utils/debounce";
 
 function setSnapElementsPosition(
   snapNodes: HTMLDivElement[],
   scrollManager: ScrollManager,
-  snapSize: number,
+  pixelSnapSize: number,
   direction: "vertical" | "horizontal",
-  value: number
+  pixelValue: number
 ) {
   const scrollValue = scrollManager.$scrollValue.get();
   const containerSize = scrollManager.$containerSize.get();
-  const valueDiff = value % snapSize;
-  const center = scrollValue - snapSize / 2 + containerSize / 2;
-  let offset = (center % snapSize) - valueDiff;
+  const valueDiff = pixelValue % pixelSnapSize;
+  const center = scrollValue - pixelSnapSize / 2 + containerSize / 2;
+  let offset = (center % pixelSnapSize) - valueDiff;
 
   if (direction === "vertical") {
     for (let i = 0; i < snapNodes.length; i++) {
       const node = snapNodes[i];
 
-      node.style.top = `${snapSize * i + offset}px`;
+      node.style.top = `${pixelSnapSize * i + offset}px`;
     }
   } else {
     for (let i = 0; i < snapNodes.length; i++) {
       const node = snapNodes[i];
 
-      node.style.left = `${snapSize * i + offset}px`;
+      node.style.left = `${pixelSnapSize * i + offset}px`;
     }
   }
 }
 
 function getSnapElements(
-  snapSize: number,
+  pixelSnapSize: number,
   direction: "horizontal" | "vertical"
 ) {
-  const snapElementsCount = Math.floor(SCROLLABLE_SIZE / snapSize) - 1;
+  const snapElementsCount = Math.floor(SCROLLABLE_SIZE / pixelSnapSize) - 1;
 
   const snapNodes: HTMLDivElement[] = [];
 
@@ -44,9 +45,9 @@ function getSnapElements(
     node.classList.add(styles.snapTarget);
 
     if (direction === "vertical") {
-      node.style.height = `${snapSize}px`;
+      node.style.height = `${pixelSnapSize}px`;
     } else {
-      node.style.width = `${snapSize}px`;
+      node.style.width = `${pixelSnapSize}px`;
     }
 
     snapNodes.push(node);
@@ -59,19 +60,34 @@ export function initSnapping(
   scrollManager: ScrollManager,
   snapSize: number,
   direction: "horizontal" | "vertical",
-  $value: Atom<number>
+  $value: Atom<number>,
+  $scale: Atom<number>,
+  updateValue: (value: number) => void
 ): [() => void] {
   if (!snapSize || typeof document === "undefined") {
     return [() => {}];
   }
 
-  const snapElements = getSnapElements(snapSize, direction);
+  const $pixelSnapSize = computed($scale, (scale) => snapSize / scale);
+  const $pixelValue = computed(
+    [$value, $scale],
+    (value, scale) => value / scale
+  );
+
+  const $snapElements = computed($pixelSnapSize, (pixelSnapSize) => {
+    return getSnapElements(pixelSnapSize, direction);
+  });
   let currScrollableNode = null;
+  let currSnapElements = $snapElements.get();
 
   const appendSnapElements = () => {
     const scrollableNode = scrollManager.$scrollableNode.get();
+    const snapElements = $snapElements.get();
 
-    if (currScrollableNode === scrollableNode) {
+    if (
+      currScrollableNode === scrollableNode &&
+      currSnapElements === snapElements
+    ) {
       return;
     }
 
@@ -82,19 +98,35 @@ export function initSnapping(
     }
 
     currScrollableNode = scrollableNode;
+    currSnapElements = snapElements;
   };
 
   const updateSnapElements = () => {
     appendSnapElements();
 
+    const snapElements = $snapElements.get();
+    const pixelSnapSize = $pixelSnapSize.get();
+    const pixelValue = $pixelValue.get();
+
     setSnapElementsPosition(
       snapElements,
       scrollManager,
-      snapSize,
+      pixelSnapSize,
       direction,
-      $value.get()
+      pixelValue
     );
   };
+
+  const onScale = debounce(() => {
+    const value = $value.get();
+    const targetValue = Math.round(value / snapSize) * snapSize;
+
+    updateValue(targetValue);
+  }, 100);
+
+  $scale.listen(onScale);
+
+  // $snapElements.listen(debounce(updateSnapElements, 100));
 
   return [updateSnapElements];
 }

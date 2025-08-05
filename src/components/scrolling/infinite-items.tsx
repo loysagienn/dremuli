@@ -14,14 +14,17 @@ type InfiniteItemsProps = {
   className?: string;
   getValueContent: (value: number, onClick: () => void) => ReactNode;
   scrollController: InfiniteScrollController;
+  itemSize?: number;
 };
 
 export function InfiniteItems({
   className,
   scrollController,
   getValueContent,
+  itemSize,
 }: InfiniteItemsProps) {
   const value = useStore(scrollController.$value);
+  const scale = useStore(scrollController.$scale);
   const containerSize = useStore(scrollController.$containerSize);
 
   const items = useMemo(() => {
@@ -29,16 +32,19 @@ export function InfiniteItems({
       return null;
     }
 
-    const { snapSize, minValue, maxValue, direction } = scrollController;
+    const { minValue, maxValue, direction } = scrollController;
+
+    const snapSize = scrollController.snapSize || itemSize;
 
     const currentValue = Math.round(value / snapSize) * snapSize;
+    const pixelSnapSize = snapSize / scale;
 
     const values: number[] = [];
 
     const radius = containerSize / 2 - 5;
     const sectorLength = (Math.PI * radius) / 2;
 
-    const valuesOffset = Math.ceil(sectorLength / snapSize);
+    const valuesOffset = Math.ceil(sectorLength / pixelSnapSize);
 
     for (let i = -valuesOffset; i <= valuesOffset; i++) {
       const val = currentValue + snapSize * i;
@@ -54,23 +60,23 @@ export function InfiniteItems({
     }
 
     const items = values.map((val) => {
-      let valueDiff = val - value;
+      let valueDiffPixel = (val - value) / scale;
 
-      if (valueDiff > sectorLength) {
-        valueDiff = sectorLength;
-      } else if (valueDiff < -sectorLength) {
-        valueDiff = -sectorLength;
+      if (valueDiffPixel > sectorLength) {
+        valueDiffPixel = sectorLength;
+      } else if (valueDiffPixel < -sectorLength) {
+        valueDiffPixel = -sectorLength;
       }
 
-      const factor = valueDiff / sectorLength;
+      const factor = valueDiffPixel / sectorLength;
       const angle = (Math.PI / 2) * factor;
       const position =
-        Math.sin(angle) * radius - snapSize / 2 + containerSize / 2;
-      const size = snapSize;
-      const scale = (Math.cos(angle) + 1) / 2;
+        Math.sin(angle) * radius - pixelSnapSize / 2 + containerSize / 2;
+      const size = pixelSnapSize;
+      const transformScale = (Math.cos(angle) + 1) / 2;
       const opacity =
         val === currentValue ? 1 : (1 - Math.abs(factor)) ** 2 * 0.8;
-      const transform = `scale(${scale}, ${scale}) ${
+      const transform = `scale(${transformScale}, ${transformScale}) ${
         direction === "vertical" ? "rotateX" : "rotateY"
       }(${angle}rad)`;
       const onClick = () => scrollController.updateValue(val);
@@ -88,7 +94,7 @@ export function InfiniteItems({
     });
 
     return items;
-  }, [value, containerSize, scrollController, getValueContent]);
+  }, [value, scale, containerSize, scrollController, getValueContent]);
 
   return (
     <InfiniteScroll className={className} scrollController={scrollController}>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import styles from "./stat-chart.module.css";
 import { Lang, NapEvent, Size, Text } from "types";
 import { cn } from "utils/cn";
@@ -62,17 +62,16 @@ function initChartState(
     scrollController.$scale,
     (scale) => (HOUR_MS * 24) / scale
   );
-  // const dayWidth = Math.max(Math.min(MAX_DAY_WIDTH, width / 10), MIN_DAY_WIDTH);
-  // const daysCount = Math.ceil(width / dayWidth) + 1;
+
   const $daysCount = computed(
     $dayWidth,
     (dayWidth) => Math.ceil(width / dayWidth) + 1
   );
 
   const $daysDiffs = computed(
-    [scrollController.$value, $daysCount, $dayWidth],
-    (value, daysCount, dayWidth) => {
-      const firstDayDiff = Math.ceil(value / dayWidth);
+    [scrollController.$value, $daysCount],
+    (value, daysCount) => {
+      const firstDayDiff = Math.ceil(value / (HOUR_MS * 24));
 
       let daysDiffs: number[] = [];
 
@@ -110,11 +109,11 @@ function initChartState(
   };
 
   const $days = computed(
-    [$daysDiffs, scrollController.$value, $dayWidth],
-    (daysDiffs, value, dayWidth) =>
+    [$daysDiffs, scrollController.$value, scrollController.$scale, $dayWidth],
+    (daysDiffs, value, scale, dayWidth) =>
       daysDiffs.map((dayDiff) => {
         const date = getDateByDiff(dayDiff);
-        const right = value - (dayDiff - 0.5) * dayWidth;
+        const right = value / scale - (dayDiff - 0.5) * dayWidth;
         const stat = getStat(dayDiff, date);
 
         return { date, right, stat, dayDiff };
@@ -168,7 +167,7 @@ function initChartRenderer(
   text: Text
 ) {
   const { $days, $dayWidth } = chartState;
-  const { $value } = scrollController;
+  const { $value, $scale } = scrollController;
   const height = contentSize.height - HEADER_HEIGHT - footerHeight;
   const canvasWidth = contentSize.width - SIDEBAR_WIDTH;
 
@@ -285,10 +284,11 @@ function initChartRenderer(
     }
 
     const value = $value.get();
+    const scale = $scale.get();
     const verticalScale = $verticalScale.get();
 
     const daysLeft = days.map((day) => {
-      const right = value - (day.dayDiff - 0.5) * dayWidth;
+      const right = value / scale - (day.dayDiff - 0.5) * dayWidth;
       const left = canvasWidth - right;
 
       return left;
@@ -357,12 +357,14 @@ function initChartRenderer(
 
   const unsubscribeVerticalScale = $verticalScale.subscribe(requestRender);
   const unsubscribeValue = $value.subscribe(requestRender);
+  const unsubscribeScale = $scale.subscribe(requestRender);
   const unsubscribeDays = $daysWithStat.subscribe(requestRender);
   const unsubscribeDayWidth = $dayWidth.subscribe(requestRender);
 
   const destroy = () => {
     unsubscribeVerticalScale();
     unsubscribeValue();
+    unsubscribeScale();
     unsubscribeDays();
     unsubscribeDayWidth();
     verticalScaleAnimationController.destroy();
@@ -402,9 +404,10 @@ export function StatChart({ className, contentSize }: StatChartProps) {
     () =>
       initInfiniteScrollController({
         direction: "horizontal",
-        defaultScale: defaultScale,
-        maxValue: (HOUR_MS * 24 * 3) / defaultScale,
+        scale: defaultScale,
+        maxValue: HOUR_MS * 24 * 3,
         defaultValue: 0,
+        scalingEnabled: true,
       }),
     []
   );

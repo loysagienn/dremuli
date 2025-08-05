@@ -33,6 +33,7 @@ export function DatePicker({
         snapSize,
         minValue: -snapSize * 364,
         maxValue: 0,
+        scale: 1,
       }),
     []
   );

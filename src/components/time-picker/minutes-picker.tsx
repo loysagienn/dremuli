@@ -29,6 +29,7 @@ export function MinutesPicker({
         direction: "vertical",
         defaultValue: minutes * snapSize,
         snapSize,
+        scale: 1,
       }),
     []
   );

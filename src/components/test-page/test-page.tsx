@@ -11,25 +11,32 @@ const snapSize = 100;
 
 export function TestPage() {
   const scrollController = useMemo(
-    () => initInfiniteScrollController({ direction: "vertical", snapSize }),
+    () =>
+      initInfiniteScrollController({
+        direction: "vertical",
+        snapSize,
+        scale: 1,
+        scalingEnabled: true,
+        valuePositionFactor: 0.5,
+      }),
     []
   );
 
-  const value = useStore(scrollController.$value);
+  // const value = useStore(scrollController.$value);
 
-  const items = useMemo(() => {
-    const currentValue = value - (value % snapSize);
+  // const items = useMemo(() => {
+  //   const currentValue = value - (value % snapSize);
 
-    const values: number[] = [];
+  //   const values: number[] = [];
 
-    for (let i = -8; i <= 8; i++) {
-      const val = currentValue + snapSize * i;
+  //   for (let i = -8; i <= 8; i++) {
+  //     const val = currentValue + snapSize * i;
 
-      values.push(val);
-    }
+  //     values.push(val);
+  //   }
 
-    return values;
-  }, [value]);
+  //   return values;
+  // }, [value]);
 
   const getValueContent = useCallback((value: number, onClick: () => void) => {
     return (
@@ -38,6 +45,7 @@ export function TestPage() {
       </div>
     );
   }, []);
+
   return (
     <div className={styles.root}>
       <Header />
@@ -47,6 +55,7 @@ export function TestPage() {
             scrollController={scrollController}
             className={styles.scroll}
             getValueContent={getValueContent}
+            itemSize={snapSize}
           ></InfiniteItems>
         </div>
       </div>

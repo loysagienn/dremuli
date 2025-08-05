@@ -53,6 +53,7 @@ function Timeline({ width, height, headerHeight }: TimelineProps) {
       initInfiniteScrollController({
         direction: "horizontal",
         maxValue: 0,
+        scale: 1,
       }),
     []
   );

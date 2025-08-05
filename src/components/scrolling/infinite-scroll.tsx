@@ -36,7 +36,8 @@ function InfiniteScroll({
         className,
         styles.container,
         styles[scrollController.direction],
-        scrollController.snapSize && styles.snapValue
+        scrollController.snapSize && styles.snappingEnabled,
+        scrollController.scalingEnabled && styles.scalingEnabled
       )}
     >
       <div className={styles.scrollArea} ref={scrollAreaRef}>

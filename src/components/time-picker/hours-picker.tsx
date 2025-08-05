@@ -27,6 +27,7 @@ export function HoursPicker({
         direction: "vertical",
         defaultValue: hour * snapSize,
         snapSize,
+        scale: 1,
       }),
     []
   );

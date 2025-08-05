@@ -1,30 +1,33 @@
-import { atom, Atom } from "nanostores";
+import { atom, Atom, WritableAtom } from "nanostores";
 import { ScrollManager } from "./scroll-manager";
 import { addWindowEvent, removeWindowEvent } from "utils/browser";
 
 export function initScaling(
   $value: Atom<number>,
+  $scale: WritableAtom<number>,
   setValue: (value: number) => void,
   scrollManager: ScrollManager,
-  defaultScale: number,
-  direction: "vertical" | "horizontal"
+  direction: "vertical" | "horizontal",
+  scalingEnabled: boolean,
+  valuePositionFactor: number
 ) {
-  const $scale = atom(defaultScale);
-
-  if (!defaultScale) {
+  if (!scalingEnabled) {
     return {
-      $scale,
       destroy: () => {},
     };
   }
 
   const onWheel = (event: WheelEvent) => {
+    if (scrollManager.$scrolling.get()) {
+      return;
+    }
+
     const [delta, deltaOpposite] =
       direction === "vertical"
         ? [event.deltaX, event.deltaY]
         : [event.deltaY, event.deltaX];
 
-    if (Math.abs(deltaOpposite) > Math.abs(delta)) {
+    if (Math.abs(deltaOpposite) > Math.abs(delta) / 2) {
       return;
     }
 
@@ -33,20 +36,26 @@ export function initScaling(
       scaleFactor = 1 / scaleFactor;
     }
 
+    const scale = $scale.get();
+    const newScale = scale * scaleFactor;
+
     const scrollAreaNode = scrollManager.$scrollAreaNode.get();
     const rect = scrollAreaNode.getBoundingClientRect();
     const value = $value.get();
-    const right = rect.right - event.clientX;
-    const valueDiff = right * scaleFactor - right;
-    // console.log("value", value);
-    // console.log("valueDiff", valueDiff);
+    const valueDiffPixel =
+      direction === "horizontal"
+        ? rect.left +
+          (rect.right - rect.left) * valuePositionFactor -
+          event.clientX
+        : rect.top +
+          (rect.bottom - rect.top) * valuePositionFactor -
+          event.clientY;
+    const mouseValue = value - valueDiffPixel * scale;
+    const newValue = mouseValue + valueDiffPixel * newScale;
 
-    setValue(value / scaleFactor + valueDiff);
+    setValue(newValue);
 
-    // console.log("right", right);
-
-    $scale.set($scale.get() * scaleFactor);
-    // console.log("scaleFactor", scaleFactor);
+    $scale.set(scale * scaleFactor);
   };
 
   addWindowEvent("wheel", onWheel);
@@ -56,7 +65,6 @@ export function initScaling(
   };
 
   return {
-    $scale,
     destroy,
   };
 }

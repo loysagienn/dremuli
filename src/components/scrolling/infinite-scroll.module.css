@@ -14,12 +14,16 @@
   overflow: auto;
 }
 
-.container.vertical.snapValue .scrollArea {
+.container.vertical.snappingEnabled .scrollArea {
   scroll-snap-type: y mandatory;
 }
 
-.container.horizontal.snapValue .scrollArea {
+.container.horizontal.snappingEnabled .scrollArea {
   scroll-snap-type: x mandatory;
+}
+
+.container.vertical.scalingEnabled .scrollArea {
+  overscroll-behavior-x: contain;
 }
 
 .container.vertical .scrollArea {
