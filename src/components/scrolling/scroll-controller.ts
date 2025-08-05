@@ -3,10 +3,12 @@ import { initAnimationController } from "utils/animation";
 import { initScrollManager } from "./scroll-manager";
 import { initSnapping } from "./snapping";
 import { debounce } from "utils/debounce";
+import { initScaling } from "./scaling";
 
 type InfiniteScrollControllerOptions = {
   direction: "horizontal" | "vertical";
   defaultValue?: number;
+  defaultScale?: number;
   snapSize?: number;
   minValue?: number | null;
   maxValue?: number | null;
@@ -39,6 +41,7 @@ function initValue(
 export function initInfiniteScrollController({
   direction = "vertical",
   defaultValue,
+  defaultScale,
   snapSize,
   minValue = null,
   maxValue = null,
@@ -55,8 +58,6 @@ export function initInfiniteScrollController({
     if (value !== newValue) {
       updateSnapElementsDebounced();
     }
-
-    // console.log(value === newValue);
   };
 
   const onRecenter = () => {
@@ -69,6 +70,16 @@ export function initInfiniteScrollController({
     onScroll,
     recenterOnScroll: !snapSize,
   });
+
+  const scaling = initScaling(
+    $value,
+    setValue,
+    scrollManager,
+    defaultScale,
+    direction
+  );
+
+  const { $scale } = scaling;
 
   const [updateSnapElements] = initSnapping(
     scrollManager,
@@ -117,6 +128,7 @@ export function initInfiniteScrollController({
 
   const destroy = () => {
     scrollManager.destroy();
+    scaling.destroy();
   };
 
   return {
@@ -128,6 +140,7 @@ export function initInfiniteScrollController({
     minValue,
     maxValue,
     $value,
+    $scale,
     $containerSize: scrollManager.$containerSize,
   };
 }

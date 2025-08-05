@@ -42,7 +42,19 @@ function findFirstNightSleep(napEvents: NapEvent[], dayStart: Date) {
   return index;
 }
 
-function calculateStat(napEvents: NapEvent[], firstNightSleepIndex: number) {
+export type DayStat = {
+  totalSleepDuration: number;
+  nightSleepDuration: number;
+  nightAwakeDuration: number;
+  daySleepDuration: number;
+  dayAwakeDuration: number;
+  dayNapsCount: number;
+};
+
+function calculateStat(
+  napEvents: NapEvent[],
+  firstNightSleepIndex: number
+): DayStat {
   let index = firstNightSleepIndex;
 
   let dayStarted = false;
@@ -113,5 +125,3 @@ export function getDayStat(day: Date, napEvents: NapEvent[]) {
 
   return stat;
 }
-
-export type DayStat = ReturnType<typeof getDayStat>;
