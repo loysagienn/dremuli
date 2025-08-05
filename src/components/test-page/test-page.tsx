@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./test-page.module.css";
 import { Header } from "components/header";
 import {
@@ -20,6 +20,13 @@ export function TestPage() {
         valuePositionFactor: 0.5,
       }),
     []
+  );
+
+  useEffect(
+    () => () => {
+      scrollController.destroy();
+    },
+    [scrollController]
   );
 
   // const value = useStore(scrollController.$value);

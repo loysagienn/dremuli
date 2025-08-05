@@ -34,6 +34,13 @@ export function MinutesPicker({
     []
   );
 
+  useEffect(
+    () => () => {
+      scrollController.destroy();
+    },
+    [scrollController]
+  );
+
   useEffect(() => {
     return scrollController.$value.listen((pixelValue) => {
       let newMinutes = Math.round(pixelValue / snapSize) % 60;

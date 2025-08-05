@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useRef } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./naps-chart.module.css";
 import {
   InfiniteScroll,
@@ -57,6 +57,14 @@ function Timeline({ width, height, headerHeight }: TimelineProps) {
       }),
     []
   );
+
+  useEffect(
+    () => () => {
+      scrollController.destroy();
+    },
+    [scrollController]
+  );
+
   const getDateByDiff = useDateByDiff();
   const value = useStore(scrollController.$value);
   const dayWidth = Math.max(Math.min(MAX_DAY_WIDTH, width / 10), MIN_DAY_WIDTH);

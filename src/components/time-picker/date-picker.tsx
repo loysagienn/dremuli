@@ -38,6 +38,13 @@ export function DatePicker({
     []
   );
 
+  useEffect(
+    () => () => {
+      scrollController.destroy();
+    },
+    [scrollController]
+  );
+
   useEffect(() => {
     return scrollController.$value.listen((pixelValue) => {
       const newDaysDiff = -Math.round(pixelValue / snapSize);

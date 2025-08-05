@@ -32,6 +32,13 @@ export function HoursPicker({
     []
   );
 
+  useEffect(
+    () => () => {
+      scrollController.destroy();
+    },
+    [scrollController]
+  );
+
   useEffect(() => {
     return scrollController.$value.listen((pixelValue) => {
       let newHour = Math.round(pixelValue / snapSize) % 24;

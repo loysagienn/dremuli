@@ -412,6 +412,13 @@ export function StatChart({ className, contentSize }: StatChartProps) {
     []
   );
 
+  useEffect(
+    () => () => {
+      scrollController.destroy();
+    },
+    [scrollController]
+  );
+
   const chartState = useMemo(
     () => initChartState(contentSize, scrollController, napEvents, currentDay),
     [contentSize, scrollController, napEvents]
