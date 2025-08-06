@@ -55,6 +55,8 @@ export function initScaling(
 
     setValue(newValue);
 
+    // console.log("scale change");
+
     $scale.set(scale * scaleFactor);
   };
 
