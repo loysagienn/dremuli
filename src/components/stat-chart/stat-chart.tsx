@@ -14,13 +14,11 @@ import {
   selectNapEvents,
   selectTheme,
 } from "selectors";
-import { useStore } from "@nanostores/react";
 import { formatDate } from "utils/date";
 import { useText } from "lang/context";
-import { atom, Atom, batched, computed } from "nanostores";
 import { DayStat, getDayStat } from "utils/nap-events";
 import { initAnimationController } from "utils/animation";
-import { createComputedStore } from "utils/stores";
+import { computedQuant, quant, useQuant } from "utils/quant";
 
 type StatChartProps = {
   className?: string;
@@ -57,29 +55,22 @@ function initChartState(
   napEvents: NapEvent[],
   currentDay: Date
 ) {
-  // const index = ++counter;
-  // console.log("init chart state", index);
   const datesByDiff: { [key: number]: Date } = {};
   const dayStatByDiff: { [key: number]: DayStat } = {};
   const { width } = contentSize;
 
-  const [$dayWidth, destroyDayWidth] = createComputedStore(
-    [scrollController.$scale],
-    (scale) => {
-      // console.log("calc day width");
-      return (HOUR_MS * 24) / scale;
-    }
-  );
+  const $dayWidth = computedQuant([scrollController.$scale], (scale) => {
+    return (HOUR_MS * 24) / scale;
+  });
 
-  const [$daysCount, destroyDaysCount] = createComputedStore(
-    [$dayWidth],
-    (dayWidth) => Math.ceil(width / dayWidth) + 1
-  );
+  const $daysCount = computedQuant([$dayWidth], (dayWidth) => {
+    return Math.ceil(width / dayWidth) + 1;
+  });
 
-  const [$daysDiffs, destroyDaysDiffs] = createComputedStore(
+  const $daysDiffs = computedQuant(
     [scrollController.$value, $daysCount],
     (value, daysCount) => {
-      const firstDayDiff = Math.ceil(value / (HOUR_MS * 24));
+      const firstDayDiff = Math.ceil(value / (HOUR_MS * 24)) + 1;
 
       let daysDiffs: number[] = [];
 
@@ -116,10 +107,9 @@ function initChartState(
     return stat;
   };
 
-  const [$days, destroyDays] = createComputedStore(
+  const $days = computedQuant(
     [$daysDiffs, scrollController.$value, scrollController.$scale, $dayWidth],
     (daysDiffs, value, scale, dayWidth) => {
-      // console.log("calc days");
       return daysDiffs.map((dayDiff) => {
         const date = getDateByDiff(dayDiff);
         const right = value / scale - (dayDiff - 0.5) * dayWidth;
@@ -127,45 +117,39 @@ function initChartState(
 
         return { date, right, stat, dayDiff };
       });
-    }
+    },
+    "days_quant"
   );
 
-  const [$headerDays, destroyHeaderDays] = createComputedStore(
-    [$days, $dayWidth],
-    (days, dayWidth) => {
-      if (dayWidth > 95) {
-        return days;
-      }
-
-      const skipFactor = Math.ceil(95 / dayWidth);
-
-      const headerDays = days.filter((day) => day.dayDiff % skipFactor === 0);
-
-      return headerDays;
+  const $headerDays = computedQuant([$days, $dayWidth], (days, dayWidth) => {
+    if (dayWidth > 95) {
+      return days;
     }
-  );
 
-  const [$headerDayWidth, destroyHeaderDayWidth] = createComputedStore(
-    [$dayWidth],
-    (dayWidth) => {
-      if (dayWidth > 95) {
-        return dayWidth;
-      }
+    const skipFactor = Math.ceil(95 / dayWidth);
 
-      const skipFactor = Math.ceil(95 / dayWidth);
+    const headerDays = days.filter((day) => day.dayDiff % skipFactor === 0);
 
-      return skipFactor * dayWidth;
+    return headerDays;
+  });
+
+  const $headerDayWidth = computedQuant([$dayWidth], (dayWidth) => {
+    if (dayWidth > 95) {
+      return dayWidth;
     }
-  );
+
+    const skipFactor = Math.ceil(95 / dayWidth);
+
+    return skipFactor * dayWidth;
+  });
 
   const destroy = () => {
-    destroyDayWidth();
-    destroyHeaderDayWidth();
-    destroyHeaderDays();
-    destroyDays();
-    destroyDaysDiffs();
-    destroyDaysCount();
-    // console.log("destroy chart state", index);
+    $dayWidth.destroy();
+    $headerDayWidth.destroy();
+    $headerDays.destroy();
+    $days.destroy();
+    $daysDiffs.destroy();
+    $daysCount.destroy();
   };
 
   return {
@@ -216,11 +200,11 @@ function initChartRenderer(
 
   const ctx = initCanvas();
 
-  const $daysWithStat = computed($days, (days) =>
+  const $daysWithStat = computedQuant([$days], (days) =>
     days.filter((day) => day.stat)
   );
 
-  const $maxDuration = computed($daysWithStat, (days) => {
+  const $maxDuration = computedQuant([$daysWithStat], (days) => {
     if (days.length === 0) {
       return HOUR_MS * 5.5;
     }
@@ -245,7 +229,7 @@ function initChartRenderer(
   const topOffset = HOUR_MS;
   const defaultVerticalScale = ($maxDuration.get() + topOffset) / height;
 
-  const $verticalScale = atom(defaultVerticalScale);
+  const $verticalScale = quant(defaultVerticalScale);
 
   const verticalScaleAnimationController = initAnimationController(
     defaultVerticalScale,
@@ -460,8 +444,8 @@ export function StatChart({ className, contentSize }: StatChartProps) {
 
   const { $headerDays, $headerDayWidth } = chartState;
 
-  const headerDays = useStore($headerDays);
-  const headerDayWidth = useStore($headerDayWidth);
+  const headerDays = useQuant($headerDays);
+  const headerDayWidth = useQuant($headerDayWidth);
 
   useEffect(() => {
     const canvasNode = canvasRef.current;

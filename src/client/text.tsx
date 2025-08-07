@@ -1,6 +1,6 @@
-import { atom, computed } from "nanostores";
 import { selectLanguage } from "selectors";
 import { Text, Store } from "types";
+import { computedQuant, quant } from "utils/quant";
 
 async function getEn() {
   const en = await import("lang/en");
@@ -28,12 +28,12 @@ async function getRu() {
 
 export function initText({ subscribe, getState }: Store) {
   const i18n = window.__I18N__;
-  const $ru = atom<Text | null>(i18n?.ru ?? null);
-  const $en = atom<Text | null>(i18n?.en ?? null);
+  const $ru = quant<Text | null>(i18n?.ru ?? null);
+  const $en = quant<Text | null>(i18n?.en ?? null);
   let pendingEn: Promise<Text> | null = null;
   let pendingRu: Promise<Text> | null = null;
 
-  const $currentLang = atom(selectLanguage(getState()));
+  const $currentLang = quant(selectLanguage(getState()));
 
   subscribe(() => {
     const lang = selectLanguage(getState());
@@ -59,17 +59,20 @@ export function initText({ subscribe, getState }: Store) {
     }
   });
 
-  const $text = computed([$currentLang, $ru, $en], (currentLang, ru, en) => {
-    if (currentLang === "en" && en) {
-      return en;
-    }
+  const $text = computedQuant(
+    [$currentLang, $ru, $en],
+    (currentLang, ru, en) => {
+      if (currentLang === "en" && en) {
+        return en;
+      }
 
-    if (currentLang === "ru" && ru) {
-      return ru;
-    }
+      if (currentLang === "ru" && ru) {
+        return ru;
+      }
 
-    return en || ru;
-  });
+      return en || ru;
+    }
+  );
 
   return $text;
 }

@@ -1,6 +1,6 @@
-import { Atom, atom, WritableAtom } from "nanostores";
 import { addWindowEvent, removeWindowEvent } from "utils/browser";
 import { SCROLLABLE_SIZE } from "./constants";
+import { MutableQuant, quant, Quant } from "utils/quant";
 
 type ScrollControllerRootOptions = {
   direction: "horizontal" | "vertical";
@@ -10,8 +10,8 @@ type ScrollControllerRootOptions = {
 };
 
 function initTouch(
-  $touchesCount: WritableAtom<number>,
-  $scrollAreaNode: Atom<HTMLDivElement | null>,
+  $touchesCount: MutableQuant<number>,
+  $scrollAreaNode: Quant<HTMLDivElement | null>,
   requestStopScrolling: (timeout: number) => void
 ): [() => void] {
   const onTouchStart = (event: TouchEvent) => {
@@ -52,9 +52,9 @@ function initTouch(
 }
 
 function initScrolling(
-  $touchesCount: Atom<number>
-): [Atom<boolean>, () => void, (timeout?: number) => void] {
-  const $scrolling = atom(false);
+  $touchesCount: Quant<number>
+): [Quant<boolean>, () => void, (timeout?: number) => void] {
+  const $scrolling = quant(false);
 
   const startScrolling = () => {
     $scrolling.set(true);
@@ -89,11 +89,11 @@ export function initScrollManager({
   onScroll,
   recenterOnScroll,
 }: ScrollControllerRootOptions) {
-  const $containerSize = atom(0);
-  const $scrollValue = atom(SCROLLABLE_SIZE / 2);
-  const $scrollAreaNode = atom<HTMLDivElement | null>(null);
-  const $scrollableNode = atom<HTMLDivElement | null>(null);
-  const $touchesCount = atom(0);
+  const $containerSize = quant(0);
+  const $scrollValue = quant(SCROLLABLE_SIZE / 2);
+  const $scrollAreaNode = quant<HTMLDivElement | null>(null);
+  const $scrollableNode = quant<HTMLDivElement | null>(null);
+  const $touchesCount = quant(0);
 
   const [$scrolling, startScrolling, requestStopScrolling] =
     initScrolling($touchesCount);

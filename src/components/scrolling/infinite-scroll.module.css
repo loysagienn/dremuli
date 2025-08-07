@@ -24,6 +24,7 @@
 
 .container.scalingEnabled .scrollArea {
   overscroll-behavior-x: contain;
+  overscroll-behavior-y: contain;
 }
 
 .container.vertical .scrollArea {

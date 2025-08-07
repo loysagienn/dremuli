@@ -1,8 +1,8 @@
 import { ScrollManager } from "./scroll-manager";
-import { Atom, computed } from "nanostores";
 import styles from "./infinite-scroll.module.css";
 import { SCROLLABLE_SIZE } from "./constants";
 import { debounce } from "utils/debounce";
+import { computedQuant, Quant } from "utils/quant";
 
 function setSnapElementsPosition(
   snapNodes: HTMLDivElement[],
@@ -60,21 +60,21 @@ export function initSnapping(
   scrollManager: ScrollManager,
   snapSize: number,
   direction: "horizontal" | "vertical",
-  $value: Atom<number>,
-  $scale: Atom<number>,
+  $value: Quant<number>,
+  $scale: Quant<number>,
   updateValue: (value: number) => void
 ): [() => void] {
   if (!snapSize || typeof document === "undefined") {
     return [() => {}];
   }
 
-  const $pixelSnapSize = computed($scale, (scale) => snapSize / scale);
-  const $pixelValue = computed(
+  const $pixelSnapSize = computedQuant([$scale], (scale) => snapSize / scale);
+  const $pixelValue = computedQuant(
     [$value, $scale],
     (value, scale) => value / scale
   );
 
-  const $snapElements = computed($pixelSnapSize, (pixelSnapSize) => {
+  const $snapElements = computedQuant([$pixelSnapSize], (pixelSnapSize) => {
     return getSnapElements(pixelSnapSize, direction);
   });
   let currScrollableNode = null;

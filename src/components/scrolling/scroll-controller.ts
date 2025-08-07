@@ -1,9 +1,9 @@
-import { Atom, atom } from "nanostores";
 import { initAnimationController } from "utils/animation";
 import { initScrollManager } from "./scroll-manager";
 import { initSnapping } from "./snapping";
 import { debounce } from "utils/debounce";
 import { initScaling } from "./scaling";
+import { quant, Quant } from "utils/quant";
 
 type InfiniteScrollControllerOptions = {
   direction: "horizontal" | "vertical";
@@ -24,8 +24,8 @@ function initValue(
   defaultValue: number,
   minValue: number | null,
   maxValue: number | null
-): [Atom<number>, (value: number) => void] {
-  const $value = atom(defaultValue);
+): [Quant<number>, (value: number) => void] {
+  const $value = quant(defaultValue);
 
   const setValue = (value: number) => {
     if (minValue !== null && value < minValue) {
@@ -50,7 +50,7 @@ export function initInfiniteScrollController({
   scalingEnabled,
   valuePositionFactor,
 }: InfiniteScrollControllerOptions = defaultOptions) {
-  const $scale = atom(scale);
+  const $scale = quant(scale);
   const [$value, setValue] = initValue(defaultValue | 0, minValue, maxValue);
 
   const onScroll = (diff: number) => {

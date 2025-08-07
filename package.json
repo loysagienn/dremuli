@@ -17,29 +17,27 @@
   "description": "",
   "dependencies": {
     "@koa/bodyparser": "^6.0.0",
-    "@nanostores/react": "^1.0.0",
-    "@prisma/client": "^6.11.0",
+    "@prisma/client": "^6.13.0",
     "@reduxjs/toolkit": "^2.8.2",
     "bcrypt": "^6.0.0",
-    "koa": "^3.0.0",
+    "koa": "^3.0.1",
     "koa-send": "^5.0.1",
-    "nanostores": "^1.0.1",
-    "nodemailer": "^7.0.4",
-    "prisma": "^6.11.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "nodemailer": "^7.0.5",
+    "prisma": "^6.13.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
+    "@types/bcrypt": "^6.0.0",
     "@types/koa-send": "^4.1.6",
     "@types/nodemailer": "^6.4.17",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "esbuild": "^0.25.5",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "esbuild": "^0.25.8",
     "esbuild-plugin-svgr": "^3.1.1",
     "nodemon": "^3.1.10",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   }
 }

@@ -6,22 +6,21 @@ import { configureStore } from "@reduxjs/toolkit";
 import { reducer } from "reducers";
 import { actionHandlersMiddleware } from "utils/action-handlers-middleware";
 import { basicHandlers } from "action-handlers";
-import { Atom } from "nanostores";
 import { TextProvider } from "lang/context";
-import { useStore } from "@nanostores/react";
+import { Quant, useQuant } from "utils/quant";
 
 type LangProviderProps = {
-  $text: Atom<Text>;
+  $text: Quant<Text>;
   children: ReactNode;
 };
 
 function LangProvider({ $text, children }: LangProviderProps) {
-  const text = useStore($text);
+  const text = useQuant($text);
 
   return <TextProvider value={text}>{children}</TextProvider>;
 }
 
-export function renderApp(store: Store, $text: Atom<Text>) {
+export function renderApp(store: Store, $text: Quant<Text>) {
   return (
     <Provider store={store}>
       <LangProvider $text={$text}>

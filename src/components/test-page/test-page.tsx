@@ -5,7 +5,6 @@ import {
   initInfiniteScrollController,
   InfiniteItems,
 } from "components/scrolling";
-import { useStore } from "@nanostores/react";
 
 const snapSize = 100;
 

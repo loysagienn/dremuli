@@ -1,14 +1,8 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { ReactNode, useMemo } from "react";
 import styles from "./infinite-scroll.module.css";
 import { InfiniteScroll } from "./infinite-scroll";
 import { InfiniteScrollController } from "./scroll-controller";
-import { useStore } from "@nanostores/react";
+import { useQuant } from "utils/quant";
 
 type InfiniteItemsProps = {
   className?: string;
@@ -23,9 +17,9 @@ export function InfiniteItems({
   getValueContent,
   itemSize,
 }: InfiniteItemsProps) {
-  const value = useStore(scrollController.$value);
-  const scale = useStore(scrollController.$scale);
-  const containerSize = useStore(scrollController.$containerSize);
+  const value = useQuant(scrollController.$value);
+  const scale = useQuant(scrollController.$scale);
+  const containerSize = useQuant(scrollController.$containerSize);
 
   const items = useMemo(() => {
     if (!containerSize) {

@@ -4,10 +4,10 @@ import {
   InfiniteScroll,
   initInfiniteScrollController,
 } from "components/scrolling";
-import { useStore } from "@nanostores/react";
 import { useSelector } from "react-redux";
 import { selectCurrentDay } from "selectors";
 import { DayNaps } from "./day-naps";
+import { useQuant } from "utils/quant";
 
 type TimelineProps = {
   height: number;
@@ -66,7 +66,7 @@ function Timeline({ width, height, headerHeight }: TimelineProps) {
   );
 
   const getDateByDiff = useDateByDiff();
-  const value = useStore(scrollController.$value);
+  const value = useQuant(scrollController.$value);
   const dayWidth = Math.max(Math.min(MAX_DAY_WIDTH, width / 10), MIN_DAY_WIDTH);
 
   const daysCount = Math.ceil(width / dayWidth);

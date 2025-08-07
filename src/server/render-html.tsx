@@ -3,9 +3,7 @@ import { renderToString } from "react-dom/server";
 import { renderApp, initStore } from "app/app";
 import { en } from "lang/en";
 import { ru } from "lang/ru";
-import { TextProvider } from "lang/context";
-import React from "react";
-import { atom } from "nanostores";
+import { quant } from "utils/quant";
 
 const langs: { [key in Lang]: Text } = {
   en,
@@ -38,7 +36,7 @@ export async function renderHtml(ctx: AppContext) {
   const text = langs[language];
 
   const store = initStore(initialState, api);
-  const content = renderToString(renderApp(store, atom(text)));
+  const content = renderToString(renderApp(store, quant(text)));
 
   ctx.body = `<html>
 <head>

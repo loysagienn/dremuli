@@ -1,10 +1,10 @@
-import { atom, Atom, WritableAtom } from "nanostores";
+import { MutableQuant, Quant } from "utils/quant";
 import { ScrollManager } from "./scroll-manager";
 import { addWindowEvent, removeWindowEvent } from "utils/browser";
 
 export function initScaling(
-  $value: Atom<number>,
-  $scale: WritableAtom<number>,
+  $value: Quant<number>,
+  $scale: MutableQuant<number>,
   setValue: (value: number) => void,
   scrollManager: ScrollManager,
   direction: "vertical" | "horizontal",
@@ -55,9 +55,7 @@ export function initScaling(
 
     setValue(newValue);
 
-    // console.log("scale change");
-
-    $scale.set(scale * scaleFactor);
+    $scale.set(newScale);
   };
 
   addWindowEvent("wheel", onWheel);
