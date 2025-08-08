@@ -43,6 +43,9 @@
 }
 
 .dayHeader {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
   height: 50px;
   display: flex;
   align-items: center;

@@ -36,9 +36,7 @@ export function initStore(initialState: State | null, api: Api) {
     preloadedState: initialState,
     // @ts-ignore
     middleware: (getDefaultMiddleware) => {
-      const defaultMiddleware = getDefaultMiddleware({
-        thunk: { extraArgument: api },
-      });
+      const defaultMiddleware = getDefaultMiddleware({});
 
       return defaultMiddleware.concat(
         ...actionHandlersMiddleware([basicHandlers], api)

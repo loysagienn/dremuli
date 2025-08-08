@@ -47,8 +47,7 @@ function sameValues(a: any[], b: any[]) {
 
 export function computedQuant<TQuants extends Quant[], TValue = unknown>(
   dependencies: [...TQuants],
-  getter: (...values: QuantsValues<TQuants>) => TValue,
-  key?: string
+  getter: (...values: QuantsValues<TQuants>) => TValue
 ): ComputedQuant<TValue, TQuants> {
   const getValues = () =>
     dependencies.map((quant) => quant.get()) as QuantsValues<TQuants>;
@@ -79,14 +78,6 @@ export function computedQuant<TQuants extends Quant[], TValue = unknown>(
   };
 
   const topLevelDeps = getTopLevelDependencies(dependencies);
-
-  if (key) {
-    console.log(
-      "topLevelDeps",
-      key,
-      topLevelDeps.map((quant) => quant.get())
-    );
-  }
 
   const unlisteners = topLevelDeps.map((quant) =>
     quant.listenStrict(updateValue)

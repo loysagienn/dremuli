@@ -117,8 +117,7 @@ function initChartState(
 
         return { date, right, stat, dayDiff };
       });
-    },
-    "days_quant"
+    }
   );
 
   const $headerDays = computedQuant([$days, $dayWidth], (days, dayWidth) => {

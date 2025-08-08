@@ -16,7 +16,6 @@ const dayMs = 1000 * 60 * 60 * 24;
 
 function DayNaps({ date, height, headerHeight, dayWidth }: DayNapsProps) {
   const sleepEvents = useSelector(selectSleepEvents);
-  const lang = useSelector(selectLanguage);
 
   const dayStartTs = date.getTime();
   const dayHeight = height - headerHeight;
@@ -41,7 +40,6 @@ function DayNaps({ date, height, headerHeight, dayWidth }: DayNapsProps) {
 
   return (
     <>
-      <div className={styles.dayHeader}>{formatDate(date, { lang })}</div>
       {dayEvents.map((event) => {
         const eventStart = event.timestamp.getTime();
         const eventEnd = event.endTime.getTime();
