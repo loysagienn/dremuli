@@ -23,6 +23,12 @@ export function OptionsBtn() {
     dispatch(showExportToJsonAction());
   }, []);
 
+  const onClick = useCallback(() => {
+    if (focused) {
+      blur();
+    }
+  }, [focused]);
+
   return (
     <>
       <Button
@@ -31,10 +37,16 @@ export function OptionsBtn() {
         focused={focused}
         onFocus={focus}
         onBlur={blur}
+        onClick={onClick}
       >
         <OptionsSvg className={styles.optionsButtonSvg} />
       </Button>
-      <Popup targetRef={buttonRef} className={styles.optionsPopup}>
+      <Popup
+        targetRef={buttonRef}
+        className={styles.optionsPopup}
+        position="top-right"
+        offset={6}
+      >
         {focused && (
           <>
             <div className={styles.menuItem} onClick={importFromJson}>

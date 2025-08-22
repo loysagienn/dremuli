@@ -40,7 +40,7 @@
   margin: 0 auto;
   max-width: 360px;
   position: relative;
-  padding: 0 16px 16px;
+  padding: 0 16px 160px;
 }
 
 @media (max-width: 440px) {

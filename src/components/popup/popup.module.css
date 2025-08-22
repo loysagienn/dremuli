@@ -3,7 +3,6 @@
   background-color: var(--color-bg-main);
   border: 1px solid var(--color-border);
   border-radius: 6px;
-  transform-origin: 100% 50%;
   opacity: 1;
   transition: transform 0.1s ease-in-out, opacity 0.1s linear;
   z-index: 10;
@@ -12,4 +11,52 @@
 .hiddenPopup {
   transform: scale(0.5, 0.5);
   opacity: 0;
+}
+
+.popup.top {
+  transform-origin: 50% 100%;
+}
+
+.popup.top-left {
+  transform-origin: 0 100%;
+}
+
+.popup.top-right {
+  transform-origin: 100% 100%;
+}
+
+.popup.bottom {
+  transform-origin: 50% 0;
+}
+
+.popup.bottom-left {
+  transform-origin: 0 0;
+}
+
+.popup.bottom-right {
+  transform-origin: 100% 0;
+}
+
+.popup.left {
+  transform-origin: 100% 50%;
+}
+
+.popup.left-top {
+  transform-origin: 100% 0;
+}
+
+.popup.left-bottom {
+  transform-origin: 100% 100%;
+}
+
+.popup.right {
+  transform-origin: 0 50%;
+}
+
+.popup.right-top {
+  transform-origin: 0 0;
+}
+
+.popup.right-bottom {
+  transform-origin: 0 100%;
 }

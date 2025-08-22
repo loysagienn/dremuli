@@ -6,6 +6,7 @@ import { selectLanguage } from "selectors";
 import { setLanguage } from "actions";
 import styles from "./lang-switcher.module.css";
 import { cn } from "utils/cn";
+import { PopupPosition } from "components/popup";
 
 const langOptions: Option[] = [
   { value: "en", label: "EN" },
@@ -14,9 +15,10 @@ const langOptions: Option[] = [
 
 type LangSwitcherProps = {
   className?: string;
+  popupPosition?: PopupPosition;
 };
 
-export function LangSwitcher({ className }: LangSwitcherProps) {
+export function LangSwitcher({ className, popupPosition }: LangSwitcherProps) {
   const lang = useSelector(selectLanguage);
   const dispatch = useDispatch();
 
@@ -30,6 +32,7 @@ export function LangSwitcher({ className }: LangSwitcherProps) {
       value={lang}
       options={langOptions}
       onChange={onChange}
+      popupPosition={popupPosition}
     />
   );
 }

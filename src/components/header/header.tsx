@@ -27,7 +27,7 @@ export function Header() {
         </Link>
       )}
       {routeName && <div className={styles.routeName}>{routeName}</div>}
-      {!isLegal && <LangSwitcher />}
+      {!isLegal && <LangSwitcher popupPosition="bottom-right" />}
       <ThemeSwitcher />
     </div>
   );

@@ -12,7 +12,7 @@ export function WelcomePage() {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <LangSwitcher />
+        <LangSwitcher popupPosition="bottom-right" />
         <ThemeSwitcher />
       </div>
       <div className={styles.content}>
