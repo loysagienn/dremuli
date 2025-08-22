@@ -191,8 +191,6 @@ export function setPopupPosition(
   position: PopupPosition,
   offset: number
 ) {
-  console.log("setPopupPosition");
-
   const setter = setters[position];
 
   setter(targetPosition, popupSize, popupNode, offset);

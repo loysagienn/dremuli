@@ -30,7 +30,6 @@ function Popup({
   position = "bottom-left",
   offset = 8,
 }: PopupProps) {
-  console.log("render popup");
   const ref = useRef<HTMLDivElement>(null);
   const contextTargetRef = useContext(popupTargetContext);
   const targetRef = propsTargetRef || contextTargetRef;
