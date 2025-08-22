@@ -11,4 +11,18 @@
   --color-text-action-hover: #ffffff;
   --color-danger: #d1322a;
   --color-danger-hover: #e0382f;
+  --color-bg-overlay: #00000080;
+
+  --color-shadow-lg: #0000003d;
+  --color-shadow-md: #0000003d;
+  --color-shadow-sm: #0003;
+  --color-shadow-xs: #0000001f;
+  --shadow-xs: 0 2px 2px 0 var(--color-shadow-xs),
+    0 2px 4px 0 var(--color-shadow-xs);
+  --shadow-sm: 0 4px 8px 0 var(--color-shadow-sm),
+    0 8px 24px 0 var(--color-shadow-sm);
+  --shadow-md: 0 8px 16px 0 var(--color-shadow-md),
+    0 16px 48px 0 var(--color-shadow-md);
+  --shadow-lg: 0 16px 32px 0 var(--color-shadow-lg),
+    0 32px 144px 0 var(--color-shadow-lg);
 }

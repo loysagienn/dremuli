@@ -11,4 +11,18 @@
   --color-border: #a1b6d4;
   --color-danger: #f03e35;
   --color-danger-hover: #e0382f;
+  --color-bg-overlay: #191c1f80;
+
+  --color-shadow-lg: #141f291f;
+  --color-shadow-md: #141f291f;
+  --color-shadow-sm: #141f291a;
+  --color-shadow-xs: #141f290f;
+  --shadow-xs: 0 2px 2px 0 var(--color-shadow-xs),
+    0 2px 4px 0 var(--color-shadow-xs);
+  --shadow-sm: 0 4px 8px 0 var(--color-shadow-sm),
+    0 8px 24px 0 var(--color-shadow-sm);
+  --shadow-md: 0 8px 16px 0 var(--color-shadow-md),
+    0 16px 48px 0 var(--color-shadow-md);
+  --shadow-lg: 0 16px 32px 0 var(--color-shadow-lg),
+    0 32px 144px 0 var(--color-shadow-lg);
 }

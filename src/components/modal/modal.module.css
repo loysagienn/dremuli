@@ -1,0 +1,42 @@
+.root {
+  position: fixed;
+  inset: 0;
+  overflow: auto;
+  transition: opacity 0.15s ease-out;
+  opacity: 1;
+  z-index: 300;
+}
+
+.root.hidden {
+  opacity: 0;
+}
+
+.wrapper {
+  box-sizing: border-box;
+  padding: 16px;
+  min-height: 100%;
+  min-width: 100%;
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-bg-overlay);
+}
+
+.modal {
+  box-sizing: border-box;
+  position: relative;
+  background-color: var(--color-bg-main);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  width: fit-content;
+  max-width: calc(100vw - 32px);
+  border: 1px solid var(--color-border);
+  transition: transform 0.15s ease-out;
+  transform-origin: 50%;
+}
+
+.root.hidden .modal {
+  transform: scale(0.97, 0.97);
+}

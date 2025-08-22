@@ -1,6 +1,6 @@
 import { selectRoute } from "selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { MouseEvent, ReactNode, useCallback, useMemo } from "react";
+import { MouseEvent, ReactNode, RefObject, useCallback, useMemo } from "react";
 import { AppRoute, router } from "app/router";
 import { routeToAction, RouteToAction } from "actions";
 import React from "react";
@@ -13,9 +13,17 @@ type LinkProps = {
   className?: string;
   web?: boolean;
   onClick?: () => void;
+  innerRef?: RefObject<HTMLElement>;
 };
 
-export function Link({ route, children, className, web, onClick }: LinkProps) {
+export function Link({
+  route,
+  children,
+  className,
+  web,
+  onClick,
+  innerRef,
+}: LinkProps) {
   const dispatch = useDispatch();
 
   const href = useMemo(() => router.writeRoute(route), [route]);
@@ -46,6 +54,7 @@ export function Link({ route, children, className, web, onClick }: LinkProps) {
       href={href}
       className={cn(className, styles.link)}
       onClick={clickHandler}
+      ref={innerRef as RefObject<HTMLAnchorElement>}
     >
       {children}
     </a>

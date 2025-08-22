@@ -9,6 +9,8 @@ import { selectNapEvents, selectNextEventType } from "selectors";
 import { setActiveDayAction } from "actions";
 import { EventType } from "types";
 import { useText } from "lang/context";
+import OptionsSvg from "svg/options.svg";
+import { OptionsBtn } from "./options-btn";
 
 type NapsProps = {
   className?: string;
@@ -121,12 +123,15 @@ export function Naps({ className }: NapsProps) {
             <Event napEvent={napEvent} key={napEvent.id} />
           ))}
 
-          <Button
-            route={{ key: "create_event" }}
-            className={styles.createNapBtn}
-          >
-            {eventTypeTitles[nextEventType]}
-          </Button>
+          <div className={styles.footer}>
+            <Button
+              route={{ key: "create_event" }}
+              className={styles.createNapBtn}
+            >
+              {eventTypeTitles[nextEventType]}
+            </Button>
+            <OptionsBtn />
+          </div>
         </div>
       </div>
     </div>

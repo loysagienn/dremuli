@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useEffect,
   useState,
+  RefObject,
 } from "react";
 import { addWindowEvent, removeWindowEvent } from "utils/browser";
 
@@ -14,6 +15,8 @@ type FocusableProps = {
   focused: boolean;
   onFocus: () => void;
   onBlur: () => void;
+  onClick?: () => void;
+  innerRef?: RefObject<HTMLElement>;
 };
 
 export function Focusable({
@@ -22,15 +25,21 @@ export function Focusable({
   focused,
   onFocus,
   onBlur,
+  onClick,
+  innerRef,
 }: FocusableProps) {
   const eventRef = useRef<MouseEvent | null>(null);
 
-  const onClick = useCallback(
+  const clickHandler = useCallback(
     (event: ReactMouseEvent) => {
       eventRef.current = event.nativeEvent;
 
       if (!focused) {
         onFocus();
+      }
+
+      if (onClick) {
+        onClick();
       }
     },
     [focused, onFocus]
@@ -57,7 +66,11 @@ export function Focusable({
   }, [focused, onBlur]);
 
   return (
-    <div className={className} onClick={onClick}>
+    <div
+      className={className}
+      onClick={clickHandler}
+      ref={innerRef as RefObject<HTMLDivElement>}
+    >
       {children}
     </div>
   );

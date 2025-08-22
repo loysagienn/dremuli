@@ -65,6 +65,8 @@ export const ru: Text = {
     fellAsleep: "Заснула",
     fellAsleepNight: "Заснула на ночной сон",
     wokeUp: "Проснулась",
+    exportToJson: "Экспортировать в JSON",
+    importFromJson: "Импортировать из JSON",
   },
   daySummary: {
     totalSleep: "Весь сон",
@@ -120,6 +122,12 @@ export const ru: Text = {
     nightSleep: "Ночной сон",
     daySleep: "Дневной сон",
     awake: "Бодрствование",
+  },
+  exportToJsonModal: {
+    inDevelopment: "В разработке",
+  },
+  importFromJsonModal: {
+    inDevelopment: "В разработке",
   },
   timeDuration,
 } as const;

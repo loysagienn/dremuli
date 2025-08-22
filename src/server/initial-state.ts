@@ -59,6 +59,12 @@ export async function initialState(ctx: AppContext, next: AppNext) {
     admin: { users },
     events,
     windowSize: getWindowSize(),
+    exportToJson: {
+      visible: false,
+    },
+    importFromJson: {
+      visible: false,
+    },
   };
 
   return next();

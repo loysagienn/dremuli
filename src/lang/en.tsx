@@ -63,6 +63,8 @@ export const en = {
     fellAsleep: "Fell asleep",
     fellAsleepNight: "Fell asleep night",
     wokeUp: "Woke up",
+    exportToJson: "Export to JSON",
+    importFromJson: "Import from JSON",
   },
   daySummary: {
     totalSleep: "Total sleep",
@@ -114,6 +116,12 @@ export const en = {
     nightSleep: "Night sleep",
     daySleep: "Day sleep",
     awake: "Awake",
+  },
+  exportToJsonModal: {
+    inDevelopment: "In development",
+  },
+  importFromJsonModal: {
+    inDevelopment: "In development",
   },
   timeDuration,
 };
