@@ -11,6 +11,7 @@ import { setLanguage } from "./set-language";
 import { updateEvent } from "./update-event";
 import { deleteEvent } from "./delete-event";
 import { setPageVisibility } from "./set-page-visibility";
+import { exportToJson } from "./export-to-json";
 
 export const basicHandlers: ActionHandlers = {
   SET_THEME: setTheme,
@@ -25,4 +26,5 @@ export const basicHandlers: ActionHandlers = {
   SET_LANGUAGE: setLanguage,
   DELETE_EVENT: deleteEvent,
   SET_PAGE_VISIBILITY: setPageVisibility,
+  EXPORT_TO_JSON: exportToJson,
 };

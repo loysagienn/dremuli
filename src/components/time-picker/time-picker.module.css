@@ -3,7 +3,7 @@
   height: 240px;
 }
 
-.datePicker {
+.dayPicker {
   width: 140px;
 }
 
@@ -28,7 +28,7 @@
   cursor: pointer;
 }
 
-.datePicker .dateValueText {
+.dayPicker .dateValueText {
   font-size: 22px;
 }
 

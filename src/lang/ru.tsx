@@ -125,6 +125,10 @@ export const ru: Text = {
   },
   exportToJsonModal: {
     inDevelopment: "В разработке",
+    title: "Экспортировать в JSON",
+    fromDate: "С даты",
+    toDate: "По дату",
+    export: "Экспортировать",
   },
   importFromJsonModal: {
     inDevelopment: "В разработке",

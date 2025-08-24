@@ -1,4 +1,55 @@
 .modal {
-  width: 500px;
+  width: 460px;
   padding: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closeBtn {
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  cursor: pointer;
+  margin-right: -6px;
+}
+
+.closeIcon {
+  width: 20px;
+  height: 20px;
+  fill: var(--color-text);
+}
+
+.title {
+  font-size: 18px;
+}
+
+.form {
+  display: flex;
+  margin-top: 16px;
+  gap: 16px;
+}
+
+.formPart {
+  flex-basis: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formTitle {
+  margin-bottom: 8px;
+}
+
+.datePicker {
+  width: 100%;
+}
+
+.submit {
+  display: flex;
+  justify-content: center;
 }

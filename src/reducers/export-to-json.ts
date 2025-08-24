@@ -5,6 +5,7 @@ export const visible = createReducer<boolean>(
   {
     SHOW_EXPORT_TO_JSON: () => true,
     CANCEL_EXPORT_TO_JSON: () => false,
+    EXPORT_TO_JSON: () => false,
   },
   false
 );

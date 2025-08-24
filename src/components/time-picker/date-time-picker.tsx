@@ -3,7 +3,7 @@ import styles from "./time-picker.module.css";
 import { cn } from "utils/cn";
 import { HoursPicker } from "./hours-picker";
 import { MinutesPicker } from "./minutes-picker";
-import { DatePicker } from "./date-picker";
+import { DatePickerRaw } from "./date-picker-raw";
 
 type DateTimePickerProps = {
   value: Date;
@@ -32,7 +32,11 @@ export function DateTimePicker({
   return (
     <div className={cn(className, styles.timePicker)}>
       <div className={styles.border} />
-      <DatePicker value={value} onChange={changeHanler} snapSize={SNAP_SIZE} />
+      <DatePickerRaw
+        value={value}
+        onChange={changeHanler}
+        snapSize={SNAP_SIZE}
+      />
       <HoursPicker value={value} onChange={changeHanler} snapSize={SNAP_SIZE} />
       <div className={styles.clock}>
         <div className={styles.dotTop} />

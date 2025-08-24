@@ -18,6 +18,20 @@ export function cancelExportToJsonAction(): CancelExportToJson {
   };
 }
 
+export type ExportToJson = {
+  type: "EXPORT_TO_JSON";
+  dateFrom: Date;
+  dateTo: Date;
+};
+
+export function exportToJsonAction(dateFrom: Date, dateTo: Date): ExportToJson {
+  return {
+    type: "EXPORT_TO_JSON",
+    dateFrom,
+    dateTo,
+  };
+}
+
 export type ShowImportFromJson = {
   type: "SHOW_IMPORT_FROM_JSON";
 };

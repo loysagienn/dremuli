@@ -119,6 +119,10 @@ export const en = {
   },
   exportToJsonModal: {
     inDevelopment: "In development",
+    title: "Export to JSON",
+    fromDate: "From date",
+    toDate: "To date",
+    export: "Export",
   },
   importFromJsonModal: {
     inDevelopment: "In development",
