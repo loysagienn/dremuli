@@ -26,3 +26,8 @@ export type NapEvent = {
   dayStartStr?: string;
   isNightSleep: boolean;
 };
+
+export type BatchEventData = {
+  type: EventType;
+  timestamp: Date;
+};

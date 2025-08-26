@@ -2,6 +2,7 @@ import { AppRouteKey } from "app/router";
 import {
   AppContext,
   AppNext,
+  BatchEventData,
   EventType,
   SessionSettings,
   UserSettings,
@@ -70,6 +71,35 @@ function getBodyChangePassword(ctx: AppContext): BodyChangePassword | null {
   }
 
   return data;
+}
+
+function getBatchEventData(ctx: AppContext): BatchEventData[] | null {
+  const data = ctx.request.body?.data;
+
+  if (!Array.isArray(data)) {
+    return null;
+  }
+
+  const eventsData: BatchEventData[] = [];
+
+  for (let i = 0; i < data.length; i++) {
+    const eventData = data[i];
+    const type = eventData.type;
+
+    if (type !== EventType.WokeUp && type !== EventType.FellAsleep) {
+      return null;
+    }
+
+    const timestamp = parseDate(eventData.timestamp);
+
+    if (timestamp === null) {
+      return null;
+    }
+
+    eventsData.push({ type, timestamp });
+  }
+
+  return eventsData;
 }
 
 type BodyEventCreate = {
@@ -210,6 +240,7 @@ const authorizedRequests: AppRouteKey[] = [
   "api_change_password",
   "api_event",
   "api_events",
+  "api_events_batch",
   "api_forget_password",
   "api_login",
   "api_register_user",
@@ -425,6 +456,30 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
 
       ctx.body = {
         data: event,
+      };
+
+      return;
+    }
+  }
+
+  if (route.key === "api_events_batch") {
+    if (ctx.method === "POST") {
+      const { userId } = ctx.state.session;
+
+      if (!userId) {
+        return unauthorized(ctx);
+      }
+
+      const batchEventsData = getBatchEventData(ctx);
+
+      if (!batchEventsData) {
+        return badRequest(ctx);
+      }
+
+      const events = await api.createEventsBatch(batchEventsData);
+
+      ctx.body = {
+        data: events,
       };
 
       return;

@@ -132,6 +132,11 @@ export const ru: Text = {
   },
   importFromJsonModal: {
     inDevelopment: "В разработке",
+    title: "Импортировать из JSON",
+    creatingEvents: "Создание событий...",
+  },
+  dropFile: {
+    selectFile: "Выбрать файл",
   },
   timeDuration,
 } as const;

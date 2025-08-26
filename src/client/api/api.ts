@@ -6,6 +6,7 @@ import {
   Event,
   EventUpdate,
   UserSettings,
+  BatchEventData,
 } from "types";
 import { request } from "./request";
 
@@ -95,6 +96,14 @@ async function createEvent(type: EventType, timestamp: Date) {
   return parseEvent(result);
 }
 
+async function createEventsBatch(events: BatchEventData[]): Promise<Event[]> {
+  const result = await request({ key: "api_events_batch" }, "POST", {
+    data: events,
+  });
+
+  return result.map(parseEvent);
+}
+
 async function updateEvent(eventId: string, update: EventUpdate) {
   const result = await request({ key: "api_event", eventId }, "POST", {
     data: update,
@@ -126,6 +135,7 @@ export const api: Api = {
   forgetPassword,
   resetPassword,
   createEvent,
+  createEventsBatch,
   getEvents,
   updateEvent,
   deleteEvent,

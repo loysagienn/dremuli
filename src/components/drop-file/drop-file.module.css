@@ -1,0 +1,36 @@
+.dropFile {
+  height: 168px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dropFile.isDragging {
+  background-color: var(--color-border);
+}
+
+.fileIcon {
+  width: 50px;
+  height: 50px;
+  stroke: var(--color-border);
+}
+
+.dropFile.isDragging .fileIcon {
+  stroke: var(--color-text-secondary);
+}
+
+.caption {
+  margin: 12px 0 16px;
+  color: var(--color-text-secondary);
+}
+
+.input {
+  position: absolute;
+  left: -1000px;
+  top: -1000px;
+}

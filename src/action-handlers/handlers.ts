@@ -12,6 +12,8 @@ import { updateEvent } from "./update-event";
 import { deleteEvent } from "./delete-event";
 import { setPageVisibility } from "./set-page-visibility";
 import { exportToJson } from "./export-to-json";
+import { importFromJsonFile } from "./import-json-file";
+import { importFromJsonFileDone } from "./import-json-file-done";
 
 export const basicHandlers: ActionHandlers = {
   SET_THEME: setTheme,
@@ -27,4 +29,6 @@ export const basicHandlers: ActionHandlers = {
   DELETE_EVENT: deleteEvent,
   SET_PAGE_VISIBILITY: setPageVisibility,
   EXPORT_TO_JSON: exportToJson,
+  IMPORT_FROM_JSON_FILE: importFromJsonFile,
+  IMPORT_FROM_JSON_FILE_DONE: importFromJsonFileDone,
 };

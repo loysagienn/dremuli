@@ -1,3 +1,5 @@
+import { BatchEventData, Event } from "types";
+
 export type ShowExportToJson = {
   type: "SHOW_EXPORT_TO_JSON";
 };
@@ -49,5 +51,57 @@ export type CancelImportFromJson = {
 export function cancelImportFromJsonAction(): CancelImportFromJson {
   return {
     type: "CANCEL_IMPORT_FROM_JSON",
+  };
+}
+
+export type ImportFromJsonFile = {
+  type: "IMPORT_FROM_JSON_FILE";
+  file: File;
+};
+
+export function importFromJsonFile(file: File): ImportFromJsonFile {
+  return {
+    type: "IMPORT_FROM_JSON_FILE",
+    file,
+  };
+}
+
+export type ImportFromJsonFileDone = {
+  type: "IMPORT_FROM_JSON_FILE_DONE";
+  importEvents: BatchEventData[];
+};
+
+export function importFromJsonFileDone(
+  importEvents: BatchEventData[]
+): ImportFromJsonFileDone {
+  return {
+    type: "IMPORT_FROM_JSON_FILE_DONE",
+    importEvents,
+  };
+}
+
+export type ImportFromJsonFileFail = {
+  type: "IMPORT_FROM_JSON_FILE_FAIL";
+  errorMessage: string;
+};
+
+export function importFromJsonFileFail(
+  errorMessage: string
+): ImportFromJsonFileFail {
+  return {
+    type: "IMPORT_FROM_JSON_FILE_FAIL",
+    errorMessage,
+  };
+}
+
+export type ImportFromJsonDone = {
+  type: "IMPORT_FROM_JSON_DONE";
+  events: Event[];
+};
+
+export function importFromJsonDone(events: Event[]): ImportFromJsonDone {
+  return {
+    type: "IMPORT_FROM_JSON_DONE",
+    events,
   };
 }

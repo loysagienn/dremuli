@@ -64,6 +64,9 @@ export async function initialState(ctx: AppContext, next: AppNext) {
     },
     importFromJson: {
       visible: false,
+      readingFile: false,
+      creatingEvents: false,
+      errorMessage: null,
     },
   };
 

@@ -1,6 +1,6 @@
 import { SessionSettings, UserSettings } from "./user";
 import { User } from "./db";
-import { Event, EventUpdate, EventType } from "./events";
+import { Event, EventUpdate, EventType, BatchEventData } from "./events";
 
 export type Api = {
   setSessionSettings: (settings: SessionSettings) => Promise<SessionSettings>;
@@ -16,6 +16,7 @@ export type Api = {
   forgetPassword: (email: string) => Promise<void>;
   resetPassword: (password: string, token: string) => Promise<void>;
   createEvent: (type: EventType, timestamp: Date) => Promise<Event>;
+  createEventsBatch: (eventsData: BatchEventData[]) => Promise<Event[]>;
   updateEvent: (eventId: string, update: EventUpdate) => Promise<Event>;
   getEvents: () => Promise<Event[]>;
   deleteEvent: (eventId: string) => Promise<Event | null>;

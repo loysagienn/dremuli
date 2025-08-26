@@ -126,6 +126,11 @@ export const en = {
   },
   importFromJsonModal: {
     inDevelopment: "In development",
+    title: "Import from JSON",
+    creatingEvents: "Creating events...",
+  },
+  dropFile: {
+    selectFile: "Select file",
   },
   timeDuration,
 };

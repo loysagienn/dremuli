@@ -1,4 +1,11 @@
-import { AppContext, EventType, EventUpdate, User } from "types";
+import {
+  AppContext,
+  BatchEventData,
+  Event,
+  EventType,
+  EventUpdate,
+  User,
+} from "types";
 import { SessionSettings, UserSettings, Api } from "types";
 import {
   hashPassword,
@@ -237,6 +244,49 @@ const getEventsFactory = (ctx: AppContext) => async () => {
   return events;
 };
 
+function checkEventExists(
+  events: Event[],
+  eventType: EventType,
+  timestamp: Date
+) {
+  const fromTs = timestamp.getTime() - 30 * 1000;
+  const toTs = timestamp.getTime() + 30 * 1000;
+
+  return events.some((event) => {
+    const ts = event.timestamp.getTime();
+
+    return event.type === eventType && ts > fromTs && ts < toTs;
+  });
+}
+
+const createEventsBatchFactory =
+  (ctx: AppContext) => async (eventsData: BatchEventData[]) => {
+    const { userId } = ctx.state.session;
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const events = await ctx.db.getEvents(userId);
+
+    const newEvents: Event[] = [];
+
+    for (let i = 0; i < eventsData.length; i++) {
+      const { type, timestamp } = eventsData[i];
+
+      if (checkEventExists(events, type, timestamp)) {
+        continue;
+      }
+
+      const event = await ctx.db.createEvent(userId, type, timestamp);
+
+      events.push(event);
+      newEvents.push(event);
+    }
+
+    return newEvents;
+  };
+
 export function initApi(ctx: AppContext): Api {
   const setSessionSettings = setSessionSettingsFactory(ctx);
   const getSessionSettings = getSessionSettingsFactory(ctx);
@@ -251,6 +301,7 @@ export function initApi(ctx: AppContext): Api {
   const getEvents = getEventsFactory(ctx);
   const updateEvent = updateEventFactory(ctx);
   const deleteEvent = deleteEventFactory(ctx);
+  const createEventsBatch = createEventsBatchFactory(ctx);
 
   return {
     setSessionSettings,
@@ -263,6 +314,7 @@ export function initApi(ctx: AppContext): Api {
     forgetPassword,
     resetPassword,
     createEvent,
+    createEventsBatch,
     getEvents,
     updateEvent,
     deleteEvent,

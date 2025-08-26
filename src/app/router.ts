@@ -350,6 +350,24 @@ const apiEvents: RouteConfig<ApiEvents> = {
   writeRoute: (route) => "/api/events",
 };
 
+type ApiEventsBatch = {
+  key: "api_events_batch";
+};
+
+const apiEventsBatch: RouteConfig<ApiEventsBatch> = {
+  key: "api_events_batch",
+  readRoute: (path: string) => {
+    if (path === "/api/events-batch") {
+      return {
+        key: "api_events_batch",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/api/events-batch",
+};
+
 type ApiEvent = {
   key: "api_event";
   eventId: string;
@@ -586,6 +604,7 @@ export const router = initRouter(
   apiForgetPassword,
   apiResetPassword,
   apiEvents,
+  apiEventsBatch,
   apiEvent,
   apiCsrfToken,
   apiNotFound,
