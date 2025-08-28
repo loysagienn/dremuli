@@ -24,6 +24,7 @@ import { SettingsPage } from "components/settings-page";
 import { StatisticsPage } from "components/statistics-page";
 import { ExportToJson } from "components/export-to-json";
 import { ImportFromJson } from "components/import-from-json";
+import { ConfirmModal } from "components/confirm-modal";
 
 export function App() {
   const theme = useSelector(selectTheme);
@@ -92,6 +93,7 @@ export function App() {
       </Route>
       <ExportToJson />
       <ImportFromJson />
+      <ConfirmModal />
     </div>
   );
 }

@@ -68,6 +68,7 @@ export async function initialState(ctx: AppContext, next: AppNext) {
       creatingEvents: false,
       errorMessage: null,
     },
+    confirmAction: null,
   };
 
   return next();

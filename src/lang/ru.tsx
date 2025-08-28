@@ -137,6 +137,14 @@ export const ru: Text = {
   },
   dropFile: {
     selectFile: "Выбрать файл",
+    caption: "Перетащите файл сюда или выберите",
+  },
+  confirmModal: {
+    confirm: "Точно?",
+    approve: "Подтвердить",
+    decline: "Отмена",
+    delete: "Удалить",
+    deleteEvent: "Удалить событие?",
   },
   timeDuration,
 } as const;

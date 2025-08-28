@@ -14,6 +14,7 @@ import { setPageVisibility } from "./set-page-visibility";
 import { exportToJson } from "./export-to-json";
 import { importFromJsonFile } from "./import-json-file";
 import { importFromJsonFileDone } from "./import-json-file-done";
+import { confirm, confirmApprove } from "./confirm";
 
 export const basicHandlers: ActionHandlers = {
   SET_THEME: setTheme,
@@ -31,4 +32,9 @@ export const basicHandlers: ActionHandlers = {
   EXPORT_TO_JSON: exportToJson,
   IMPORT_FROM_JSON_FILE: importFromJsonFile,
   IMPORT_FROM_JSON_FILE_DONE: importFromJsonFileDone,
+};
+
+export const confirmHandlers: ActionHandlers = {
+  DELETE_EVENT: confirm,
+  CONFIRM_APPROVE: confirmApprove,
 };

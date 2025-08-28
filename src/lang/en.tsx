@@ -131,6 +131,14 @@ export const en = {
   },
   dropFile: {
     selectFile: "Select file",
+    caption: "Drop file here or select file",
+  },
+  confirmModal: {
+    confirm: "You sure?",
+    approve: "Approve",
+    decline: "Decline",
+    delete: "Delete",
+    deleteEvent: "Delete event?",
   },
   timeDuration,
 };

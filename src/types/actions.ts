@@ -26,3 +26,5 @@ export type ActionHandler<TActionType extends ActionType = ActionType> = (
 export type ActionHandlers = {
   [key in ActionType]?: ActionHandler<key>;
 };
+
+export type ConfirmableAction = actions.DeleteEvent;

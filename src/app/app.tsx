@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { reducer } from "reducers";
 import { actionHandlersMiddleware } from "utils/action-handlers-middleware";
-import { basicHandlers } from "action-handlers";
+import { basicHandlers, confirmHandlers } from "action-handlers";
 import { TextProvider } from "lang/context";
 import { Quant, useQuant } from "utils/quant";
 
@@ -39,7 +39,7 @@ export function initStore(initialState: State | null, api: Api) {
       const defaultMiddleware = getDefaultMiddleware({});
 
       return defaultMiddleware.concat(
-        ...actionHandlersMiddleware([basicHandlers], api)
+        ...actionHandlersMiddleware([confirmHandlers, basicHandlers], api)
       );
     },
   });

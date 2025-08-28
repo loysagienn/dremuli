@@ -49,11 +49,13 @@ export function updateEventAction(
 export type DeleteEvent = {
   type: "DELETE_EVENT";
   eventId: string;
+  confirmed: boolean;
 };
 
 export function deleteEventAction(eventId: string): DeleteEvent {
   return {
     type: "DELETE_EVENT",
     eventId,
+    confirmed: false,
   };
 }

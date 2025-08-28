@@ -9,6 +9,7 @@ import styles from "./drop-file.module.css";
 import { Button } from "components/button";
 import FilePlus from "svg/file-plus.svg";
 import { cn } from "utils/cn";
+import { useText } from "lang/context";
 
 type DropFileProps = {
   className?: string;
@@ -24,6 +25,7 @@ const stop = (event: DragEvent) => {
 export function DropFile({ className, onSelectFile, disabled }: DropFileProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const { dropFile: text } = useText();
 
   const handleDrop = useCallback(
     (event: DragEvent<HTMLDivElement>) => {
@@ -109,8 +111,8 @@ export function DropFile({ className, onSelectFile, disabled }: DropFileProps) {
       onDragLeave={handleDragLeave}
     >
       <FilePlus className={styles.fileIcon} />
-      <div className={styles.caption}>Drop file here or select file</div>
-      <Button onClick={openFileDialog}>Select file</Button>
+      <div className={styles.caption}>{text.caption}</div>
+      <Button onClick={openFileDialog}>{text.selectFile}</Button>
       <input
         ref={inputRef}
         type="file"
