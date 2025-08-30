@@ -1,0 +1,21 @@
+.root {
+  position: relative;
+}
+
+.container {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+}
+
+.scrollable {
+  position: relative;
+}
+
+.root.vertical .scrollable {
+  height: 20000px;
+}
+
+.root.horizontal .scrollable {
+  width: 20000px;
+}

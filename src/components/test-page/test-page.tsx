@@ -1,22 +1,27 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./test-page.module.css";
 import { Header } from "components/header";
+// import {
+//   initInfiniteScrollController,
+//   InfiniteItems,
+// } from "components/scrolling";
 import {
-  initInfiniteScrollController,
-  InfiniteItems,
-} from "components/scrolling";
+  ScrollContent,
+  createScrollController,
+} from "components/scroll-content";
+import { useQuant } from "utils/quant";
 
 const snapSize = 100;
 
 export function TestPage() {
   const scrollController = useMemo(
     () =>
-      initInfiniteScrollController({
-        direction: "vertical",
-        snapSize,
-        scale: 1,
+      createScrollController({
+        defaultValue: 0,
+        defaultScale: 1,
         scalingEnabled: true,
-        valuePositionFactor: 0.5,
+        valuePosition: 0.5,
+        direction: "vertical",
       }),
     []
   );
@@ -28,41 +33,32 @@ export function TestPage() {
     [scrollController]
   );
 
-  // const value = useStore(scrollController.$value);
+  const inited = useQuant(scrollController.$inited);
 
-  // const items = useMemo(() => {
-  //   const currentValue = value - (value % snapSize);
-
-  //   const values: number[] = [];
-
-  //   for (let i = -8; i <= 8; i++) {
-  //     const val = currentValue + snapSize * i;
-
-  //     values.push(val);
+  // useEffect(() => {
+  //   if (inited) {
+  //     const value = scrollController.$value.get();
+  //     const visibleRangeValue = scrollController.$visibleRangeValue.get();
+  //     console.log("value", value);
+  //     console.log("visibleRangeValue", visibleRangeValue);
   //   }
+  // }, [inited]);
+  const value = useQuant(scrollController.$value);
+  const visibleRangeValue = useQuant(scrollController.$visibleRangeValue);
 
-  //   return values;
-  // }, [value]);
-
-  const getValueContent = useCallback((value: number, onClick: () => void) => {
-    return (
-      <div className={styles.item} key={value} onClick={onClick}>
-        {value}
-      </div>
-    );
-  }, []);
+  // console.log("inited", inited);
+  console.log("value", value);
+  console.log("visibleRangeValue", visibleRangeValue);
 
   return (
     <div className={styles.root}>
       <Header />
       <div className={styles.content}>
         <div className={styles.container}>
-          <InfiniteItems
+          <ScrollContent
             scrollController={scrollController}
             className={styles.scroll}
-            getValueContent={getValueContent}
-            itemSize={snapSize}
-          ></InfiniteItems>
+          />
         </div>
       </div>
     </div>

@@ -3,9 +3,9 @@ import styles from "./events-list-page.module.css";
 import { Layout } from "components/layout";
 import { ActiveDay } from "components/active-day";
 import {
-  InfiniteScroll,
-  initInfiniteScrollController,
-} from "components/scrolling";
+  ScrollContent,
+  createScrollController,
+} from "components/scroll-content";
 import { useQuant } from "utils/quant";
 import { Footer } from "./footer";
 import { EventsList } from "./events-list";
@@ -18,12 +18,12 @@ export function EventsListPage() {
 
   const scrollController = useMemo(
     () =>
-      initInfiniteScrollController({
+      createScrollController({
         direction: "vertical",
-        scale: 1,
-        maxValue: 0,
+        defaultScale: 1,
         defaultValue: 0,
-        scalingEnabled: true,
+        valuePosition: 1,
+        scalingEnabled: false,
       }),
     []
   );
@@ -35,42 +35,46 @@ export function EventsListPage() {
     [scrollController]
   );
 
-  useEffect(() => {
-    if (eventsListRef.current) {
-      const { destroy, $size } = trackDivSize(eventsListRef.current);
+  // useEffect(() => {
+  //   if (eventsListRef.current) {
+  //     const { destroy, $size } = trackDivSize(eventsListRef.current);
 
-      const unsubscribe = $size.subscribe((size) => {
-        setEventsListHeight(size.height);
-      });
+  //     const unsubscribe = $size.subscribe((size) => {
+  //       setEventsListHeight(size.height);
+  //     });
 
-      return () => {
-        unsubscribe();
-        destroy();
-      };
-    }
-  }, []);
+  //     return () => {
+  //       unsubscribe();
+  //       destroy();
+  //     };
+  //   }
+  // }, []);
 
   return (
     <Layout>
-      <InfiniteScroll
-        scrollController={scrollController}
-        className={styles.content}
-      >
-        <div className={styles.eventsListContainer}>
-          <div className={styles.eventsList} ref={eventsListRef}>
-            <Footer scrollController={scrollController} />
-            {eventsListHeight > 0 && (
+      <div className={styles.content}>
+        <div className={styles.activeDayContainer}>
+          <ActiveDay className={styles.activeDay} />
+        </div>
+        <ScrollContent
+          className={styles.eventsListContainer}
+          scrollController={scrollController}
+        >
+          {/* <div className={styles.eventsList} ref={eventsListRef}> */}
+          <Footer scrollController={scrollController} />
+          <EventsList
+            scrollController={scrollController}
+            containerHeight={eventsListHeight}
+          />
+          {/* {eventsListHeight > 0 && (
               <EventsList
                 scrollController={scrollController}
                 containerHeight={eventsListHeight}
               />
-            )}
-          </div>
-        </div>
-        <div className={styles.activeDayContainer}>
-          <ActiveDay className={styles.activeDay} />
-        </div>
-      </InfiniteScroll>
+            )} */}
+          {/* </div> */}
+        </ScrollContent>
+      </div>
     </Layout>
   );
 }

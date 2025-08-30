@@ -1,30 +1,32 @@
 import React, { memo, useLayoutEffect, useMemo, useRef } from "react";
 import styles from "./events-list-page.module.css";
-import { InfiniteScrollController } from "components/scrolling";
 import { EventType } from "types";
 import { useText } from "lang/context";
 import { Button } from "components/button";
 import { OptionsBtn } from "./options-btn";
 import { useSelector } from "react-redux";
 import { selectNextEventType } from "selectors";
-import { PADDING } from "./constants";
+import { PADDING, FOOTER_HEIGHT } from "./constants";
+import { ScrollController } from "components/scroll-content";
 
 type FooterProps = {
-  scrollController: InfiniteScrollController;
+  scrollController: ScrollController;
 };
 
 function handleFooterPosition(
-  scrollController: InfiniteScrollController,
+  scrollController: ScrollController,
   node: HTMLDivElement
 ) {
-  const unsubscribeValue = scrollController.$value.subscribe((value) => {
-    node.style.bottom = `${PADDING + value}px`;
-  });
+  const unsubscribe = scrollController.$scrollStartValue.subscribe(
+    (scrollStartValue) => {
+      node.style.top = `${-scrollStartValue - FOOTER_HEIGHT - PADDING}px`;
+    }
+  );
 
   node.style.opacity = "1";
 
   return () => {
-    unsubscribeValue();
+    unsubscribe();
   };
 }
 
