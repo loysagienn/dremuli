@@ -2,6 +2,7 @@ import { computedQuant, quant } from "utils/quant";
 import { SCROLL_OFFSET } from "./constants";
 import { ScrollDirection } from "./types";
 import { initScrollManager, ScrollManager } from "./scroll-manager";
+import { DivSize } from "utils/div-size";
 
 type ScrollControllerOptions = {
   defaultValue: number;
@@ -24,6 +25,7 @@ export function createScrollController({
   const $scrollPixelValue = quant(SCROLL_OFFSET);
   const $scale = quant(defaultScale);
   const $containerLength = quant(containerLength);
+  const $containerSize = quant<DivSize>({ width: 100, height: 100 });
   const $scrollStartValue = quant(
     defaultValue -
       (SCROLL_OFFSET + containerLength * valuePosition) * defaultScale
@@ -54,14 +56,12 @@ export function createScrollController({
     $scrollStartValue.set(scrollStartValue + pixelDiff * scale);
   };
 
-  let scrollManager: ScrollManager | null = null;
+  let destroyScrollManager: () => void = () => {};
 
   const init = (containerNode: HTMLDivElement, scrollNode: HTMLDivElement) => {
-    if (scrollManager) {
-      scrollManager.destroy();
-    }
+    destroyScrollManager();
 
-    scrollManager = initScrollManager(
+    const scrollManager = initScrollManager(
       containerNode,
       scrollNode,
       $scrollPixelValue,
@@ -71,6 +71,15 @@ export function createScrollController({
       direction
     );
 
+    const unsubscribe = scrollManager.$containerSize.subscribe((size) =>
+      $containerSize.set(size)
+    );
+
+    destroyScrollManager = () => {
+      scrollManager.destroy();
+      unsubscribe();
+    };
+
     $inited.set(true);
   };
 
@@ -78,12 +87,11 @@ export function createScrollController({
     $value.destroy();
     $visibleRangeValue.destroy();
 
-    if (scrollManager) {
-      scrollManager.destroy();
-    }
+    destroyScrollManager();
   };
 
   return {
+    $containerSize,
     $value,
     $visibleRangeValue,
     $scrollStartValue,

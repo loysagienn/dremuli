@@ -19,3 +19,15 @@
 .root.horizontal .scrollable {
   width: 20000px;
 }
+
+.staticContent {
+  position: sticky;
+}
+
+.root.vertical .staticContent {
+  top: 0;
+}
+
+.root.horizontal .staticContent {
+  left: 0;
+}

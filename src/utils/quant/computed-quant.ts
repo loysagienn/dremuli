@@ -47,7 +47,8 @@ function sameValues(a: any[], b: any[]) {
 
 export function computedQuant<TQuants extends Quant[], TValue = unknown>(
   dependencies: [...TQuants],
-  getter: (...values: QuantsValues<TQuants>) => TValue
+  getter: (...values: QuantsValues<TQuants>) => TValue,
+  getNewValue?: (currentValue: TValue, newValue: TValue) => TValue
 ): ComputedQuant<TValue, TQuants> {
   const getValues = () =>
     dependencies.map((quant) => quant.get()) as QuantsValues<TQuants>;
@@ -63,6 +64,14 @@ export function computedQuant<TQuants extends Quant[], TValue = unknown>(
     destroy: destroyQuant,
   } = quant(getter(...currentValues));
 
+  const setValue = (value: TValue) => {
+    if (getNewValue) {
+      set(getNewValue(get(), value));
+    } else {
+      set(value);
+    }
+  };
+
   const updateValue = () => {
     const values = getValues();
 
@@ -74,7 +83,7 @@ export function computedQuant<TQuants extends Quant[], TValue = unknown>(
 
     currentValues = values;
 
-    set(getter(...values));
+    setValue(getter(...values));
   };
 
   const topLevelDeps = getTopLevelDependencies(dependencies);

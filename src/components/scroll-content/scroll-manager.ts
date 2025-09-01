@@ -102,7 +102,7 @@ export function initScrollManager(
     destroySizeTracker();
   };
 
-  return { destroy };
+  return { $containerSize, destroy };
 }
 
 export type ScrollManager = ReturnType<typeof initScrollManager>;

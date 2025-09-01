@@ -1,20 +1,25 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import styles from "./events-list-page.module.css";
 import { Layout } from "components/layout";
 import { ActiveDay } from "components/active-day";
 import {
   ScrollContent,
+  StickyContent,
   createScrollController,
 } from "components/scroll-content";
-import { useQuant } from "utils/quant";
 import { Footer } from "./footer";
-import { EventsList } from "./events-list";
-import { trackDivSize } from "utils/div-size";
+import { initEventsListState } from "./events-list-state";
+import { useSelector } from "react-redux";
+import { selectNapEvents } from "selectors";
+import { Events } from "./events";
+import { DayStarts } from "./day-starts";
+import { SideLine } from "./side-line";
+import { StickyDayStarts } from "./static-day-starts";
+import { Dots } from "./dots";
 
 export function EventsListPage() {
-  console.log("render events list page");
-  const eventsListRef = useRef<HTMLDivElement>(null);
-  const [eventsListHeight, setEventsListHeight] = useState(0);
+  // console.log("render EventsListPage");
+  const napEvents = useSelector(selectNapEvents);
 
   const scrollController = useMemo(
     () =>
@@ -35,20 +40,17 @@ export function EventsListPage() {
     [scrollController]
   );
 
-  // useEffect(() => {
-  //   if (eventsListRef.current) {
-  //     const { destroy, $size } = trackDivSize(eventsListRef.current);
+  const eventsListState = useMemo(
+    () => initEventsListState(napEvents, scrollController),
+    [napEvents, scrollController]
+  );
 
-  //     const unsubscribe = $size.subscribe((size) => {
-  //       setEventsListHeight(size.height);
-  //     });
-
-  //     return () => {
-  //       unsubscribe();
-  //       destroy();
-  //     };
-  //   }
-  // }, []);
+  useEffect(
+    () => () => {
+      eventsListState.destroy();
+    },
+    [eventsListState]
+  );
 
   return (
     <Layout>
@@ -60,19 +62,14 @@ export function EventsListPage() {
           className={styles.eventsListContainer}
           scrollController={scrollController}
         >
-          {/* <div className={styles.eventsList} ref={eventsListRef}> */}
+          <Events eventsListState={eventsListState} />
+          <StickyContent scrollController={scrollController}>
+            <StickyDayStarts eventsListState={eventsListState} />
+          </StickyContent>
+          <DayStarts eventsListState={eventsListState} />
+          <SideLine eventsListState={eventsListState} />
+          <Dots eventsListState={eventsListState} />
           <Footer scrollController={scrollController} />
-          <EventsList
-            scrollController={scrollController}
-            containerHeight={eventsListHeight}
-          />
-          {/* {eventsListHeight > 0 && (
-              <EventsList
-                scrollController={scrollController}
-                containerHeight={eventsListHeight}
-              />
-            )} */}
-          {/* </div> */}
         </ScrollContent>
       </div>
     </Layout>
