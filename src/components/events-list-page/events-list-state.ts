@@ -1,7 +1,4 @@
-import {
-  createScrollController,
-  ScrollController,
-} from "components/scroll-content";
+import { ScrollController } from "components/scroll-content";
 import { NapEvent } from "types";
 import {
   PADDING,
@@ -51,9 +48,16 @@ export function initEventsListState(
 
   const offsets = getEventsOffsets(napEvents);
 
+  scrollController.setMinValue(
+    offsets[0] - DAY_START_PADDING - DAY_START_HEIGHT
+  );
+  scrollController.setMaxValue(0);
+
   const $renderRange = computedQuant(
     [$visibleRangeValue],
     ([rangeStart, rangeEnd]) => {
+      // console.log("calculate renderRange");
+
       let startIndex = 0;
 
       while (

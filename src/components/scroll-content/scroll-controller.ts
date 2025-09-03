@@ -11,6 +11,8 @@ type ScrollControllerOptions = {
   defaultScale: number;
   scalingEnabled: boolean;
   containerLength?: number;
+  minValue?: number;
+  maxValue?: number;
 };
 
 const DEFAULT_CONTAINER_LENGTH = 100;
@@ -20,17 +22,33 @@ export function createScrollController({
   valuePosition,
   direction,
   defaultScale,
+  scalingEnabled,
   containerLength = DEFAULT_CONTAINER_LENGTH,
+  minValue,
+  maxValue,
 }: ScrollControllerOptions) {
-  const $scrollPixelValue = quant(SCROLL_OFFSET);
+  const $maxValue = quant<number | null>(maxValue ?? null);
+  const $minValue = quant<number | null>(minValue ?? null);
+  const $scrollPixelValue = quant(0);
   const $scale = quant(defaultScale);
   const $containerLength = quant(containerLength);
   const $containerSize = quant<DivSize>({ width: 100, height: 100 });
   const $scrollStartValue = quant(
-    defaultValue -
-      (SCROLL_OFFSET + containerLength * valuePosition) * defaultScale
+    defaultValue - containerLength * valuePosition * defaultScale
   );
   const $inited = quant(false);
+
+  const $minMaxRange = computedQuant(
+    [$minValue, $maxValue, $scale, $scrollStartValue],
+    (minValue, maxValue, scale, scrollStartValue) => {
+      const minPixelValue =
+        minValue === null ? null : (minValue - scrollStartValue) / scale;
+      const maxPixelValue =
+        maxValue === null ? null : (maxValue - scrollStartValue) / scale;
+
+      return [minPixelValue, maxPixelValue] as [number | null, number | null];
+    }
+  );
 
   const $visibleRangeValue = computedQuant(
     [$scrollPixelValue, $scrollStartValue, $containerLength, $scale],
@@ -65,6 +83,7 @@ export function createScrollController({
       containerNode,
       scrollNode,
       $scrollPixelValue,
+      $minMaxRange,
       $containerLength,
       shiftScrollStartValue,
       valuePosition,
@@ -90,6 +109,9 @@ export function createScrollController({
     destroyScrollManager();
   };
 
+  const setMinValue = (minValue: number | null) => $minValue.set(minValue);
+  const setMaxValue = (maxValue: number | null) => $maxValue.set(maxValue);
+
   return {
     $containerSize,
     $value,
@@ -100,6 +122,8 @@ export function createScrollController({
     valuePosition,
     direction,
     init,
+    setMaxValue,
+    setMinValue,
     destroy,
   };
 }

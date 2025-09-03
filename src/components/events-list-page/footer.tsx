@@ -23,8 +23,6 @@ function handleFooterPosition(
     }
   );
 
-  node.style.opacity = "1";
-
   return () => {
     unsubscribe();
   };

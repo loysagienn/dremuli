@@ -42,8 +42,6 @@
   width: 360px;
   display: flex;
   padding: 0 16px;
-  opacity: 0;
-  translate: opacity 0.1s linear;
   left: calc(50% - 180px);
 }
 

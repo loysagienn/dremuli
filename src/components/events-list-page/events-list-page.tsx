@@ -4,22 +4,13 @@ import { Layout } from "components/layout";
 import { ActiveDay } from "components/active-day";
 import {
   ScrollContent,
-  StickyContent,
   createScrollController,
 } from "components/scroll-content";
-import { Footer } from "./footer";
-import { initEventsListState } from "./events-list-state";
-import { useSelector } from "react-redux";
-import { selectNapEvents } from "selectors";
-import { Events } from "./events";
-import { DayStarts } from "./day-starts";
-import { SideLine } from "./side-line";
-import { StickyDayStarts } from "./static-day-starts";
-import { Dots } from "./dots";
+import { EventsList } from "./events-list";
+import { useQuant } from "utils/quant";
 
 export function EventsListPage() {
-  // console.log("render EventsListPage");
-  const napEvents = useSelector(selectNapEvents);
+  console.log("render EventsListPage");
 
   const scrollController = useMemo(
     () =>
@@ -40,17 +31,7 @@ export function EventsListPage() {
     [scrollController]
   );
 
-  const eventsListState = useMemo(
-    () => initEventsListState(napEvents, scrollController),
-    [napEvents, scrollController]
-  );
-
-  useEffect(
-    () => () => {
-      eventsListState.destroy();
-    },
-    [eventsListState]
-  );
+  const inited = useQuant(scrollController.$inited);
 
   return (
     <Layout>
@@ -62,14 +43,7 @@ export function EventsListPage() {
           className={styles.eventsListContainer}
           scrollController={scrollController}
         >
-          <Events eventsListState={eventsListState} />
-          <StickyContent scrollController={scrollController}>
-            <StickyDayStarts eventsListState={eventsListState} />
-          </StickyContent>
-          <DayStarts eventsListState={eventsListState} />
-          <SideLine eventsListState={eventsListState} />
-          <Dots eventsListState={eventsListState} />
-          <Footer scrollController={scrollController} />
+          {inited && <EventsList scrollController={scrollController} />}
         </ScrollContent>
       </div>
     </Layout>
