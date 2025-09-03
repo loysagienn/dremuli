@@ -15,7 +15,8 @@ export function TestPage() {
       createScrollController({
         defaultValue: 0,
         defaultScale: 1,
-        scalingEnabled: true,
+        scalingEnabled: false,
+        snappingEnabled: true,
         valuePosition: 0.5,
         direction: "vertical",
       }),
@@ -29,6 +30,24 @@ export function TestPage() {
     [scrollController]
   );
 
+  const [rangeStart, rangeEnd] = useQuant(scrollController.$visibleRangeValue);
+  const scrollStartValue = useQuant(scrollController.$scrollStartValue);
+
+  const items = useMemo(() => {
+    let item = Math.floor(rangeStart / snapSize) * snapSize;
+    const items = [item];
+
+    while (item < rangeEnd) {
+      item += 100;
+
+      items.push(item);
+    }
+
+    return items;
+  }, [rangeStart, rangeEnd]);
+
+  console.log("items", items);
+
   const inited = useQuant(scrollController.$inited);
 
   return (
@@ -39,7 +58,17 @@ export function TestPage() {
           <ScrollContent
             scrollController={scrollController}
             className={styles.scroll}
-          />
+          >
+            {items.map((item) => {
+              const top = item - scrollStartValue - snapSize / 2;
+
+              return (
+                <div className={styles.item} style={{ top }} key={item}>
+                  {item}
+                </div>
+              );
+            })}
+          </ScrollContent>
         </div>
       </div>
     </div>

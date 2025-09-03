@@ -28,7 +28,12 @@ function ScrollContent({
 
   return (
     <div
-      className={cn(className, styles.root, styles[scrollController.direction])}
+      className={cn(
+        className,
+        styles.root,
+        styles[scrollController.direction],
+        scrollController.snappingEnabled && styles.snappingEnabled
+      )}
     >
       <div className={styles.container} ref={containerRef}>
         <div className={styles.scrollable} ref={scrollRef}>

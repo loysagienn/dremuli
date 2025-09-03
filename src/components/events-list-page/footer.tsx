@@ -19,6 +19,13 @@ function handleFooterPosition(
 ) {
   const unsubscribe = scrollController.$scrollStartValue.subscribe(
     (scrollStartValue) => {
+      if (scrollStartValue < -20000) {
+        node.style.display = "none";
+
+        return;
+      }
+
+      node.style.display = "flex";
       node.style.top = `${-scrollStartValue - FOOTER_HEIGHT - PADDING}px`;
     }
   );

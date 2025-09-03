@@ -5,12 +5,19 @@
 .container {
   position: absolute;
   inset: 0;
-  overflow: auto;
+  overflow: scroll;
+}
+
+.root.vertical.snappingEnabled .container {
+  scroll-snap-type: y mandatory;
+}
+
+.root.horizontal.snappingEnabled .container {
+  scroll-snap-type: x mandatory;
 }
 
 .scrollable {
   position: relative;
-  overflow: hidden;
 }
 
 .root.vertical .scrollable {

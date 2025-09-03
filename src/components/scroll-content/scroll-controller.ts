@@ -10,6 +10,7 @@ type ScrollControllerOptions = {
   direction: ScrollDirection;
   defaultScale: number;
   scalingEnabled: boolean;
+  snappingEnabled?: boolean;
   containerLength?: number;
   minValue?: number;
   maxValue?: number;
@@ -23,6 +24,7 @@ export function createScrollController({
   direction,
   defaultScale,
   scalingEnabled,
+  snappingEnabled,
   containerLength = DEFAULT_CONTAINER_LENGTH,
   minValue,
   maxValue,
@@ -121,6 +123,7 @@ export function createScrollController({
     $inited,
     valuePosition,
     direction,
+    snappingEnabled,
     init,
     setMaxValue,
     setMinValue,
