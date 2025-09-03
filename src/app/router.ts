@@ -411,24 +411,6 @@ const createEvent: RouteConfig<CreateEvent> = {
   writeRoute: (route) => "/events/create",
 };
 
-type EventsList = {
-  key: "events_list";
-};
-
-const eventsList: RouteConfig<EventsList> = {
-  key: "events_list",
-  readRoute: (path: string) => {
-    if (path === "/events-list") {
-      return {
-        key: "events_list",
-      };
-    }
-
-    return null;
-  },
-  writeRoute: (route) => "/events-list",
-};
-
 type UpdateEvent = {
   key: "update_event";
   eventId: string;
@@ -614,7 +596,6 @@ export const router = initRouter(
   statisticsNaps,
   statisticsCharts,
   testPage,
-  eventsList,
   apiSettings,
   apiUserSettings,
   apiRegisterUser,

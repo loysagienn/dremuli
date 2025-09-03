@@ -56,8 +56,6 @@ export function initEventsListState(
   const $renderRange = computedQuant(
     [$visibleRangeValue],
     ([rangeStart, rangeEnd]) => {
-      // console.log("calculate renderRange");
-
       let startIndex = 0;
 
       while (
@@ -114,7 +112,7 @@ export function initEventsListState(
     [$dayStartIndexes, $visibleRangeValue],
     (dayStartIndexes, [visibleRangeStart]) =>
       dayStartIndexes.filter((index) => {
-        let offset = offsets[index] - DAY_START_PADDING - DAY_START_HEIGHT;
+        const offset = offsets[index] - DAY_START_PADDING - DAY_START_HEIGHT;
 
         return offset < visibleRangeStart;
       }),
@@ -125,11 +123,38 @@ export function initEventsListState(
     [$dayStartIndexes, $visibleRangeValue],
     (dayStartIndexes, [visibleRangeStart]) =>
       dayStartIndexes.filter((index) => {
-        let offset = offsets[index] - DAY_START_PADDING - DAY_START_HEIGHT;
+        const offset = offsets[index] - DAY_START_PADDING - DAY_START_HEIGHT;
 
         return offset >= visibleRangeStart;
       }),
     compareArrayValue
+  );
+
+  const $activeDay = computedQuant(
+    [$dayStartIndexes, $visibleRangeValue],
+    (dayStartIndexes, [visibleRangeStart, visibleRangeEnd]) => {
+      if (dayStartIndexes.length === 0) {
+        return null;
+      }
+      const firstIndex = dayStartIndexes[0];
+
+      if (visibleRangeEnd > -10) {
+        return napEvents[firstIndex];
+      }
+
+      for (let i = 0; i < dayStartIndexes.length; i++) {
+        const index = dayStartIndexes[i];
+
+        const offset = offsets[index] - DAY_START_PADDING - DAY_START_HEIGHT;
+        const middle = (visibleRangeStart + visibleRangeEnd) / 2;
+
+        if (offset < middle) {
+          return napEvents[index];
+        }
+      }
+
+      return napEvents[firstIndex];
+    }
   );
 
   const destroy = () => {
@@ -144,6 +169,7 @@ export function initEventsListState(
     offsets,
     scrollController,
     $renderRange,
+    $activeDay,
     $stickyDayStartIndexes,
     $activeDayStartIndexes,
     destroy,

@@ -10,7 +10,6 @@ type DayStartsProps = {
 };
 
 function DayStarts({ eventsListState }: DayStartsProps) {
-  // console.log("render DayStarts");
   const { $activeDayStartIndexes, napEvents, offsets, scrollController } =
     eventsListState;
   const scrollStartValue = useQuant(scrollController.$scrollStartValue);

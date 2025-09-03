@@ -9,7 +9,6 @@ type DotsProps = {
 };
 
 function Dots({ eventsListState }: DotsProps) {
-  // console.log("render Dots");
   const { $renderRange, napEvents, offsets, scrollController } =
     eventsListState;
   const scrollStartValue = useQuant(scrollController.$scrollStartValue);

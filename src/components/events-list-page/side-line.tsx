@@ -9,7 +9,6 @@ type SideLineProps = {
 };
 
 function SideLine({ eventsListState }: SideLineProps) {
-  // console.log("render SideLine");
   const { scrollController } = eventsListState;
   const scrollStartValue = useQuant(scrollController.$scrollStartValue);
 

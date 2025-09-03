@@ -9,7 +9,6 @@ type EventsProps = {
 };
 
 function Events({ eventsListState }: EventsProps) {
-  // console.log("render Events");
   const { $renderRange, napEvents, offsets, scrollController } =
     eventsListState;
   const scrollStartValue = useQuant(scrollController.$scrollStartValue);

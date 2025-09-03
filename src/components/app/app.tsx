@@ -13,7 +13,6 @@ import { ForgetPassword } from "components/forget-password";
 import { ResetPassword } from "components/reset-password";
 import { WelcomePage } from "components/welcome-page";
 import { Profile } from "components/profile";
-import { Home } from "components/home";
 import { Login } from "components/login";
 import { UpdateEvent } from "components/update-event";
 import { TermsOfUse } from "components/terms-of-use";
@@ -41,12 +40,8 @@ export function App() {
       )}
     >
       <Route routeKey="home">
-        {user && <Home />}
+        {user && <EventsListPage />}
         {!user && <WelcomePage />}
-      </Route>
-
-      <Route routeKey="events_list">
-        <EventsListPage />
       </Route>
 
       <Route routeKey="login">

@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./test-page.module.css";
 import { Header } from "components/header";
-// import {
-//   initInfiniteScrollController,
-//   InfiniteItems,
-// } from "components/scrolling";
 import {
   ScrollContent,
   createScrollController,
@@ -34,21 +30,6 @@ export function TestPage() {
   );
 
   const inited = useQuant(scrollController.$inited);
-
-  // useEffect(() => {
-  //   if (inited) {
-  //     const value = scrollController.$value.get();
-  //     const visibleRangeValue = scrollController.$visibleRangeValue.get();
-  //     console.log("value", value);
-  //     console.log("visibleRangeValue", visibleRangeValue);
-  //   }
-  // }, [inited]);
-  const value = useQuant(scrollController.$value);
-  const visibleRangeValue = useQuant(scrollController.$visibleRangeValue);
-
-  // console.log("inited", inited);
-  console.log("value", value);
-  console.log("visibleRangeValue", visibleRangeValue);
 
   return (
     <div className={styles.root}>

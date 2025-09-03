@@ -36,7 +36,6 @@ export function initScrollManager(
   valuePosition: number,
   direction: ScrollDirection
 ) {
-  console.log("initScrollManager");
   const $minMaxValueDiff = computedQuant([$minMaxRange], ([min, max]) => {
     if (min === null || max === null) {
       return null;
@@ -94,7 +93,6 @@ export function initScrollManager(
     const [minPixelValue, maxPixelValue] = $minMaxRange.get();
     const topSpace = containerTopPixelValue - scrollStartPixelValue;
     const bottomSpace = scrollEndPixelValue - containerBottomPixelValue;
-    // console.log("recenterScroll");
 
     const setScrollPosition = (
       scrollPosition: number,
@@ -121,7 +119,6 @@ export function initScrollManager(
     };
 
     if (maxPixelValue === null && minPixelValue === null) {
-      // console.log("a");
       if (topSpace < 2000 || bottomSpace < 2000) {
         setScrollToCetner();
       }
@@ -131,8 +128,6 @@ export function initScrollManager(
 
     const handleTopLimit = () => {
       if (minPixelValue > containerTopPixelValue) {
-        // console.log("handleTopLimit a");
-
         const newScrollPosition = 0;
 
         setScrollPosition(newScrollPosition, minPixelValue);
@@ -141,8 +136,6 @@ export function initScrollManager(
       }
 
       if (minPixelValue > scrollStartPixelValue) {
-        // console.log("handleTopLimit b");
-
         const outOfRangeDiff = scrollStartPixelValue - minPixelValue;
         const newScrollPosition = containerTopPixelValue + outOfRangeDiff;
 
@@ -153,8 +146,6 @@ export function initScrollManager(
 
       if (minPixelValue < scrollStartPixelValue) {
         if (topSpace < 2000) {
-          // console.log("handleTopLimit c");
-
           setScrollToCetner();
 
           return true;
@@ -166,8 +157,6 @@ export function initScrollManager(
 
     const handleBottomLimit = () => {
       if (maxPixelValue < containerBottomPixelValue) {
-        // console.log("handleBottomLimit a");
-
         const outOfRangeDiff = containerBottomPixelValue - maxPixelValue;
         const newScrollPosition = SCROLL_OFFSET * 2 - containerLength;
         const scrollShift =
@@ -179,8 +168,6 @@ export function initScrollManager(
       }
 
       if (maxPixelValue < scrollEndPixelValue) {
-        // console.log("handleBottomLimit b");
-
         const outOfRangeDiff = scrollEndPixelValue - maxPixelValue;
         const newScrollPosition = containerTopPixelValue + outOfRangeDiff;
 
@@ -191,8 +178,6 @@ export function initScrollManager(
 
       if (maxPixelValue > scrollEndPixelValue) {
         if (bottomSpace < 2000) {
-          // console.log("handleBottomLimit c");
-
           setScrollToCetner();
 
           return true;

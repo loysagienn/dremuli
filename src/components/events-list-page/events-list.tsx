@@ -1,30 +1,25 @@
-import React, { useEffect, useMemo, useRef } from "react";
-import styles from "./events-list-page.module.css";
-import { Layout } from "components/layout";
-import { ActiveDay } from "components/active-day";
-import {
-  ScrollContent,
-  ScrollController,
-  StickyContent,
-} from "components/scroll-content";
+import React, { useEffect, useMemo } from "react";
+import { ScrollController, StickyContent } from "components/scroll-content";
 import { Footer } from "./footer";
 import { initEventsListState } from "./events-list-state";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectNapEvents } from "selectors";
 import { Events } from "./events";
 import { DayStarts } from "./day-starts";
 import { SideLine } from "./side-line";
 import { StickyDayStarts } from "./static-day-starts";
 import { Dots } from "./dots";
+import { selectActiveDay } from "selectors/active-day";
+import { setActiveDayAction } from "actions";
 
 type EventsListProps = {
   scrollController: ScrollController;
 };
 
 export function EventsList({ scrollController }: EventsListProps) {
-  console.log("render EventsList");
-  const contentRef = useRef<HTMLDivElement>(null);
   const napEvents = useSelector(selectNapEvents);
+  const activeDay = useSelector(selectActiveDay);
+  const dispatch = useDispatch();
 
   const eventsListState = useMemo(
     () => initEventsListState(napEvents, scrollController),
@@ -36,6 +31,20 @@ export function EventsList({ scrollController }: EventsListProps) {
       eventsListState.destroy();
     },
     [eventsListState]
+  );
+
+  useEffect(
+    () =>
+      eventsListState.$activeDay.subscribe((newActiveDay) => {
+        if (
+          newActiveDay &&
+          (!activeDay ||
+            activeDay.getTime() !== newActiveDay.timestamp.getTime())
+        ) {
+          dispatch(setActiveDayAction(newActiveDay.timestamp));
+        }
+      }),
+    [eventsListState, activeDay]
   );
 
   return (

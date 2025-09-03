@@ -10,8 +10,6 @@ import { EventsList } from "./events-list";
 import { useQuant } from "utils/quant";
 
 export function EventsListPage() {
-  console.log("render EventsListPage");
-
   const scrollController = useMemo(
     () =>
       createScrollController({
