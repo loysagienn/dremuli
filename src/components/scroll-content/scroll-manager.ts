@@ -32,18 +32,11 @@ export function initScrollManager(
   $scrollPixelValue: MutableQuant<number>,
   $minMaxRange: Quant<[number, number]>,
   $containerLength: MutableQuant<number>,
+  $scrollableLength: Quant<number>,
   shiftScrollStartValue: (pixelDiff: number) => void,
   valuePosition: number,
   direction: ScrollDirection
 ) {
-  const $minMaxValueDiff = computedQuant([$minMaxRange], ([min, max]) => {
-    if (min === null || max === null) {
-      return null;
-    }
-
-    return max - min;
-  });
-
   const setScrollableLength = (length: number) => {
     if (direction === "vertical") {
       scrollNode.style.height = `${length}px`;
@@ -52,13 +45,7 @@ export function initScrollManager(
     }
   };
 
-  $minMaxValueDiff.subscribe((minMaxValueDiff) => {
-    if (minMaxValueDiff === null || minMaxValueDiff >= SCROLL_OFFSET * 2) {
-      setScrollableLength(SCROLL_OFFSET * 2);
-    } else {
-      setScrollableLength(minMaxValueDiff);
-    }
-  });
+  $scrollableLength.subscribe(setScrollableLength);
 
   const { destroy: destroySizeTracker, $size: $containerSize } =
     trackDivSize(containerNode);

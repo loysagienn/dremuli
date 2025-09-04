@@ -11,6 +11,7 @@ type ScrollControllerOptions = {
   defaultScale: number;
   scalingEnabled: boolean;
   snappingEnabled?: boolean;
+  snapSize?: number;
   containerLength?: number;
   minValue?: number;
   maxValue?: number;
@@ -25,6 +26,7 @@ export function createScrollController({
   defaultScale,
   scalingEnabled,
   snappingEnabled,
+  snapSize = 100,
   containerLength = DEFAULT_CONTAINER_LENGTH,
   minValue,
   maxValue,
@@ -51,6 +53,20 @@ export function createScrollController({
       return [minPixelValue, maxPixelValue] as [number | null, number | null];
     }
   );
+
+  const $scrollableLength = computedQuant([$minMaxRange], ([min, max]) => {
+    if (min === null || max === null) {
+      return SCROLL_OFFSET * 2;
+    }
+
+    const diff = max - min;
+
+    if (diff >= SCROLL_OFFSET * 2) {
+      return SCROLL_OFFSET * 2;
+    }
+
+    return diff;
+  });
 
   const $visibleRangeValue = computedQuant(
     [$scrollPixelValue, $scrollStartValue, $containerLength, $scale],
@@ -87,6 +103,7 @@ export function createScrollController({
       $scrollPixelValue,
       $minMaxRange,
       $containerLength,
+      $scrollableLength,
       shiftScrollStartValue,
       valuePosition,
       direction
@@ -116,11 +133,13 @@ export function createScrollController({
 
   return {
     $containerSize,
+    $scrollableLength,
     $value,
     $visibleRangeValue,
     $scrollStartValue,
     $scale,
     $inited,
+    snapSize,
     valuePosition,
     direction,
     snappingEnabled,

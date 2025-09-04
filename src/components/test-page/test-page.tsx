@@ -17,6 +17,7 @@ export function TestPage() {
         defaultScale: 1,
         scalingEnabled: false,
         snappingEnabled: true,
+        snapSize,
         valuePosition: 0.5,
         direction: "vertical",
       }),

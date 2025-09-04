@@ -2,6 +2,7 @@ import React, { memo, ReactNode, useEffect, useRef } from "react";
 import styles from "./scroll-content.module.css";
 import { cn } from "utils/cn";
 import { ScrollController } from "./scroll-controller";
+import { SnapTarget } from "./snap-target";
 
 type ScrollContentProps = {
   scrollController: ScrollController;
@@ -37,6 +38,9 @@ function ScrollContent({
     >
       <div className={styles.container} ref={containerRef}>
         <div className={styles.scrollable} ref={scrollRef}>
+          {scrollController.snappingEnabled && (
+            <SnapTarget scrollController={scrollController} />
+          )}
           {children}
         </div>
       </div>
