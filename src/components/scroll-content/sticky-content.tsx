@@ -9,18 +9,24 @@ type StickyContentProps = {
 
 function StickyContent({ children, scrollController }: StickyContentProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const { $containerSize, direction } = scrollController;
 
   useLayoutEffect(() => {
-    return scrollController.$containerSize.subscribe(({ width, height }) => {
+    return $containerSize.subscribe(({ width, height }) => {
       if (ref.current) {
-        ref.current.style.width = `${width}px`;
-        ref.current.style.height = `${height}px`;
+        if (direction === "vertical") {
+          ref.current.style.width = `${width}px`;
+          ref.current.style.height = `$1px`;
+        } else {
+          ref.current.style.width = `$1px`;
+          ref.current.style.height = `${height}px`;
+        }
       }
     });
   }, []);
 
   return (
-    <div className={styles.staticContent} ref={ref}>
+    <div className={styles.stickyContent} ref={ref}>
       {children}
     </div>
   );
