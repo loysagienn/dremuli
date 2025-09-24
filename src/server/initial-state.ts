@@ -68,6 +68,10 @@ export async function initialState(ctx: AppContext, next: AppNext) {
       creatingEvents: false,
       errorMessage: null,
     },
+    share: {
+      modalOpened: false,
+      shareLink: null,
+    },
     confirmAction: null,
   };
 

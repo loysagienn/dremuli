@@ -8,3 +8,4 @@ export * from "./events";
 export * from "./ui";
 export * from "./lang";
 export * from "./options";
+export * from "./share";

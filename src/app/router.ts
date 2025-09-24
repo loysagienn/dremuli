@@ -579,6 +579,48 @@ const statisticsCharts: RouteConfig<StatisticsCharts> = {
   writeRoute: (route) => "/statistics/charts",
 };
 
+type ShareTimeline = {
+  key: "share_timeline";
+  token: string;
+};
+
+const shareTimeline: RouteConfig<ShareTimeline> = {
+  key: "share_timeline",
+  readRoute: (path: string) => {
+    if (path.startsWith("/share/")) {
+      const token = path.slice(7);
+
+      if (token && !token.includes("/")) {
+        return {
+          key: "share_timeline",
+          token,
+        };
+      }
+    }
+
+    return null;
+  },
+  writeRoute: (route) => `/share/${route.token}`,
+};
+
+type ApiShareLink = {
+  key: "api_share_link";
+};
+
+const apiShareLink: RouteConfig<ApiShareLink> = {
+  key: "api_share_link",
+  readRoute: (path: string) => {
+    if (path === "/api/share-link") {
+      return {
+        key: "api_share_link",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: () => "/api/share-link",
+};
+
 export const router = initRouter(
   home,
   login,
@@ -596,6 +638,7 @@ export const router = initRouter(
   statisticsNaps,
   statisticsCharts,
   testPage,
+  shareTimeline,
   apiSettings,
   apiUserSettings,
   apiRegisterUser,
@@ -607,6 +650,7 @@ export const router = initRouter(
   apiEventsBatch,
   apiEvent,
   apiCsrfToken,
+  apiShareLink,
   apiNotFound,
   notFound
 );

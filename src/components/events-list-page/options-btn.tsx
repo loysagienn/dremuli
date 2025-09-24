@@ -5,7 +5,11 @@ import OptionsSvg from "svg/options.svg";
 import { Popup } from "components/popup";
 import { useText } from "lang/context";
 import { useDispatch } from "react-redux";
-import { showExportToJsonAction, showImportFromJsonAction } from "actions";
+import {
+  showExportToJsonAction,
+  showImportFromJsonAction,
+  showShareModalAction,
+} from "actions";
 
 export function OptionsBtn() {
   const buttonRef = useRef<HTMLElement>(null);
@@ -21,6 +25,10 @@ export function OptionsBtn() {
 
   const exportToJson = useCallback(() => {
     dispatch(showExportToJsonAction());
+  }, []);
+
+  const share = useCallback(() => {
+    dispatch(showShareModalAction());
   }, []);
 
   const onClick = useCallback(() => {
@@ -54,6 +62,9 @@ export function OptionsBtn() {
             </div>
             <div className={styles.menuItem} onClick={exportToJson}>
               {text.exportToJson}
+            </div>
+            <div className={styles.menuItem} onClick={share}>
+              {text.share}
             </div>
           </>
         )}

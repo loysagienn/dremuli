@@ -149,6 +149,31 @@ function getBodyEventUpdate(ctx: AppContext): BodyEventUpdate | null {
   return { timestamp };
 }
 
+type BodyShareLink = {
+  startDate: Date;
+  timeZone: string;
+};
+
+function getBodyShareLink(ctx: AppContext): BodyShareLink | null {
+  const data = ctx.request.body?.data;
+
+  if (!data || typeof data !== "object") {
+    return null;
+  }
+
+  if (!data.startDate || !data.timeZone) {
+    return null;
+  }
+
+  const startDate = parseDate(data.startDate);
+
+  if (startDate === null) {
+    return null;
+  }
+
+  return { startDate, timeZone: data.timeZone };
+}
+
 type BodyResetPassword = {
   password: string;
   token: string;
@@ -522,6 +547,32 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
 
       ctx.body = {
         data: events,
+      };
+
+      return;
+    }
+  }
+
+  if (route.key === "api_share_link") {
+    if (ctx.method === "POST") {
+      const { userId } = ctx.state.session;
+
+      if (!userId) {
+        return unauthorized(ctx);
+      }
+
+      const bodyShareLink = getBodyShareLink(ctx);
+
+      if (!bodyShareLink) {
+        return badRequest(ctx);
+      }
+
+      const { startDate, timeZone } = bodyShareLink;
+
+      const shareLink = await api.createShareLink(startDate, timeZone);
+
+      ctx.body = {
+        data: shareLink,
       };
 
       return;

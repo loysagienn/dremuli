@@ -20,4 +20,5 @@ export type Api = {
   updateEvent: (eventId: string, update: EventUpdate) => Promise<Event>;
   getEvents: () => Promise<Event[]>;
   deleteEvent: (eventId: string) => Promise<Event | null>;
+  createShareLink: (startDate: Date, timeZone: string) => Promise<string>;
 };

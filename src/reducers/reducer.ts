@@ -11,6 +11,7 @@ import { windowSize } from "./window-size";
 import { exportToJson } from "./export-to-json";
 import { importFromJson } from "./import-from-json";
 import { confirmAction } from "./confirm";
+import { share } from "./share";
 
 export const reducer = combineReducers({
   router,
@@ -25,6 +26,7 @@ export const reducer = combineReducers({
   exportToJson,
   importFromJson,
   confirmAction,
+  share,
 });
 
 export type State = ReturnType<typeof reducer>;

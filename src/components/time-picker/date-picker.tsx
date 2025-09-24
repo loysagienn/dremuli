@@ -13,7 +13,12 @@ export function DatePicker({ value, onChange, className }: DatePickerProps) {
   return (
     <div className={cn(className, styles.timePicker)}>
       <div className={styles.border} />
-      <DatePickerRaw value={value} onChange={onChange} snapSize={44} />
+      <DatePickerRaw
+        value={value}
+        onChange={onChange}
+        snapSize={44}
+        fullWidth
+      />
     </div>
   );
 }

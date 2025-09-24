@@ -14,6 +14,7 @@ type DatePickerRawProps = {
   onChange: (value: Date) => void;
   className?: string;
   snapSize: number;
+  fullWidth?: boolean;
 };
 
 export function DatePickerRaw({
@@ -21,6 +22,7 @@ export function DatePickerRaw({
   onChange,
   className,
   snapSize,
+  fullWidth,
 }: DatePickerRawProps) {
   const daysDiff = useMemo(() => getDaysDiff(value), [value]);
   const lang = useSelector(selectLanguage);
@@ -77,7 +79,12 @@ export function DatePickerRaw({
 
   return (
     <InfiniteItems
-      className={cn(className, styles.picker, styles.dayPicker)}
+      className={cn(
+        className,
+        styles.picker,
+        styles.dayPicker,
+        fullWidth && styles.fullWidth
+      )}
       scrollController={scrollController}
       getValueContent={getValueContent}
     />

@@ -37,6 +37,7 @@ model User {
   sessions      Session[]
   sleepSessions SleepSession[]
   events        Event[]
+  shareLinks    ShareLink[]
 
   @@map("users")
 }
@@ -115,4 +116,24 @@ model SessionSettings {
   session Session @relation(fields: [id], references: [id], onDelete: Cascade)
 
   @@map("session_settings")
+}
+
+model ShareLink {
+  id          String    @id @default(uuid())
+  userId      String    @map("user_id")
+  tokenHash   String    @unique @map("token_hash")
+  tokenHint   String?   @map("token_hint")
+
+  startDate   DateTime  @map("start_date")
+  timeZone    String    @map("time_zone")
+
+  expiresAt   DateTime? @map("expires_at")
+  revokedAt   DateTime? @map("revoked_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([startDate])
+  @@map("share_links")
 }

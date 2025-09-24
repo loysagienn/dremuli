@@ -287,6 +287,30 @@ const createEventsBatchFactory =
     return newEvents;
   };
 
+const createShareLinkFactory =
+  (ctx: AppContext) => async (startDate: Date, timeZone: string) => {
+    const { userId } = ctx.state.session;
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const token = getToken(16);
+    const tokenHash = hashToken(token);
+
+    const shareLink = await ctx.db.createShareLink(
+      userId,
+      tokenHash,
+      startDate,
+      timeZone
+    );
+
+    return `https://${DOMAIN}${router.writeRoute({
+      key: "share_timeline",
+      token: token,
+    })}`;
+  };
+
 export function initApi(ctx: AppContext): Api {
   const setSessionSettings = setSessionSettingsFactory(ctx);
   const getSessionSettings = getSessionSettingsFactory(ctx);
@@ -302,6 +326,7 @@ export function initApi(ctx: AppContext): Api {
   const updateEvent = updateEventFactory(ctx);
   const deleteEvent = deleteEventFactory(ctx);
   const createEventsBatch = createEventsBatchFactory(ctx);
+  const createShareLink = createShareLinkFactory(ctx);
 
   return {
     setSessionSettings,
@@ -318,5 +343,6 @@ export function initApi(ctx: AppContext): Api {
     getEvents,
     updateEvent,
     deleteEvent,
+    createShareLink,
   };
 }

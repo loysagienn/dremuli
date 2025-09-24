@@ -3,6 +3,7 @@ import { SCROLL_OFFSET } from "./constants";
 import { ScrollDirection } from "./types";
 import { trackDivSize } from "utils/div-size";
 import { Size } from "types";
+import { debounce } from "utils/debounce";
 
 function setStyles(
   containerNode: HTMLDivElement,
@@ -65,8 +66,7 @@ export function initScrollManager(
     const containerLength = $containerLength.get();
 
     if (length !== containerLength) {
-      shiftScrollStartValue((containerLength - length) * valuePosition);
-
+      // shiftScrollStartValue((containerLength - length) * valuePosition);
       $containerLength.set(length);
     }
   });

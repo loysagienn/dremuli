@@ -7,6 +7,10 @@
   width: 140px;
 }
 
+.dayPicker.fullWidth {
+  width: 100%;
+}
+
 .hoursPicker {
   width: 80px;
 }

@@ -65,6 +65,7 @@ export const en = {
     wokeUp: "Woke up",
     exportToJson: "Export to JSON",
     importFromJson: "Import from JSON",
+    share: "Share",
   },
   daySummary: {
     totalSleep: "Total sleep",
@@ -139,6 +140,12 @@ export const en = {
     decline: "Decline",
     delete: "Delete",
     deleteEvent: "Delete event?",
+  },
+  shareModal: {
+    title: "Share",
+    fromDate: "From date",
+    createLink: "Create link",
+    shareLinkTitle: "Link:",
   },
   timeDuration,
 };

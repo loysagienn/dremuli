@@ -13,8 +13,8 @@ export async function comparePassword(password: string, passwordHash: string) {
   return await compare(password, passwordHash);
 }
 
-export function getToken() {
-  return randomBytes(32).toString("hex");
+export function getToken(length = 32) {
+  return randomBytes(length).toString("hex");
 }
 
 export function hashToken(token: string) {

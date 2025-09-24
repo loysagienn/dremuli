@@ -124,6 +124,17 @@ async function getEvents(): Promise<Event[]> {
   return result.map(parseEvent);
 }
 
+async function createShareLink(
+  startDate: Date,
+  timeZone: string
+): Promise<string> {
+  const result = await request({ key: "api_share_link" }, "POST", {
+    data: { startDate, timeZone },
+  });
+
+  return result;
+}
+
 export const api: Api = {
   getSessionSettings,
   setSessionSettings,
@@ -139,4 +150,5 @@ export const api: Api = {
   getEvents,
   updateEvent,
   deleteEvent,
+  createShareLink,
 };

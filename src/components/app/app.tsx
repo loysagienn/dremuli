@@ -25,6 +25,7 @@ import { ExportToJson } from "components/export-to-json";
 import { ImportFromJson } from "components/import-from-json";
 import { ConfirmModal } from "components/confirm-modal";
 import { EventsListPage } from "components/events-list-page";
+import { ShareModal } from "components/share-modal";
 
 export function App() {
   const theme = useSelector(selectTheme);
@@ -93,6 +94,7 @@ export function App() {
       </Route>
       <ExportToJson />
       <ImportFromJson />
+      <ShareModal />
       <ConfirmModal />
     </div>
   );

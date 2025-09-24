@@ -67,6 +67,7 @@ export const ru: Text = {
     wokeUp: "Проснулась",
     exportToJson: "Экспортировать в JSON",
     importFromJson: "Импортировать из JSON",
+    share: "Поделиться",
   },
   daySummary: {
     totalSleep: "Весь сон",
@@ -145,6 +146,12 @@ export const ru: Text = {
     decline: "Отмена",
     delete: "Удалить",
     deleteEvent: "Удалить событие?",
+  },
+  shareModal: {
+    title: "Поделиться",
+    fromDate: "С даты",
+    createLink: "Создать ссылку",
+    shareLinkTitle: "Ссылка:",
   },
   timeDuration,
 } as const;
