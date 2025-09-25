@@ -76,6 +76,10 @@
     padding: 0 0 16px;
   }
 
+  .shareTab {
+    flex-basis: 50%;
+  }
+
   .tab.isActive {
     border-bottom: 2px solid transparent;
     border-top: 2px solid var(--color-action);

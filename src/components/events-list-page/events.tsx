@@ -12,10 +12,15 @@ function Events({ eventsListState }: EventsProps) {
   const { $renderRange, napEvents, offsets, scrollController } =
     eventsListState;
   const scrollStartValue = useQuant(scrollController.$scrollStartValue);
+  const scrollableLength = useQuant(scrollController.$scrollableLength);
 
   const [renderStartIndex, renderEndIndex] = useQuant($renderRange);
 
   const eventsContent: ReactNode[] = [];
+
+  if (renderStartIndex === 0 && renderEndIndex === 0) {
+    return <></>;
+  }
 
   for (let i = renderStartIndex; i <= renderEndIndex; i++) {
     const napEvent = napEvents[i];

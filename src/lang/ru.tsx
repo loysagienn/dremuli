@@ -68,6 +68,7 @@ export const ru: Text = {
     exportToJson: "Экспортировать в JSON",
     importFromJson: "Импортировать из JSON",
     share: "Поделиться",
+    addSleepSession: "Добавьте ваш первый интервал сна",
   },
   daySummary: {
     totalSleep: "Весь сон",

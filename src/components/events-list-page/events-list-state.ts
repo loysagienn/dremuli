@@ -9,9 +9,9 @@ import {
 } from "./constants";
 import { computedQuant } from "utils/quant";
 
-function getEventsOffsets(napEvents: NapEvent[]) {
+function getEventsOffsets(napEvents: NapEvent[], isSharePage: boolean) {
   const offsets: number[] = [];
-  let offset = -PADDING - FOOTER_HEIGHT;
+  let offset = isSharePage ? 0 : -PADDING - FOOTER_HEIGHT;
 
   for (let i = napEvents.length - 1; i >= 0; i--) {
     const napEvent = napEvents[i];
@@ -42,11 +42,12 @@ function compareArrayValue<TValue extends any[]>(
 
 export function initEventsListState(
   napEvents: NapEvent[],
-  scrollController: ScrollController
+  scrollController: ScrollController,
+  isSharePage: boolean
 ) {
   const { $visibleRangeValue } = scrollController;
 
-  const offsets = getEventsOffsets(napEvents);
+  const offsets = getEventsOffsets(napEvents, isSharePage);
 
   scrollController.setMinValue(
     offsets[0] - DAY_START_PADDING - DAY_START_HEIGHT
@@ -80,6 +81,10 @@ export function initEventsListState(
     [$renderRange],
     ([renderStartIndex, renderEndIndex]) => {
       const indexes: number[] = [];
+
+      if (renderStartIndex === 0 && renderEndIndex === 0) {
+        return indexes;
+      }
 
       for (let i = renderEndIndex; i >= renderStartIndex; i--) {
         const napEvent = napEvents[i];

@@ -59,6 +59,8 @@ export function initScrollManager(
     direction
   );
 
+  let aaa = true;
+
   const unsubscribeContainerSize = $containerSize.subscribe((containerSize) => {
     const length =
       direction === "vertical" ? containerSize.height : containerSize.width;
@@ -66,6 +68,10 @@ export function initScrollManager(
     const containerLength = $containerLength.get();
 
     if (length !== containerLength) {
+      if (aaa) {
+        shiftScrollStartValue((containerLength - length) * valuePosition);
+        aaa = false;
+      }
       // shiftScrollStartValue((containerLength - length) * valuePosition);
       $containerLength.set(length);
     }
@@ -85,6 +91,7 @@ export function initScrollManager(
       scrollPosition: number,
       scrollStartValueShift: number
     ) => {
+      console.log("setScrollPosition", scrollPosition);
       $scrollPixelValue.set(scrollPosition);
 
       shiftScrollStartValue(scrollStartValueShift);
@@ -180,7 +187,7 @@ export function initScrollManager(
       if (valueDiff > SCROLL_OFFSET * 2) {
         handleTopLimit() || handleBottomLimit();
       } else {
-        if (minPixelValue > scrollStartPixelValue) {
+        if (minPixelValue !== scrollStartPixelValue) {
           const outOfRangeDiff = scrollStartPixelValue - minPixelValue;
           const newScrollPosition = containerTopPixelValue + outOfRangeDiff;
 

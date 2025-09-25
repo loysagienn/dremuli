@@ -17,6 +17,10 @@ function Dots({ eventsListState }: DotsProps) {
 
   const content: ReactNode[] = [];
 
+  if (renderStartIndex === 0 && renderEndIndex === 0) {
+    return <></>;
+  }
+
   for (let i = renderStartIndex; i <= renderEndIndex; i++) {
     const napEvent = napEvents[i];
     const offset = offsets[i];

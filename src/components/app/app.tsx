@@ -92,6 +92,15 @@ export function App() {
       <Route routeKey="test_page">
         <TestPage />
       </Route>
+
+      <Route routeKey="share_timeline">
+        <EventsListPage />
+      </Route>
+
+      <Route routeKey={["share_statistics_naps", "share_statistics_charts"]}>
+        <StatisticsPage />
+      </Route>
+
       <ExportToJson />
       <ImportFromJson />
       <ShareModal />

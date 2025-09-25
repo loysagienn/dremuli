@@ -1,11 +1,12 @@
 import { AppContext, AppNext, User, SessionSettings, Event } from "types";
 import { getCurrentMinute } from "utils/date";
 import { getWindowSize } from "utils/browser";
+import { hashToken } from "./utils/crypto";
 
 const DEFAULT_SETTINGS: SessionSettings = {
   theme: "dark",
   timeZone: null,
-  language: "en",
+  language: "ru",
 };
 
 async function getSettings(ctx: AppContext): Promise<SessionSettings> {
@@ -21,15 +22,54 @@ async function getSettings(ctx: AppContext): Promise<SessionSettings> {
   return { theme, timeZone, language };
 }
 
+async function getEvents(ctx: AppContext): Promise<Event[]> {
+  const route = ctx.state.route;
+
+  const isShareRoute =
+    route.key === "share_timeline" ||
+    route.key === "share_statistics_naps" ||
+    route.key === "share_statistics_charts";
+
+  if (isShareRoute) {
+    const token = route.token;
+
+    if (!token) {
+      return [];
+    }
+
+    const tokenHash = hashToken(token);
+
+    const shareLink = await ctx.db.getShareLink(tokenHash);
+
+    if (!shareLink) {
+      return [];
+    }
+
+    const { userId, startDate } = shareLink;
+
+    const events = await ctx.db.getEvents(userId);
+
+    const startTimestamp = startDate.getTime();
+
+    return events.filter(
+      (event) => event.timestamp.getTime() >= startTimestamp
+    );
+  }
+
+  const user = ctx.state.user;
+
+  if (!user) {
+    return [];
+  }
+
+  return ctx.db.getEvents(user.id);
+}
+
 export async function initialState(ctx: AppContext, next: AppNext) {
   const { route } = ctx.state;
 
   const user = ctx.state.user;
-  let events: Event[] = [];
-
-  if (user) {
-    events = await ctx.db.getEvents(user.id);
-  }
+  const events = await getEvents(ctx);
 
   let users: User[] = [];
 

@@ -66,6 +66,7 @@ export const en = {
     exportToJson: "Export to JSON",
     importFromJson: "Import from JSON",
     share: "Share",
+    addSleepSession: "Add your first sleep session",
   },
   daySummary: {
     totalSleep: "Total sleep",

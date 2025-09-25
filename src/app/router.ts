@@ -603,6 +603,54 @@ const shareTimeline: RouteConfig<ShareTimeline> = {
   writeRoute: (route) => `/share/${route.token}`,
 };
 
+type ShareStatisticsNaps = {
+  key: "share_statistics_naps";
+  token: string;
+};
+
+const shareStatisticsNaps: RouteConfig<ShareStatisticsNaps> = {
+  key: "share_statistics_naps",
+  readRoute: (path: string) => {
+    if (path.startsWith("/share/") && path.endsWith("/statistics/naps")) {
+      const token = path.slice(7, -16);
+
+      if (token && !token.includes("/")) {
+        return {
+          key: "share_statistics_naps",
+          token,
+        };
+      }
+    }
+
+    return null;
+  },
+  writeRoute: (route) => `/share/${route.token}/statistics/naps`,
+};
+
+type ShareStatisticsCharts = {
+  key: "share_statistics_charts";
+  token: string;
+};
+
+const shareStatisticsCharts: RouteConfig<ShareStatisticsCharts> = {
+  key: "share_statistics_charts",
+  readRoute: (path: string) => {
+    if (path.startsWith("/share/") && path.endsWith("/statistics/charts")) {
+      const token = path.slice(7, -18);
+
+      if (token && !token.includes("/")) {
+        return {
+          key: "share_statistics_charts",
+          token,
+        };
+      }
+    }
+
+    return null;
+  },
+  writeRoute: (route) => `/share/${route.token}/statistics/charts`,
+};
+
 type ApiShareLink = {
   key: "api_share_link";
 };
@@ -639,6 +687,8 @@ export const router = initRouter(
   statisticsCharts,
   testPage,
   shareTimeline,
+  shareStatisticsNaps,
+  shareStatisticsCharts,
   apiSettings,
   apiUserSettings,
   apiRegisterUser,

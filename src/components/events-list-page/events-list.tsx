@@ -3,7 +3,7 @@ import { ScrollController, StickyContent } from "components/scroll-content";
 import { Footer } from "./footer";
 import { initEventsListState } from "./events-list-state";
 import { useDispatch, useSelector } from "react-redux";
-import { selectNapEvents } from "selectors";
+import { selectIsSharePage, selectNapEvents } from "selectors";
 import { Events } from "./events";
 import { DayStarts } from "./day-starts";
 import { SideLine } from "./side-line";
@@ -20,10 +20,11 @@ export function EventsList({ scrollController }: EventsListProps) {
   const napEvents = useSelector(selectNapEvents);
   const activeDay = useSelector(selectActiveDay);
   const dispatch = useDispatch();
+  const isSharePage = useSelector(selectIsSharePage);
 
   const eventsListState = useMemo(
-    () => initEventsListState(napEvents, scrollController),
-    [napEvents, scrollController]
+    () => initEventsListState(napEvents, scrollController, isSharePage),
+    [napEvents, scrollController, isSharePage]
   );
 
   useEffect(
@@ -56,7 +57,7 @@ export function EventsList({ scrollController }: EventsListProps) {
       <DayStarts eventsListState={eventsListState} />
       <SideLine eventsListState={eventsListState} />
       <Dots eventsListState={eventsListState} />
-      <Footer scrollController={scrollController} />
+      {!isSharePage && <Footer scrollController={scrollController} />}
     </>
   );
 }
