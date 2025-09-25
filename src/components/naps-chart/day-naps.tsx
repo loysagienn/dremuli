@@ -1,9 +1,14 @@
 import React, { memo, useMemo } from "react";
 import styles from "./naps-chart.module.css";
 import { formatDate } from "utils/date";
-import { selectLanguage, selectSleepEvents } from "selectors";
+import {
+  selectActiveTimezone,
+  selectLanguage,
+  selectSleepEvents,
+} from "selectors";
 import { useSelector } from "react-redux";
 import { cn } from "utils/cn";
+import { getDayStartSameDate } from "utils/date";
 
 type DayNapsProps = {
   date: Date;
@@ -16,23 +21,34 @@ const dayMs = 1000 * 60 * 60 * 24;
 
 function DayNaps({ date, height, headerHeight, dayWidth }: DayNapsProps) {
   const sleepEvents = useSelector(selectSleepEvents);
+  const timeZone = useSelector(selectActiveTimezone);
 
-  const dayStartTs = date.getTime();
+  const [dayStartTs, dayEndTs] = useMemo(() => {
+    if (!date) return [0, 0];
+
+    const dayStart = getDayStartSameDate(date, timeZone);
+    const dayEnd = new Date(dayStart);
+    dayEnd.setDate(dayEnd.getDate() + 1);
+
+    return [dayStart.getTime(), dayEnd.getTime()];
+  }, [date]);
+
+  // const dayStartTs = date.getTime();
   const dayHeight = height - headerHeight;
   const pixelsInMs = dayHeight / dayMs;
 
   const dayEvents = useMemo(() => {
-    const nextDate = new Date(date);
-    nextDate.setDate(nextDate.getDate() + 1);
-    const endTimestamp = nextDate.getTime();
+    // const nextDate = new Date(date);
+    // nextDate.setDate(nextDate.getDate() + 1);
+    // const endTimestamp = nextDate.getTime();
 
     return sleepEvents.filter((event) => {
       const eventStart = event.timestamp.getTime();
       const eventEnd = event.endTime.getTime();
 
-      return eventEnd > dayStartTs && eventStart < endTimestamp;
+      return eventEnd > dayStartTs && eventStart < dayEndTs;
     });
-  }, [date, sleepEvents]);
+  }, [dayStartTs, dayEndTs, sleepEvents]);
 
   const napWidth = Math.min(dayWidth / 2, 32);
   const left = (dayWidth - napWidth) / 2;

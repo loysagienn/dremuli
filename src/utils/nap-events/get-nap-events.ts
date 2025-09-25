@@ -1,5 +1,5 @@
 import { NapEvent, Event, Lang } from "types";
-import { formatTime, formatDate } from "utils/date";
+import { formatTime, formatDate, getMonthDay } from "utils/date";
 import { labelNightEvents } from "./label-night-events";
 
 export function getNapEvents(
@@ -55,12 +55,15 @@ export function getNapEvents(
     const prev = napEvents[i - 1];
     const event = napEvents[i];
 
-    if (prev.timestamp.getDate() !== event.timestamp.getDate()) {
+    if (
+      getMonthDay(prev.timestamp, timeZone) !==
+      getMonthDay(event.timestamp, timeZone)
+    ) {
       event.dayStartStr = formatDate(event.timestamp, { timeZone, lang });
     }
   }
 
-  labelNightEvents(napEvents);
+  labelNightEvents(napEvents, timeZone);
 
   return napEvents;
 }

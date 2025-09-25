@@ -8,3 +8,4 @@ export * from "./events";
 export * from "./events-export-import";
 export * from "./confirm";
 export * from "./share";
+export * from "./timezone";

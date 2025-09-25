@@ -1,5 +1,5 @@
 import { NapEvent, EventType } from "types";
-import { getDayStart } from "utils/date";
+import { getDayStart, getHours } from "utils/date";
 
 const HOUR_MS = 1000 * 60 * 60;
 
@@ -54,7 +54,8 @@ export type DayStat = {
 
 function calculateStat(
   napEvents: NapEvent[],
-  firstNightSleepIndex: number
+  firstNightSleepIndex: number,
+  timeZone: string | null
 ): DayStat {
   let index = firstNightSleepIndex;
 
@@ -76,7 +77,7 @@ function calculateStat(
     }
 
     if (event.isNightSleep) {
-      if (dayStarted && event.timestamp.getHours() > 15) {
+      if (dayStarted && getHours(event.timestamp, timeZone) > 15) {
         break;
       }
 
@@ -108,8 +109,12 @@ function calculateStat(
   };
 }
 
-export function getDayStat(day: Date, napEvents: NapEvent[]) {
-  const dayStart = getDayStart(day);
+export function getDayStat(
+  day: Date,
+  napEvents: NapEvent[],
+  timeZone: string | null
+) {
+  const dayStart = getDayStart(day, timeZone);
 
   const firstNightSleepIndex = findFirstNightSleep(napEvents, dayStart);
 
@@ -117,7 +122,7 @@ export function getDayStat(day: Date, napEvents: NapEvent[]) {
     return null;
   }
 
-  const stat = calculateStat(napEvents, firstNightSleepIndex);
+  const stat = calculateStat(napEvents, firstNightSleepIndex, timeZone);
 
   return stat;
 }

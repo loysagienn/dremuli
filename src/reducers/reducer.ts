@@ -12,6 +12,7 @@ import { exportToJson } from "./export-to-json";
 import { importFromJson } from "./import-from-json";
 import { confirmAction } from "./confirm";
 import { share } from "./share";
+import { activeTimezone } from "./active-timezone";
 
 export const reducer = combineReducers({
   router,
@@ -27,6 +28,7 @@ export const reducer = combineReducers({
   importFromJson,
   confirmAction,
   share,
+  activeTimezone,
 });
 
 export type State = ReturnType<typeof reducer>;

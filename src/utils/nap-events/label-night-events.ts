@@ -1,4 +1,5 @@
 import { NapEvent, EventType } from "types";
+import { getHours } from "utils/date";
 
 function isBetween(hour: number, fromHour: number, toHour: number) {
   let marker = fromHour;
@@ -22,9 +23,14 @@ function isBetween(hour: number, fromHour: number, toHour: number) {
   return false;
 }
 
-function isBetweenHours(event: NapEvent, fromHour: number, toHour: number) {
-  let marker = event.timestamp.getHours();
-  const endHour = event.endTime.getHours();
+function isBetweenHours(
+  event: NapEvent,
+  fromHour: number,
+  toHour: number,
+  timeZone: string | null
+) {
+  let marker = getHours(event.timestamp, timeZone);
+  const endHour = getHours(event.endTime, timeZone);
 
   if (isBetween(endHour, fromHour, toHour)) {
     return true;
@@ -47,7 +53,11 @@ function isBetweenHours(event: NapEvent, fromHour: number, toHour: number) {
 
 const NIGHT_SLEEP_TRESHOLD = 1000 * 60 * 30; // 30 mins
 
-function addNightSleepBefore(events: NapEvent[], index: number) {
+function addNightSleepBefore(
+  events: NapEvent[],
+  index: number,
+  timeZone: string | null
+) {
   if (index < 2) {
     return;
   }
@@ -61,7 +71,7 @@ function addNightSleepBefore(events: NapEvent[], index: number) {
   let isNight = false;
 
   if (
-    isBetweenHours(sleep, 22, 0) &&
+    isBetweenHours(sleep, 22, 0, timeZone) &&
     awake.duration < NIGHT_SLEEP_TRESHOLD * 2
   ) {
     isNight = true;
@@ -69,7 +79,7 @@ function addNightSleepBefore(events: NapEvent[], index: number) {
 
   if (
     !isNight &&
-    isBetweenHours(sleep, 20, 22) &&
+    isBetweenHours(sleep, 20, 22, timeZone) &&
     awake.duration < NIGHT_SLEEP_TRESHOLD
   ) {
     isNight = true;
@@ -77,7 +87,7 @@ function addNightSleepBefore(events: NapEvent[], index: number) {
 
   if (
     !isNight &&
-    isBetweenHours(sleep, 18, 20) &&
+    isBetweenHours(sleep, 18, 20, timeZone) &&
     awake.duration < NIGHT_SLEEP_TRESHOLD / 2
   ) {
     isNight = true;
@@ -86,11 +96,15 @@ function addNightSleepBefore(events: NapEvent[], index: number) {
   if (isNight) {
     sleep.isNightSleep = true;
 
-    addNightSleepBefore(events, index - 2);
+    addNightSleepBefore(events, index - 2, timeZone);
   }
 }
 
-function addNightSleepAfter(events: NapEvent[], index: number) {
+function addNightSleepAfter(
+  events: NapEvent[],
+  index: number,
+  timeZone: string | null
+) {
   const event = events[index];
 
   if (!event.isNightSleep) {
@@ -110,13 +124,16 @@ function addNightSleepAfter(events: NapEvent[], index: number) {
 
   let isNight = false;
 
-  if (isBetweenHours(sleep, 4, 6) && awake.duration < NIGHT_SLEEP_TRESHOLD) {
+  if (
+    isBetweenHours(sleep, 4, 6, timeZone) &&
+    awake.duration < NIGHT_SLEEP_TRESHOLD
+  ) {
     isNight = true;
   }
 
   if (
     !isNight &&
-    isBetweenHours(sleep, 6, 8) &&
+    isBetweenHours(sleep, 6, 8, timeZone) &&
     awake.duration < NIGHT_SLEEP_TRESHOLD / 2
   ) {
     isNight = true;
@@ -127,11 +144,14 @@ function addNightSleepAfter(events: NapEvent[], index: number) {
   }
 }
 
-export function labelNightEvents(events: NapEvent[]) {
+export function labelNightEvents(events: NapEvent[], timeZone: string | null) {
   for (let i = 0; i < events.length - 1; i++) {
     const event = events[i];
 
-    if (event.type === EventType.FellAsleep && isBetweenHours(event, 0, 4)) {
+    if (
+      event.type === EventType.FellAsleep &&
+      isBetweenHours(event, 0, 4, timeZone)
+    ) {
       event.isNightSleep = true;
     }
   }
@@ -146,7 +166,7 @@ export function labelNightEvents(events: NapEvent[]) {
     }
 
     if (event.isNightSleep && !isNight) {
-      addNightSleepBefore(events, i);
+      addNightSleepBefore(events, i, timeZone);
 
       isNight = true;
     }
@@ -164,7 +184,7 @@ export function labelNightEvents(events: NapEvent[]) {
     }
 
     if (event.isNightSleep) {
-      addNightSleepAfter(events, i);
+      addNightSleepAfter(events, i, timeZone);
     }
   }
 
@@ -174,7 +194,7 @@ export function labelNightEvents(events: NapEvent[]) {
     if (
       lastEvent.type === EventType.FellAsleep &&
       !lastEvent.isNightSleep &&
-      isBetweenHours(lastEvent, 21, 0)
+      isBetweenHours(lastEvent, 21, 0, timeZone)
     ) {
       lastEvent.isNightSleep = true;
     }

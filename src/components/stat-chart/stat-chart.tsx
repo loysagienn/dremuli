@@ -9,12 +9,13 @@ import {
 } from "components/scrolling";
 import { useSelector } from "react-redux";
 import {
+  selectActiveTimezone,
   selectCurrentDay,
   selectLanguage,
   selectNapEvents,
   selectTheme,
 } from "selectors";
-import { formatDate } from "utils/date";
+import { formatDate, getDayStartSameDate } from "utils/date";
 import { useText } from "lang/context";
 import { DayStat, getDayStat } from "utils/nap-events";
 import { initAnimationController } from "utils/animation";
@@ -53,7 +54,8 @@ function initChartState(
   contentSize: Size,
   scrollController: InfiniteScrollController,
   napEvents: NapEvent[],
-  currentDay: Date
+  currentDay: Date,
+  timeZone: string | null
 ) {
   const datesByDiff: { [key: number]: Date } = {};
   const dayStatByDiff: { [key: number]: DayStat } = {};
@@ -100,7 +102,9 @@ function initChartState(
       return dayStatByDiff[diff];
     }
 
-    const stat = getDayStat(date, napEvents);
+    const dayStart = getDayStartSameDate(date, timeZone);
+
+    const stat = getDayStat(dayStart, napEvents, timeZone);
 
     dayStatByDiff[diff] = stat;
 
@@ -392,6 +396,7 @@ export function StatChart({ className, contentSize }: StatChartProps) {
   const currentDay = useSelector(selectCurrentDay);
   const theme = useSelector(selectTheme);
   const text = useText();
+  const timeZone = useSelector(selectActiveTimezone);
   const { statisticsPage } = text;
 
   const footerHeight = useMemo(
@@ -430,8 +435,15 @@ export function StatChart({ className, contentSize }: StatChartProps) {
   );
 
   const chartState = useMemo(
-    () => initChartState(contentSize, scrollController, napEvents, currentDay),
-    [contentSize, scrollController, napEvents]
+    () =>
+      initChartState(
+        contentSize,
+        scrollController,
+        napEvents,
+        currentDay,
+        timeZone
+      ),
+    [contentSize, scrollController, napEvents, currentDay, timeZone]
   );
 
   useEffect(

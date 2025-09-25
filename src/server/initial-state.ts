@@ -22,7 +22,7 @@ async function getSettings(ctx: AppContext): Promise<SessionSettings> {
   return { theme, timeZone, language };
 }
 
-async function getEvents(ctx: AppContext): Promise<Event[]> {
+async function getEvents(ctx: AppContext): Promise<[Event[], string | null]> {
   const route = ctx.state.route;
 
   const isShareRoute =
@@ -34,7 +34,7 @@ async function getEvents(ctx: AppContext): Promise<Event[]> {
     const token = route.token;
 
     if (!token) {
-      return [];
+      return [[], null];
     }
 
     const tokenHash = hashToken(token);
@@ -42,34 +42,36 @@ async function getEvents(ctx: AppContext): Promise<Event[]> {
     const shareLink = await ctx.db.getShareLink(tokenHash);
 
     if (!shareLink) {
-      return [];
+      return [[], null];
     }
 
-    const { userId, startDate } = shareLink;
+    const { userId, startDate, timeZone } = shareLink;
 
     const events = await ctx.db.getEvents(userId);
 
     const startTimestamp = startDate.getTime();
 
-    return events.filter(
+    const filteredEvents = events.filter(
       (event) => event.timestamp.getTime() >= startTimestamp
     );
+
+    return [filteredEvents, timeZone];
   }
 
   const user = ctx.state.user;
 
   if (!user) {
-    return [];
+    return [[], null];
   }
 
-  return ctx.db.getEvents(user.id);
+  return [await ctx.db.getEvents(user.id), null];
 }
 
 export async function initialState(ctx: AppContext, next: AppNext) {
   const { route } = ctx.state;
 
   const user = ctx.state.user;
-  const events = await getEvents(ctx);
+  const [events, eventsTimeZone] = await getEvents(ctx);
 
   let users: User[] = [];
 
@@ -113,6 +115,10 @@ export async function initialState(ctx: AppContext, next: AppNext) {
       shareLink: null,
     },
     confirmAction: null,
+    activeTimezone: eventsTimeZone ?? settings.timeZone ?? null,
+    // activeTimezone: "Europe/Berlin",
+    // activeTimezone: "America/Los_Angeles",
+    // activeTimezone: "Asia/Jerusalem",
   };
 
   return next();

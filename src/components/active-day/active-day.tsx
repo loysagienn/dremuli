@@ -5,7 +5,7 @@ import { formatDate } from "utils/date";
 import styles from "./active-day.module.css";
 import { cn } from "utils/cn";
 import { useText } from "lang/context";
-import { selectLanguage } from "selectors";
+import { selectActiveTimezone, selectLanguage } from "selectors";
 
 type ActiveDayProps = {
   className?: string;
@@ -15,6 +15,7 @@ export function ActiveDay({ className }: ActiveDayProps) {
   const { daySummary: text, timeDuration } = useText();
   const lang = useSelector(selectLanguage);
   const activeDay = useSelector(selectActiveDay);
+  const timeZone = useSelector(selectActiveTimezone);
   const activeDayStat = useSelector(selectActiveDayStat);
 
   if (!activeDay || !activeDayStat) {
@@ -23,7 +24,9 @@ export function ActiveDay({ className }: ActiveDayProps) {
 
   return (
     <div className={cn(className, styles.root)}>
-      <div className={styles.dateTitle}>{formatDate(activeDay, { lang })}</div>
+      <div className={styles.dateTitle}>
+        {formatDate(activeDay, { lang, timeZone })}
+      </div>
 
       <div className={styles.content}>
         <div className={styles.dataBlock}>
