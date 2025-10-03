@@ -14,7 +14,7 @@ function getImportEvents(data: any): BatchEventData[] {
       throw new Error("Invalid JSON");
     }
 
-    const { type, timestamp } = event;
+    const { type, timestamp, comment } = event;
 
     if (type !== "woke_up" && type !== "fell_asleep") {
       throw new Error("Invalid JSON");
@@ -30,9 +30,14 @@ function getImportEvents(data: any): BatchEventData[] {
       throw new Error("Invalid JSON");
     }
 
+    if (comment && typeof comment !== "string") {
+      throw new Error("Invalid JSON");
+    }
+
     return {
       type,
       timestamp: date,
+      comment,
     } as BatchEventData;
   });
 

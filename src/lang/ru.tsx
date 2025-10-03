@@ -95,6 +95,7 @@ export const ru: Text = {
     submit: "Обновить",
     cancel: "Отмена",
     delete: "Удалить",
+    commentPlaceholder: "Добавить комментарий...",
   },
   profilePage: {
     title: "Профиль",

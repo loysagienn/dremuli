@@ -4,6 +4,7 @@ import { EventType, NapEvent } from "types";
 import { useText } from "lang/context";
 import { AppRoute } from "app/router";
 import { Link } from "components/router";
+import { TextValue } from "components/text-value";
 
 type TimelineEventProps = {
   napEvent: NapEvent;
@@ -41,6 +42,13 @@ function TimelineEvent({ napEvent }: TimelineEventProps) {
         <div className={styles.eventContentDuration}>
           {timeDuration(napEvent.duration)}
         </div>
+
+        {napEvent.comment && (
+          <div className={styles.eventContentComment}>
+            <TextValue value={napEvent.comment} />
+          </div>
+        )}
+
         <div className={styles.eventDot} />
       </div>
     </div>

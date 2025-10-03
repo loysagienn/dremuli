@@ -8,6 +8,7 @@ import { Event, EventType } from "types";
 import { DateTimePicker } from "components/time-picker";
 import { Layout } from "components/layout";
 import { useText } from "lang/context";
+import { TextInput } from "components/text-input";
 
 type UpdateEventFormProps = {
   event: Event;
@@ -25,14 +26,15 @@ export function UpdateEventForm({ event }: UpdateEventFormProps) {
   );
 
   const [timeValue, setTimeValue] = useState(event.timestamp);
+  const [comment, setComment] = useState(event.comment ?? "");
 
   const dispatch = useDispatch();
 
   const onSubmit = useCallback(() => {
     const timestamp = timeValue;
 
-    dispatch(updateEventAction(event.id, { timestamp }));
-  }, [timeValue, event]);
+    dispatch(updateEventAction(event.id, { timestamp, comment }));
+  }, [timeValue, comment, event]);
 
   const onDelete = useCallback(() => {
     if (!event) {
@@ -54,6 +56,13 @@ export function UpdateEventForm({ event }: UpdateEventFormProps) {
             {eventTitles[event?.type] ?? text.title}
           </div>
           <DateTimePicker value={timeValue} onChange={setTimeValue} />
+
+          <TextInput
+            className={styles.comment}
+            value={comment}
+            onChange={setComment}
+            placeholder={text.commentPlaceholder}
+          />
 
           <div className={styles.formSubmit}>
             <FormSubmit onSubmit={onSubmit} submitLabel={text.submit} />

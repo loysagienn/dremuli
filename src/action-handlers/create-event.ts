@@ -9,10 +9,10 @@ export const cerateEvent: ActionHandler<"CREATE_EVENT"> = async ({
 }) => {
   next(action);
 
-  const { eventType, timestamp } = action;
+  const { eventType, timestamp, comment } = action;
 
   try {
-    const event = await api.createEvent(eventType, timestamp);
+    const event = await api.createEvent(eventType, timestamp, comment);
     const events = await api.getEvents();
 
     dispatch(setEventsAction(events));

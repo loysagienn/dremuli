@@ -62,6 +62,7 @@ export const exportToJson: ActionHandler<"EXPORT_TO_JSON"> = async ({
     .map((event) => ({
       type: event.type,
       timestamp: toIsoWithTimezone(event.timestamp),
+      comment: event.comment,
     }));
 
   const filename = `Dremuli ${formatDate(dateFrom, {

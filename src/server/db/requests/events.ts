@@ -3,29 +3,41 @@ import { prisma } from "../client";
 
 export const createEvent =
   () =>
-  async (userId: string, type: EventType, timestamp: Date): Promise<Event> => {
+  async (
+    userId: string,
+    type: EventType,
+    timestamp: Date,
+    comment?: string | null
+  ): Promise<Event> => {
     const { id, createdAt, updatedAt } = await prisma.event.create({
       data: {
         userId,
         type,
         timestamp,
+        comment,
       },
     });
 
-    return { id, type, timestamp, createdAt, updatedAt };
+    return { id, type, timestamp, createdAt, updatedAt, comment };
   };
 
 export const updateEvent =
   () =>
   async (id: string, update: EventUpdate): Promise<Event> => {
-    const { timestamp, type, createdAt, updatedAt } = await prisma.event.update(
-      {
+    const { timestamp, type, createdAt, updatedAt, comment } =
+      await prisma.event.update({
         where: { id },
         data: update,
-      }
-    );
+      });
 
-    return { id, timestamp, type: type as EventType, createdAt, updatedAt };
+    return {
+      id,
+      timestamp,
+      type: type as EventType,
+      createdAt,
+      updatedAt,
+      comment,
+    };
   };
 
 export const getEvent =
@@ -34,7 +46,7 @@ export const getEvent =
     const event = await prisma.event.findUnique({ where: { id } });
 
     if (event) {
-      const { id, type, timestamp, createdAt, updatedAt } = event;
+      const { id, type, timestamp, createdAt, updatedAt, comment } = event;
 
       return {
         id,
@@ -42,6 +54,7 @@ export const getEvent =
         timestamp,
         createdAt,
         updatedAt,
+        comment,
       };
     }
 
@@ -65,7 +78,7 @@ export const getEvents =
     });
 
     return events.map((event) => {
-      const { id, type, timestamp, createdAt, updatedAt } = event;
+      const { id, type, timestamp, createdAt, updatedAt, comment } = event;
 
       return {
         id,
@@ -73,6 +86,7 @@ export const getEvents =
         timestamp,
         createdAt,
         updatedAt,
+        comment,
       };
     });
   };
@@ -94,7 +108,7 @@ export const deleteEvent =
     const event = await prisma.event.delete({ where: { id } });
 
     if (event) {
-      const { id, type, timestamp, createdAt, updatedAt } = event;
+      const { id, type, timestamp, createdAt, updatedAt, comment } = event;
 
       return {
         id,
@@ -102,6 +116,7 @@ export const deleteEvent =
         timestamp,
         createdAt,
         updatedAt,
+        comment,
       };
     }
 

@@ -9,10 +9,12 @@ export type Event = {
   timestamp: Date;
   createdAt: Date;
   updatedAt: Date;
+  comment?: string | null;
 };
 
 export type EventUpdate = {
   timestamp?: Date;
+  comment?: string | null;
 };
 
 export type NapEvent = {
@@ -25,9 +27,11 @@ export type NapEvent = {
   duration: number;
   dayStartStr?: string;
   isNightSleep: boolean;
+  comment?: string | null;
 };
 
 export type BatchEventData = {
   type: EventType;
   timestamp: Date;
+  comment?: string | null;
 };

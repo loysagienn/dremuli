@@ -4,16 +4,19 @@ export type CreateEvent = {
   type: "CREATE_EVENT";
   eventType: EventType;
   timestamp: Date;
+  comment?: string | null;
 };
 
 export function createEventAction(
   eventType: EventType,
-  timestamp: Date
+  timestamp: Date,
+  comment?: string | null
 ): CreateEvent {
   return {
     type: "CREATE_EVENT",
     eventType,
     timestamp,
+    comment,
   };
 }
 

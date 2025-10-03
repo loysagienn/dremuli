@@ -175,14 +175,15 @@ const resetPasswordFactory =
   };
 
 const createEventFactory =
-  (ctx: AppContext) => async (type: EventType, timestamp: Date) => {
+  (ctx: AppContext) =>
+  async (type: EventType, timestamp: Date, comment?: string | null) => {
     const { userId } = ctx.state.session;
 
     if (!userId) {
       throw new Error("Unauthorized");
     }
 
-    const event = await ctx.db.createEvent(userId, type, timestamp);
+    const event = await ctx.db.createEvent(userId, type, timestamp, comment);
 
     return event;
   };
@@ -272,13 +273,13 @@ const createEventsBatchFactory =
     const newEvents: Event[] = [];
 
     for (let i = 0; i < eventsData.length; i++) {
-      const { type, timestamp } = eventsData[i];
+      const { type, timestamp, comment } = eventsData[i];
 
       if (checkEventExists(events, type, timestamp)) {
         continue;
       }
 
-      const event = await ctx.db.createEvent(userId, type, timestamp);
+      const event = await ctx.db.createEvent(userId, type, timestamp, comment);
 
       events.push(event);
       newEvents.push(event);

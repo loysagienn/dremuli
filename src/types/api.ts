@@ -15,7 +15,11 @@ export type Api = {
   changePassword: (password: string, newPassword: string) => Promise<void>;
   forgetPassword: (email: string) => Promise<void>;
   resetPassword: (password: string, token: string) => Promise<void>;
-  createEvent: (type: EventType, timestamp: Date) => Promise<Event>;
+  createEvent: (
+    type: EventType,
+    timestamp: Date,
+    comment?: string | null
+  ) => Promise<Event>;
   createEventsBatch: (eventsData: BatchEventData[]) => Promise<Event[]>;
   updateEvent: (eventId: string, update: EventUpdate) => Promise<Event>;
   getEvents: () => Promise<Event[]>;

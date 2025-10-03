@@ -96,7 +96,9 @@ function getBatchEventData(ctx: AppContext): BatchEventData[] | null {
       return null;
     }
 
-    eventsData.push({ type, timestamp });
+    const comment = eventData.comment;
+
+    eventsData.push({ type, timestamp, comment });
   }
 
   return eventsData;
@@ -105,6 +107,7 @@ function getBatchEventData(ctx: AppContext): BatchEventData[] | null {
 type BodyEventCreate = {
   type: EventType;
   timestamp: Date;
+  comment?: string | null;
 };
 
 function getBodyEventCreate(ctx: AppContext): BodyEventCreate | null {
@@ -126,11 +129,14 @@ function getBodyEventCreate(ctx: AppContext): BodyEventCreate | null {
     return null;
   }
 
-  return { type, timestamp };
+  const comment = data.comment;
+
+  return { type, timestamp, comment };
 }
 
 type BodyEventUpdate = {
   timestamp: Date;
+  comment?: string | null;
 };
 
 function getBodyEventUpdate(ctx: AppContext): BodyEventUpdate | null {
@@ -146,7 +152,9 @@ function getBodyEventUpdate(ctx: AppContext): BodyEventUpdate | null {
     return null;
   }
 
-  return { timestamp };
+  const comment = data.comment;
+
+  return { timestamp, comment };
 }
 
 type BodyShareLink = {
@@ -525,9 +533,9 @@ export async function apiHandler(ctx: AppContext, next: AppNext) {
         return badRequest(ctx);
       }
 
-      const { type, timestamp } = eventCreate;
+      const { type, timestamp, comment } = eventCreate;
 
-      const event = await api.createEvent(type, timestamp);
+      const event = await api.createEvent(type, timestamp, comment);
 
       ctx.body = {
         data: event,

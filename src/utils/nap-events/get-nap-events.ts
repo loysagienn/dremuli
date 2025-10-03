@@ -22,7 +22,7 @@ export function getNapEvents(
 
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
-    const { type, timestamp } = event;
+    const { type, timestamp, comment } = event;
 
     const endTime = getEndTime(i);
 
@@ -41,6 +41,7 @@ export function getNapEvents(
       timeStr: formatTime(timestamp, timeZone),
       duration,
       isNightSleep: false,
+      comment,
     });
   }
 

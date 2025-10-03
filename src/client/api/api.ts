@@ -77,7 +77,7 @@ function parseEvent(data: any): Event | null {
     return null;
   }
 
-  const { id, type, timestamp, createdAt, updatedAt } = data;
+  const { id, type, timestamp, createdAt, updatedAt, comment } = data;
 
   return {
     id,
@@ -85,12 +85,17 @@ function parseEvent(data: any): Event | null {
     timestamp: new Date(timestamp),
     createdAt: new Date(createdAt),
     updatedAt: new Date(updatedAt),
+    comment,
   };
 }
 
-async function createEvent(type: EventType, timestamp: Date) {
+async function createEvent(
+  type: EventType,
+  timestamp: Date,
+  comment?: string | null
+) {
   const result = await request({ key: "api_events" }, "POST", {
-    data: { type, timestamp },
+    data: { type, timestamp, comment },
   });
 
   return parseEvent(result);

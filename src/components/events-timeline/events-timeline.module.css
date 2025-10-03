@@ -136,6 +136,11 @@
   font-size: 14px;
 }
 
+.eventContentComment {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
 .eventDot {
   position: absolute;
   top: 3px;

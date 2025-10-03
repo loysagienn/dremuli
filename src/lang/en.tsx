@@ -89,6 +89,7 @@ export const en = {
     submit: "Update",
     cancel: "Cancel",
     delete: "Delete",
+    commentPlaceholder: "Add a comment...",
   },
   profilePage: {
     title: "Profile",
