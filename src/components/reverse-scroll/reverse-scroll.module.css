@@ -1,0 +1,10 @@
+.container {
+  overflow: auto;
+  overflow-anchor: none;
+  opacity: 0;
+  transition: opacity 0.2s linear;
+}
+
+.content {
+  height: 10000px;
+}

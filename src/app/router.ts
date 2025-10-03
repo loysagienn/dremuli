@@ -525,6 +525,24 @@ const testPage: RouteConfig<TestPage> = {
   writeRoute: (route) => "/test",
 };
 
+type EventsTimeline = {
+  key: "events_timeline";
+};
+
+const eventsTimeline: RouteConfig<EventsTimeline> = {
+  key: "events_timeline",
+  readRoute: (path: string) => {
+    if (path === "/events-timeline") {
+      return {
+        key: "events_timeline",
+      };
+    }
+
+    return null;
+  },
+  writeRoute: (route) => "/events-timeline",
+};
+
 type Settings = {
   key: "settings";
 };
@@ -689,6 +707,7 @@ export const router = initRouter(
   shareTimeline,
   shareStatisticsNaps,
   shareStatisticsCharts,
+  eventsTimeline,
   apiSettings,
   apiUserSettings,
   apiRegisterUser,

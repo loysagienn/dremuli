@@ -15,17 +15,20 @@ const formatters: { [key: string]: Intl.DateTimeFormat } = {};
 type FormatOptions = {
   timeZone?: string;
   lang?: Lang;
+  month?: "short" | "long";
 };
 
 function getFormatter(options: FormatOptions) {
-  const key = `${options.timeZone || ""}:${options.lang || ""}`;
+  const key = `${options.timeZone || ""}:${options.lang || ""}:${
+    options.month || ""
+  }`;
 
   if (formatters[key]) {
     return formatters[key];
   }
 
   const formatter = new Intl.DateTimeFormat(langMap[options.lang || "en"], {
-    month: options.lang === "ru" ? "long" : "short",
+    month: options.month ?? "short",
     day: "2-digit",
     timeZone: options.timeZone,
   });
@@ -38,5 +41,11 @@ function getFormatter(options: FormatOptions) {
 export function formatDate(date: Date, options?: FormatOptions) {
   const formatter = options ? getFormatter(options) : defaultFormatter;
 
-  return formatter.format(date);
+  const str = formatter.format(date);
+
+  if (options?.lang === "ru") {
+    return str.replace(".", ""); // replace space with non-breaking space
+  }
+
+  return str;
 }

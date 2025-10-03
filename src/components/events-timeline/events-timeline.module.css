@@ -1,0 +1,194 @@
+.content {
+  position: absolute;
+  inset: 0;
+  --active-day-height: 128px;
+  --date-width: 90px;
+}
+
+.activeDayContainer {
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--active-day-height);
+  overflow: auto;
+  background-color: var(--color-bg-main);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.activeDay {
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+@media (max-width: 560px) {
+  .activeDay {
+    max-width: 100%;
+  }
+}
+
+.eventsListContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--active-day-height);
+  bottom: 0;
+}
+
+.reverseScroll {
+  position: absolute;
+  inset: 0;
+}
+
+.eventsList {
+  max-width: 400px;
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+@media (max-width: 560px) {
+  .eventsList {
+    max-width: 100%;
+  }
+}
+
+.sideLine {
+  position: absolute;
+  top: 0;
+  bottom: 60px;
+  left: var(--date-width);
+  width: 2px;
+  background-color: var(--color-border);
+}
+
+.content.isSharePage .sideLine {
+  bottom: 0;
+}
+
+.eventsContainer {
+  width: 100%;
+  position: relative;
+}
+
+.event {
+  display: flex;
+  padding: 12px 0;
+}
+
+.eventTime {
+  min-width: var(--date-width);
+}
+
+.eventTimeText {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.eventTimeText:hover {
+  text-decoration: underline;
+}
+
+.dayStart {
+  position: sticky;
+  top: 0;
+  background-color: var(--color-bg-main);
+  width: var(--date-width);
+  text-align: center;
+  padding: 7px 0;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 4px;
+}
+
+.dayStartSpacer {
+  height: 8px;
+}
+
+.eventContent {
+  padding-left: 24px;
+  position: relative;
+}
+
+.eventContentTitle {
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.eventContentTitle:hover {
+  text-decoration: underline;
+}
+
+.eventContentDuration {
+  margin-top: 8px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.eventDot {
+  position: absolute;
+  top: 3px;
+  left: -6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 14px;
+  background-color: var(--color-border);
+}
+
+.footer {
+  box-sizing: border-box;
+  display: flex;
+  padding: 16px 0;
+}
+
+@media (max-width: 560px) {
+  .footer {
+    padding: 16px;
+  }
+}
+
+.createNapBtn {
+  flex-basis: 100%;
+  height: 44px;
+}
+
+.optionsBtn {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  margin-left: 8px;
+}
+
+.optionsButtonSvg {
+  width: 18px;
+  height: 18px;
+  fill: var(--color-text);
+}
+.optionsPopup {
+  padding: 8px 0;
+}
+
+.menuItem {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.menuItem + .menuItem {
+  margin-top: 2px;
+}
+
+.menuItem:hover {
+  background-color: var(--color-border);
+}

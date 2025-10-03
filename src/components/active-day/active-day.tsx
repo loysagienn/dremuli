@@ -25,7 +25,7 @@ export function ActiveDay({ className }: ActiveDayProps) {
   return (
     <div className={cn(className, styles.root)}>
       <div className={styles.dateTitle}>
-        {formatDate(activeDay, { lang, timeZone })}
+        {formatDate(activeDay, { lang, timeZone, month: "long" })}
       </div>
 
       <div className={styles.content}>

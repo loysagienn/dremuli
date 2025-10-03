@@ -26,6 +26,7 @@ import { ImportFromJson } from "components/import-from-json";
 import { ConfirmModal } from "components/confirm-modal";
 import { EventsListPage } from "components/events-list-page";
 import { ShareModal } from "components/share-modal";
+import { EventsTimeline } from "components/events-timeline";
 
 export function App() {
   const theme = useSelector(selectTheme);
@@ -41,7 +42,7 @@ export function App() {
       )}
     >
       <Route routeKey="home">
-        {user && <EventsListPage />}
+        {user && <EventsTimeline />}
         {!user && <WelcomePage />}
       </Route>
 
@@ -95,6 +96,10 @@ export function App() {
 
       <Route routeKey="share_timeline">
         <EventsListPage />
+      </Route>
+
+      <Route routeKey="events_timeline">
+        <EventsTimeline />
       </Route>
 
       <Route routeKey={["share_statistics_naps", "share_statistics_charts"]}>
