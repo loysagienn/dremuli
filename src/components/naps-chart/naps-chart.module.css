@@ -27,12 +27,17 @@
   background-color: var(--color-border);
 }
 
-.timeline {
+.timelineContainer {
   position: absolute;
   left: var(--sidebar-width);
   right: 0;
   top: 0;
   bottom: 0;
+}
+
+.timeline {
+  position: absolute;
+  inset: 0;
 }
 
 .day {
@@ -69,4 +74,24 @@
 .dayNap.dayEnd {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+.mouseTime {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--color-border);
+  pointer-events: none;
+}
+
+.mouseTimeLabel {
+  position: absolute;
+  top: -8px;
+  height: 17px;
+  border-radius: 20px;
+  line-height: 17px;
+  padding: 0 6px;
+  background-color: var(--color-border);
+  font-size: 11px;
 }

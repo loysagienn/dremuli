@@ -245,7 +245,7 @@ const getEventsFactory = (ctx: AppContext) => async () => {
   return events;
 };
 
-function checkEventExists(
+function getExistingEvent(
   events: Event[],
   eventType: EventType,
   timestamp: Date
@@ -253,7 +253,7 @@ function checkEventExists(
   const fromTs = timestamp.getTime() - 30 * 1000;
   const toTs = timestamp.getTime() + 30 * 1000;
 
-  return events.some((event) => {
+  return events.find((event) => {
     const ts = event.timestamp.getTime();
 
     return event.type === eventType && ts > fromTs && ts < toTs;
@@ -275,7 +275,13 @@ const createEventsBatchFactory =
     for (let i = 0; i < eventsData.length; i++) {
       const { type, timestamp, comment } = eventsData[i];
 
-      if (checkEventExists(events, type, timestamp)) {
+      const existingEvent = getExistingEvent(events, type, timestamp);
+
+      if (existingEvent) {
+        if ((existingEvent.comment || null) !== (comment || null)) {
+          await ctx.db.updateEvent(existingEvent.id, { comment });
+        }
+
         continue;
       }
 

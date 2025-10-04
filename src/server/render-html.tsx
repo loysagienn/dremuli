@@ -42,7 +42,7 @@ export async function renderHtml(ctx: AppContext) {
 <head>
   <meta charset="UTF-8">
   ${favicon}
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="manifest" href="/static/manifest.json" />
 
   <meta name="apple-mobile-web-app-capable" content="yes" />

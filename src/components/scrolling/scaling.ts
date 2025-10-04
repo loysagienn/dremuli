@@ -18,20 +18,18 @@ export function initScaling(
   }
 
   const onWheel = (event: WheelEvent) => {
-    if (scrollManager.$scrolling.get()) {
+    if (scrollManager.$scrolling.get() || (!event.metaKey && !event.ctrlKey)) {
       return;
     }
+
+    event.preventDefault();
 
     const [delta, deltaOpposite] =
       direction === "vertical"
         ? [event.deltaX, event.deltaY]
         : [event.deltaY, event.deltaX];
 
-    if (Math.abs(deltaOpposite) > Math.abs(delta) / 2) {
-      return;
-    }
-
-    let scaleFactor = 1 + Math.abs(delta) / 500;
+    let scaleFactor = 1 + Math.abs(delta) / 400;
     if (delta < 0) {
       scaleFactor = 1 / scaleFactor;
     }
@@ -58,7 +56,7 @@ export function initScaling(
     $scale.set(newScale);
   };
 
-  addWindowEvent("wheel", onWheel);
+  addWindowEvent("wheel", onWheel, { passive: false });
 
   const destroy = () => {
     removeWindowEvent("wheel", onWheel);

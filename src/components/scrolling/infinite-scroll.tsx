@@ -1,4 +1,10 @@
-import React, { memo, ReactNode, useLayoutEffect, useRef } from "react";
+import React, {
+  memo,
+  ReactNode,
+  RefObject,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import styles from "./infinite-scroll.module.css";
 import { cn } from "utils/cn";
 import { InfiniteScrollController } from "./scroll-controller";
@@ -7,12 +13,14 @@ type InfiniteScrollProps = {
   scrollController: InfiniteScrollController;
   className?: string;
   children: ReactNode;
+  innerRef?: RefObject<HTMLDivElement>;
 };
 
 function InfiniteScroll({
   scrollController,
   className,
   children,
+  innerRef,
 }: InfiniteScrollProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const scrollableRef = useRef<HTMLDivElement>(null);
@@ -39,6 +47,7 @@ function InfiniteScroll({
         scrollController.snapSize && styles.snappingEnabled,
         scrollController.scalingEnabled && styles.scalingEnabled
       )}
+      ref={innerRef}
     >
       <div className={styles.scrollArea} ref={scrollAreaRef}>
         <div className={styles.scrollable} ref={scrollableRef}></div>

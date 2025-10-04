@@ -125,11 +125,11 @@ function initChartState(
   );
 
   const $headerDays = computedQuant([$days, $dayWidth], (days, dayWidth) => {
-    if (dayWidth > 95) {
+    if (dayWidth > 68) {
       return days;
     }
 
-    const skipFactor = Math.ceil(95 / dayWidth);
+    const skipFactor = Math.ceil(68 / dayWidth);
 
     const headerDays = days.filter((day) => day.dayDiff % skipFactor === 0);
 
@@ -137,11 +137,11 @@ function initChartState(
   });
 
   const $headerDayWidth = computedQuant([$dayWidth], (dayWidth) => {
-    if (dayWidth > 95) {
+    if (dayWidth > 68) {
       return dayWidth;
     }
 
-    const skipFactor = Math.ceil(95 / dayWidth);
+    const skipFactor = Math.ceil(68 / dayWidth);
 
     return skipFactor * dayWidth;
   });
