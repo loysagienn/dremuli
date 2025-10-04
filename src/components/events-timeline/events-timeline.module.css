@@ -115,6 +115,10 @@
   height: 8px;
 }
 
+.dayStartSpacerFirst {
+  height: 0;
+}
+
 .eventContent {
   padding-left: 24px;
   position: relative;

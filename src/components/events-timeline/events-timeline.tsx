@@ -41,7 +41,7 @@ export function EventsTimeline() {
 
       if (event.dayStartStr) {
         eventsContent.push(
-          <DayStart key={`ds-${event.id}`} napEvent={event} />
+          <DayStart key={`ds-${event.id}`} napEvent={event} isFirst={i === 0} />
         );
       }
 

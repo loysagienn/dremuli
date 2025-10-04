@@ -2,12 +2,14 @@ import React, { memo, useContext, useEffect, useMemo, useRef } from "react";
 import styles from "./events-timeline.module.css";
 import { NapEvent } from "types";
 import { dayStartContext } from "./day-start-context";
+import { cn } from "utils/cn";
 
 type DayStartProps = {
   napEvent: NapEvent;
+  isFirst?: boolean;
 };
 
-function DayStart({ napEvent }: DayStartProps) {
+function DayStart({ napEvent, isFirst }: DayStartProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { registerDayStartNode, unregisterDayStartNode } =
     useContext(dayStartContext);
@@ -25,7 +27,13 @@ function DayStart({ napEvent }: DayStartProps) {
 
   return (
     <>
-      <div className={styles.dayStartSpacer} ref={ref} />
+      <div
+        className={cn(
+          styles.dayStartSpacer,
+          isFirst && styles.dayStartSpacerFirst
+        )}
+        ref={ref}
+      />
       <div className={styles.dayStart}>{napEvent.dayStartStr}</div>
     </>
   );

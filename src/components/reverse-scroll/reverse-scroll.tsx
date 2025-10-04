@@ -17,7 +17,8 @@ export function ReverseScroll({
   onScroll,
 }: ReverseScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const containerHeightRef = useRef<number>(containerHeight);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const containerHeightRef = useRef<number>(10000);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -43,15 +44,18 @@ export function ReverseScroll({
 
   useEffect(() => {
     const container = containerRef.current;
+    const content = contentRef.current;
 
-    if (!container) {
+    if (!container || !content) {
       return;
     }
 
     if (containerHeightRef.current !== containerHeight) {
       const sizeDiff = containerHeight - containerHeightRef.current;
+      const newScrollTop = container.scrollTop + sizeDiff;
 
-      container.scrollTop = container.scrollTop + sizeDiff;
+      content.style.height = `${containerHeight}px`;
+      container.scrollTop = newScrollTop;
 
       containerHeightRef.current = containerHeight;
     }
@@ -63,7 +67,7 @@ export function ReverseScroll({
       ref={containerRef}
       onScroll={scrollHandler}
     >
-      <div className={styles.content} style={{ height: containerHeight }}>
+      <div className={styles.content} ref={contentRef}>
         {children}
       </div>
     </div>

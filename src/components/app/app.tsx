@@ -95,7 +95,7 @@ export function App() {
       </Route>
 
       <Route routeKey="share_timeline">
-        <EventsListPage />
+        <EventsTimeline />
       </Route>
 
       <Route routeKey="events_timeline">

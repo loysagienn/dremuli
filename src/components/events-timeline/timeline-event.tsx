@@ -32,7 +32,6 @@ function TimelineEvent({ napEvent }: TimelineEventProps) {
     ? text.sleeping
     : text.awaking;
 
-  // console.log("napEvent", napEvent);
   return (
     <div className={styles.event}>
       <div className={styles.eventTime}>

@@ -91,7 +91,6 @@ export function initScrollManager(
       scrollPosition: number,
       scrollStartValueShift: number
     ) => {
-      console.log("setScrollPosition", scrollPosition);
       $scrollPixelValue.set(scrollPosition);
 
       shiftScrollStartValue(scrollStartValueShift);
