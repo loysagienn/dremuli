@@ -70,6 +70,7 @@ export const ru: Text = {
     share: "Поделиться",
     addSleepSession: "Добавьте ваш первый интервал сна",
     sleeping: "Сон",
+    nightSleeping: "Ночной сон",
     awaking: "Бодрствование",
   },
   daySummary: {

@@ -68,6 +68,7 @@ export const en = {
     share: "Share",
     addSleepSession: "Add your first sleep session",
     sleeping: "Sleep",
+    nightSleeping: "Night sleep",
     awaking: "Awake",
   },
   daySummary: {

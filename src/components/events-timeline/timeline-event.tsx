@@ -26,6 +26,12 @@ function TimelineEvent({ napEvent }: TimelineEventProps) {
     [text]
   );
 
+  const actionText = napEvent.isNightSleep
+    ? text.nightSleeping
+    : napEvent.type === EventType.FellAsleep
+    ? text.sleeping
+    : text.awaking;
+
   // console.log("napEvent", napEvent);
   return (
     <div className={styles.event}>
@@ -46,11 +52,7 @@ function TimelineEvent({ napEvent }: TimelineEventProps) {
         )}
 
         <div className={styles.eventContentDuration}>
-          {`${
-            napEvent.type === EventType.FellAsleep
-              ? text.sleeping
-              : text.awaking
-          } ${timeDuration(napEvent.duration)}`}
+          {`${actionText} ${timeDuration(napEvent.duration)}`}
         </div>
 
         <div className={styles.eventDot} />
