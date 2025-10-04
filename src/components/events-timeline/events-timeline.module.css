@@ -20,7 +20,7 @@
 .activeDay {
   box-sizing: border-box;
   margin: 0 auto;
-  max-width: 400px;
+  max-width: 528px;
 }
 
 @media (max-width: 560px) {
@@ -43,7 +43,7 @@
 }
 
 .eventsList {
-  max-width: 400px;
+  max-width: 528px;
   margin: 0 auto;
   height: 100%;
   position: relative;
