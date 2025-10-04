@@ -39,15 +39,19 @@ function TimelineEvent({ napEvent }: TimelineEventProps) {
           {napEvent.isNightSleep ? text.fellAsleepNight : titles[napEvent.type]}
         </Link>
 
-        <div className={styles.eventContentDuration}>
-          {timeDuration(napEvent.duration)}
-        </div>
-
         {napEvent.comment && (
           <div className={styles.eventContentComment}>
             <TextValue value={napEvent.comment} />
           </div>
         )}
+
+        <div className={styles.eventContentDuration}>
+          {`${
+            napEvent.type === EventType.FellAsleep
+              ? text.sleeping
+              : text.awaking
+          } ${timeDuration(napEvent.duration)}`}
+        </div>
 
         <div className={styles.eventDot} />
       </div>
