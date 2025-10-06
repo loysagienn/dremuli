@@ -1,5 +1,6 @@
 import { InfiniteScrollController } from "components/scrolling";
 import { RefObject } from "react";
+import { NapEvent } from "types";
 import { addWindowEvent } from "utils/browser";
 import { computedQuant, quant } from "utils/quant";
 
@@ -14,6 +15,7 @@ export function initMouseController(
   containerRef: RefObject<HTMLDivElement>
 ) {
   const $mousePosition = quant<[number, number] | null>(null);
+  const $activeNapEvent = quant<NapEvent | null>(null);
   const dataHeight = height - headerHeight;
 
   const onMouseMove = (event: MouseEvent) => {
@@ -55,6 +57,10 @@ export function initMouseController(
     return (mouseY / dataHeight) * DAY_MS;
   });
 
+  const setActiveNap = (napEvent: NapEvent | null) => {
+    $activeNapEvent.set(napEvent);
+  };
+
   const removeEventListener = addWindowEvent("mousemove", onMouseMove);
 
   const destroy = () => {
@@ -62,7 +68,7 @@ export function initMouseController(
     removeEventListener();
   };
 
-  return { $mouseTime, $mousePosition, destroy };
+  return { $mouseTime, $mousePosition, $activeNapEvent, destroy, setActiveNap };
 }
 
 export type MouseController = ReturnType<typeof initMouseController>;

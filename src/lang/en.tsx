@@ -152,6 +152,11 @@ export const en = {
     createLink: "Create link",
     shareLinkTitle: "Link:",
   },
+  activeNapPopup: {
+    sleeping: "Sleep",
+    nightSleeping: "Night sleep",
+    awaking: "Awake",
+  },
   timeDuration,
 };
 

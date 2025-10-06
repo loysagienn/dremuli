@@ -2,6 +2,7 @@ import React, { memo, useMemo } from "react";
 import styles from "./naps-chart.module.css";
 import { MouseController } from "./mouse-controller";
 import { useQuant } from "utils/quant";
+import { isTouchDevice } from "utils/browser";
 
 type MouseContentProps = {
   mouseController: MouseController;
@@ -21,6 +22,7 @@ function MouseContent({
 }: MouseContentProps) {
   const mouseTime = useQuant(mouseController.$mouseTime);
   const mousePosition = useQuant(mouseController.$mousePosition);
+  const activeNapEvent = useQuant(mouseController.$activeNapEvent);
 
   const mouseTimeStr = useMemo(() => {
     if (!mouseTime) {
@@ -53,12 +55,20 @@ function MouseContent({
     return null;
   }
 
+  if (activeNapEvent) {
+    return null;
+  }
+
   return (
-    <div className={styles.mouseTime} style={{ top: mouseTop }}>
-      <div className={styles.mouseTimeLabel} style={labelStyles}>
-        {mouseTimeStr}
-      </div>
-    </div>
+    <>
+      {!isTouchDevice && (
+        <div className={styles.mouseTime} style={{ top: mouseTop }}>
+          <div className={styles.mouseTimeLabel} style={labelStyles}>
+            {mouseTimeStr}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

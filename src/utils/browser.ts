@@ -50,3 +50,8 @@ export function downloadJSON(data: any, filename: string) {
   a.remove();
   URL.revokeObjectURL(url);
 }
+
+export const isTouchDevice =
+  typeof window === "undefined"
+    ? false
+    : window.matchMedia("(pointer: coarse)").matches;

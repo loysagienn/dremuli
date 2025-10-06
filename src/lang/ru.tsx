@@ -158,5 +158,10 @@ export const ru: Text = {
     createLink: "Создать ссылку",
     shareLinkTitle: "Ссылка:",
   },
+  activeNapPopup: {
+    sleeping: "Сон",
+    nightSleeping: "Ночной сон",
+    awaking: "Бодрствование",
+  },
   timeDuration,
 } as const;

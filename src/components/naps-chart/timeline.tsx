@@ -30,7 +30,7 @@ function Timeline({ width, height, headerHeight }: TimelineProps) {
 
   const defaultScale = useMemo(() => {
     const dayWidth = Math.max(
-      Math.min(MAX_DAY_WIDTH, width / 10),
+      Math.min(MAX_DAY_WIDTH, width / 15),
       MIN_DAY_WIDTH
     );
 
@@ -126,8 +126,10 @@ function Timeline({ width, height, headerHeight }: TimelineProps) {
               <DayNaps
                 date={date}
                 height={height}
+                width={width}
                 headerHeight={headerHeight}
                 dayWidth={dayWidth}
+                mouseController={mouseController}
               />
             </div>
           );
