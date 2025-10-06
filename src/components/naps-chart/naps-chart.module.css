@@ -113,10 +113,10 @@
 
 .activeNapEvent {
   position: absolute;
-  inset: -1px;
+  inset: 0;
   box-sizing: border-box;
-  border: 1px solid white;
-  border-radius: 5px;
+  border: 2px solid var(--color-active-event-border);
+  border-radius: 4px;
 }
 
 .activeNapEvent.isStart {

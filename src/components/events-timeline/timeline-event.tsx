@@ -5,6 +5,9 @@ import { useText } from "lang/context";
 import { AppRoute } from "app/router";
 import { Link } from "components/router";
 import { TextValue } from "components/text-value";
+import { useSelector } from "react-redux";
+import { selectIsSharePage } from "selectors";
+import { cn } from "utils/cn";
 
 type TimelineEventProps = {
   napEvent: NapEvent;
@@ -12,6 +15,8 @@ type TimelineEventProps = {
 
 function TimelineEvent({ napEvent }: TimelineEventProps) {
   const { timelinePage: text, timeDuration } = useText();
+
+  const isSharePage = useSelector(selectIsSharePage);
 
   const napRoute = useMemo<AppRoute>(
     () => ({ key: "update_event", eventId: napEvent.event.id }),
@@ -35,14 +40,34 @@ function TimelineEvent({ napEvent }: TimelineEventProps) {
   return (
     <div className={styles.event}>
       <div className={styles.eventTime}>
-        <Link className={styles.eventTimeText} route={napRoute}>
-          {napEvent.timeStr}
-        </Link>
+        {isSharePage ? (
+          <div className={styles.eventTimeText}>{napEvent.timeStr}</div>
+        ) : (
+          <Link
+            className={cn(styles.eventTimeText, styles.link)}
+            route={napRoute}
+          >
+            {napEvent.timeStr}
+          </Link>
+        )}
       </div>
       <div className={styles.eventContent}>
-        <Link className={styles.eventContentTitle} route={napRoute}>
-          {napEvent.isNightSleep ? text.fellAsleepNight : titles[napEvent.type]}
-        </Link>
+        {isSharePage ? (
+          <div className={styles.eventContentTitle}>
+            {napEvent.isNightSleep
+              ? text.fellAsleepNight
+              : titles[napEvent.type]}
+          </div>
+        ) : (
+          <Link
+            className={cn(styles.eventContentTitle, styles.link)}
+            route={napRoute}
+          >
+            {napEvent.isNightSleep
+              ? text.fellAsleepNight
+              : titles[napEvent.type]}
+          </Link>
+        )}
 
         {napEvent.comment && (
           <div className={styles.eventContentComment}>

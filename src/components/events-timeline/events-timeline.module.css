@@ -91,10 +91,13 @@
   margin: 0 auto;
   font-size: 16px;
   font-weight: 600;
+}
+
+.link {
   text-decoration: none;
 }
 
-.eventTimeText:hover {
+.link:hover {
   text-decoration: underline;
 }
 
@@ -133,11 +136,6 @@
 .eventContentTitle {
   font-size: 16px;
   font-weight: 600;
-  text-decoration: none;
-}
-
-.eventContentTitle:hover {
-  text-decoration: underline;
 }
 
 .eventContentDuration {
