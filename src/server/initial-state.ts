@@ -64,7 +64,17 @@ async function getEvents(ctx: AppContext): Promise<[Event[], string | null]> {
     return [[], null];
   }
 
-  return [await ctx.db.getEvents(user.id), null];
+  const events = await ctx.db.getEvents(user.id);
+
+  const date = new Date();
+  date.setDate(date.getDate() - 30);
+  const timestamp = date.getTime();
+
+  const filteredEvents = events.filter(
+    (event) => event.timestamp.getTime() >= timestamp
+  );
+
+  return [filteredEvents, null];
 }
 
 export async function initialState(ctx: AppContext, next: AppNext) {

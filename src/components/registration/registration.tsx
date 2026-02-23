@@ -23,7 +23,7 @@ export function Registration() {
     }
 
     dispatch(registerUser(email, password));
-  }, [email, password]);
+  }, [email, password, termsOfUseConfirmed]);
 
   return (
     <div className={styles.root}>
