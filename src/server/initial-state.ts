@@ -6,7 +6,7 @@ import { hashToken } from "./utils/crypto";
 const DEFAULT_SETTINGS: SessionSettings = {
   theme: "dark",
   timeZone: null,
-  language: "ru",
+  language: "en",
 };
 
 async function getSettings(ctx: AppContext): Promise<SessionSettings> {
